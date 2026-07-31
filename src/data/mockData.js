@@ -257,12 +257,20 @@ export const AI_DOMAINS = [
 
 // ── Executive team ──
 export const EXECUTIVE_TEAM = [
-  { id: 'exec-01', name: 'Aditya Verma',   role: 'President',            dept: 'B.Tech CSE, 3rd Year' },
-  { id: 'exec-02', name: 'Riya Sinha',     role: 'Vice President',       dept: 'B.Tech ECE, 3rd Year' },
-  { id: 'exec-03', name: 'Kabir Malhotra', role: 'Secretary',            dept: 'B.Tech IT, 2nd Year'  },
-  { id: 'exec-04', name: 'Ananya Das',     role: 'Technical Head',       dept: 'B.Tech CSE, 3rd Year' },
-  { id: 'exec-05', name: 'Ishaan Batra',   role: 'Research Head',        dept: 'B.Tech ECE, 2nd Year' },
-  { id: 'exec-06', name: 'Tara Pillai',    role: 'Events Head',          dept: 'B.Tech IT, 3rd Year'  },
+  { id: 'exec-01', name: 'Aditya Verma',   role: 'President',            dept: 'B.Tech CSE, 3rd Year', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'exec-02', name: 'Riya Sinha',     role: 'Vice President',       dept: 'B.Tech ECE, 3rd Year', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'exec-03', name: 'Kabir Malhotra', role: 'Secretary',            dept: 'B.Tech IT, 2nd Year',  image: null, linkedin: 'https://linkedin.com' },
+  { id: 'exec-04', name: 'Ananya Das',     role: 'Technical Head',       dept: 'B.Tech CSE, 3rd Year', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'exec-05', name: 'Ishaan Batra',   role: 'Research Head',        dept: 'B.Tech ECE, 2nd Year', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'exec-06', name: 'Tara Pillai',    role: 'Events Head',          dept: 'B.Tech IT, 3rd Year',  image: null, linkedin: 'https://linkedin.com' },
+];
+
+export const HALL_OF_FAME = [
+  { id: 'hof-01', name: 'Priya Nair',   role: 'Founding President (2019)', dept: 'Google DeepMind', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'hof-02', name: 'Karan Joshi',  role: 'Research Head (2020)', dept: 'PhD at CMU', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'hof-03', name: 'Rohan Gupta',  role: 'Tech Lead (2021)', dept: 'Applied Scientist at Amazon', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'hof-04', name: 'Neha Sharma',  role: 'Vice President (2022)', dept: 'ML Engineer at OpenAI', image: null, linkedin: 'https://linkedin.com' },
+  { id: 'hof-05', name: 'Vikram Singh', role: 'Secretary (2020)', dept: 'Founder of NeuralX', image: null, linkedin: 'https://linkedin.com' },
 ];
 
 // ── Legacy timeline ──
@@ -281,14 +289,15 @@ export const NAV_LINKS = [
   { label: 'Society',          href: '/society',      id: 'nav-society' },
   { label: 'Notice Board',     href: '/notices',      id: 'nav-notices' },
   { label: 'Blogs & Resources',href: '/blogs',        id: 'nav-blogs' },
+  { label: 'Contact',          href: '/contact',      id: 'nav-contact' },
 ];
 
 // ── Social links ──
 export const SOCIAL_LINKS = [
-  { label: 'LinkedIn',  href: 'https://linkedin.com',  id: 'social-linkedin' },
-  { label: 'Instagram', href: 'https://instagram.com', id: 'social-instagram' },
-  { label: 'GitHub',    href: 'https://github.com',    id: 'social-github' },
-  { label: 'Email',     href: 'mailto:neural@dtu.ac.in', id: 'social-email' },
+  { label: 'LinkedIn',  href: 'https://linkedin.com',  id: 'social-linkedin', iconClass: 'fa-brands fa-linkedin' },
+  { label: 'Instagram', href: 'https://instagram.com', id: 'social-instagram', iconClass: 'fa-brands fa-instagram' },
+  { label: 'GitHub',    href: 'https://github.com',    id: 'social-github', iconClass: 'fa-brands fa-github' },
+  { label: 'Contact',   href: '/contact',              id: 'social-contact', iconClass: 'fa-solid fa-envelope' },
 ];
 
 // ── Learning resources ──

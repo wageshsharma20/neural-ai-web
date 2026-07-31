@@ -1,7 +1,8 @@
 import React from 'react';
 import PageLayout from '../components/layout/PageLayout';
-import { EXECUTIVE_TEAM, LEGACY_TIMELINE, ACHIEVEMENTS } from '../data/mockData';
-import { CORE_VALUES, HALL_OF_FAME } from '../data/societyData';
+import { EXECUTIVE_TEAM, LEGACY_TIMELINE, ACHIEVEMENTS, HALL_OF_FAME } from '../data/mockData';
+import { CORE_VALUES } from '../data/societyData';
+import TeamSlider from '../components/ui/TeamSlider';
 import './SocietyPage.css';
 
 /**
@@ -91,19 +92,17 @@ function SocietyPage() {
             </div>
             <div className="society-section__content">
               <h2 className="society-section__heading" id="values-heading">What we stand by.</h2>
-              <ul className="values-list" role="list">
+              <div className="values-timeline" role="list">
                 {CORE_VALUES.map((v, i) => (
-                  <li key={v.id} className="values-item" id={v.id}>
+                  <div key={v.id} className="values-item" id={v.id} role="listitem">
                     <span className="values-item__num" aria-hidden="true">
-                      {String(i + 1).padStart(2, '0')}
+                      0{i + 1}
                     </span>
-                    <div>
-                      <p className="values-item__title">{v.title}</p>
-                      <p className="values-item__body">{v.body}</p>
-                    </div>
-                  </li>
+                    <p className="values-item__title">{v.title}</p>
+                    <p className="values-item__body">{v.body}</p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -142,20 +141,7 @@ function SocietyPage() {
             </div>
             <div className="society-section__content">
               <h2 className="society-section__heading" id="team-heading">2025–26 Office Bearers.</h2>
-              <ul className="team-list" role="list">
-                {EXECUTIVE_TEAM.map((m) => (
-                  <li key={m.id} className="team-row" id={m.id}>
-                    <span className="team-row__initials" aria-hidden="true">
-                      {m.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                    <div className="team-row__info">
-                      <p className="team-row__name">{m.name}</p>
-                      <p className="team-row__dept">{m.dept}</p>
-                    </div>
-                    <span className="team-row__role">{m.role}</span>
-                  </li>
-                ))}
-              </ul>
+              <TeamSlider members={EXECUTIVE_TEAM} />
             </div>
           </div>
         </section>
@@ -223,23 +209,7 @@ function SocietyPage() {
               <h2 className="society-section__heading" id="hof-heading">
                 Where our alumni are now.
               </h2>
-              <ul className="hof-list" role="list">
-                {HALL_OF_FAME.map((p) => (
-                  <li key={p.id} className="hof-row" id={p.id}>
-                    <span className="hof-row__initials" aria-hidden="true">
-                      {p.name.split(' ').map(n => n[0]).join('')}
-                    </span>
-                    <div className="hof-row__info">
-                      <p className="hof-row__name">{p.name}</p>
-                      <p className="hof-row__org">{p.org}</p>
-                    </div>
-                    <div className="hof-row__right">
-                      <p className="hof-row__role">{p.role}</p>
-                      <span className="hof-row__batch">Batch {p.batch}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <TeamSlider members={HALL_OF_FAME} />
             </div>
           </div>
         </section>

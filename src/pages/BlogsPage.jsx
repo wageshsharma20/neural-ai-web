@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import PageLayout from '../components/layout/PageLayout';
 import { ALL_BLOGS, RESOURCES, RESOURCE_TYPES, DIFFICULTY_LEVELS } from '../data/blogsData';
 import { BLOG_CATEGORIES } from '../data/mockData';
@@ -171,6 +172,7 @@ function BlogsPage() {
                     </div>
                     <h3 className="blog-card__title" id={`${blog.id}-title`}>{blog.title}</h3>
                     <p className="blog-card__excerpt">{blog.excerpt}</p>
+                    
                     <div className="blog-card__footer">
                       <div className="blog-author blog-author--sm">
                         <span className="blog-author__initials blog-author__initials--sm" aria-hidden="true">
@@ -181,6 +183,7 @@ function BlogsPage() {
                           <p className="blog-author__role">{formatDate(blog.publishedAt)}</p>
                         </div>
                       </div>
+                      <Link to={`/blogs/${blog.id}`} className="blog-read-more">Read More <span aria-hidden="true">→</span></Link>
                     </div>
                   </li>
                 ))}

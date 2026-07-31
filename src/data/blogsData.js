@@ -10,6 +10,7 @@ export const ALL_BLOGS = [
     title: 'Understanding Attention: From Transformers to Linear Attention',
     excerpt:
       'A ground-up walkthrough of the self-attention mechanism, its computational cost, and the emerging linear-attention variants reducing O(n²) complexity.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'A ground-up walkthrough of the self-attention mechanism, its computational cost, and the emerging linear-attention variants reducing O(n²) complexity.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Aryan Mehta',
     authorRole: 'Core — Research',
     authorInitials: 'AM',
@@ -24,6 +25,7 @@ export const ALL_BLOGS = [
     title: 'Vision-Language Models: Bridging Pixels and Text',
     excerpt:
       'A survey of CLIP, Flamingo, and GPT-4V, tracing the architectural choices that make multimodal reasoning possible.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'A survey of CLIP, Flamingo, and GPT-4V, tracing the architectural choices that make multimodal reasoning possible.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Sneha Kapoor',
     authorRole: 'Core — Content',
     authorInitials: 'SK',
@@ -38,6 +40,7 @@ export const ALL_BLOGS = [
     title: 'The Road to AGI: Milestones, Benchmarks and Open Questions',
     excerpt:
       'An opinionated survey of what current benchmarks actually measure, where they fall short, and what frontier labs are quietly working on next.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'An opinionated survey of what current benchmarks actually measure, where they fall short, and what frontier labs are quietly working on next.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Rahul Sharma',
     authorRole: 'Office Bearer',
     authorInitials: 'RS',
@@ -52,6 +55,7 @@ export const ALL_BLOGS = [
     title: 'Mechanistic Interpretability: Reading the Mind of a Neural Network',
     excerpt:
       'An introduction to circuits, superposition, and how researchers are reverse-engineering what LLMs actually learn internally.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'An introduction to circuits, superposition, and how researchers are reverse-engineering what LLMs actually learn internally.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Ishaan Batra',
     authorRole: 'Core — Research',
     authorInitials: 'IB',
@@ -66,6 +70,7 @@ export const ALL_BLOGS = [
     title: 'LoRA and Beyond: Efficient Fine-Tuning of Large Language Models',
     excerpt:
       'Why training a 7B parameter model on a consumer GPU is now possible — and the fascinating mathematics of low-rank decomposition behind it.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'Why training a 7B parameter model on a consumer GPU is now possible — and the fascinating mathematics of low-rank decomposition behind it.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Ananya Das',
     authorRole: 'Technical Head',
     authorInitials: 'AD',
@@ -80,6 +85,7 @@ export const ALL_BLOGS = [
     title: 'Point Clouds to 3D Scenes: NeRF, 3DGS and Beyond',
     excerpt:
       'From Neural Radiance Fields to 3D Gaussian Splatting — a deep dive into how AI is reconstructing the physical world from photographs.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'From Neural Radiance Fields to 3D Gaussian Splatting — a deep dive into how AI is reconstructing the physical world from photographs.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Kabir Malhotra',
     authorRole: 'Core — Technical',
     authorInitials: 'KM',
@@ -94,6 +100,7 @@ export const ALL_BLOGS = [
     title: 'Reward Hacking and Alignment: Lessons from RLHF',
     excerpt:
       'What went wrong with early RLHF approaches, how constitutional AI and DPO try to fix it, and what the alignment community hasn\'t solved yet.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'What went wrong with early RLHF approaches, how constitutional AI and DPO try to fix it, and what the alignment community hasn\'t solved yet.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Tara Pillai',
     authorRole: 'Events Head',
     authorInitials: 'TP',
@@ -108,6 +115,7 @@ export const ALL_BLOGS = [
     title: 'Building a Real-Time Object Detection Pipeline',
     excerpt:
       'A practical walkthrough of deploying YOLOv9 with TensorRT for sub-30ms inference on edge devices, with lessons from our robotics cluster.',
+    content: 'This is the full expanded content for the blog post. It goes into much deeper detail about the topic discussed in the excerpt. ' + 'A practical walkthrough of deploying YOLOv9 with TensorRT for sub-30ms inference on edge devices, with lessons from our robotics cluster.' + ' Furthermore, we explore advanced concepts, implementation details, and practical examples that will help you master the material.',
     author: 'Aditya Verma',
     authorRole: 'President',
     authorInitials: 'AV',

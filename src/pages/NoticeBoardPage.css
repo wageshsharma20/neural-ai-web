@@ -188,6 +188,35 @@
   height: 16px;
 }
 
+/* WhatsApp Recruitment CTA - Mid */
+.rec-whatsapp-link-wrapper {
+  margin-top: var(--space-8);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.rec-mid-btn {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--bone);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-6);
+  text-decoration: none;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+
+.rec-mid-btn:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+
 /* ================================================================
    COMBINED NOTICE BOARD — PRIMARY TABS
    ================================================================ */

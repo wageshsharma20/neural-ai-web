@@ -50,24 +50,35 @@ function Footer() {
           <address className="footer__address">
             <p>Neural AI, DTU</p>
             <p>Shahbad Daulatpur, Delhi — 110042</p>
-            <a href="mailto:neural@dtu.ac.in" className="footer__email">
-              neural@dtu.ac.in
-            </a>
+            <Link to="/contact" className="footer__email">
+              Contact Us
+            </Link>
           </address>
           {/* Social links — small bordered buttons per design spec */}
           <ul className="footer__socials" role="list" aria-label="Social links">
             {SOCIAL_LINKS.map((s) => (
               <li key={s.id}>
-                <a
-                  href={s.href}
-                  id={s.id}
-                  className="footer__social"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Neural AI on ${s.label}`}
-                >
-                  {s.label}
-                </a>
+                {s.href.startsWith('/') ? (
+                  <Link
+                    to={s.href}
+                    id={s.id}
+                    className="footer__social"
+                    aria-label={s.label}
+                  >
+                    {s.iconClass ? <i className={s.iconClass}></i> : s.label}
+                  </Link>
+                ) : (
+                  <a
+                    href={s.href}
+                    id={s.id}
+                    className="footer__social"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Neural AI on ${s.label}`}
+                  >
+                    {s.iconClass ? <i className={s.iconClass}></i> : s.label}
+                  </a>
+                )}
               </li>
             ))}
           </ul>

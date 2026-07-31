@@ -42,55 +42,7 @@ export const members = [
     email: 'priya.mehta@dtu.ac.in', rollNumber: '2K21/CO/091', batch: '2021–25',
     status: 'active', joined: '2021-09-12', reportsTo: 'USR-001', initials: 'PM',
     skills: ['TensorFlow', 'Computer Vision', 'Flask'],
-  },
-  {
-    id: 'USR-003', name: 'Rohan Gupta', role: 'Core Team',
-    email: 'rohan.gupta@dtu.ac.in', rollNumber: '2K22/CO/034', batch: '2022–26',
-    status: 'active', joined: '2022-09-05', reportsTo: 'USR-002', initials: 'RG',
-    skills: ['NLP', 'HuggingFace', 'LaTeX', 'Research Writing'],
-  },
-  {
-    id: 'USR-004', name: 'Sanya Kapoor', role: 'Core Team',
-    email: 'sanya.kapoor@dtu.ac.in', rollNumber: '2K22/IT/056', batch: '2022–26',
-    status: 'active', joined: '2022-09-07', reportsTo: 'USR-002', initials: 'SK',
-    skills: ['Figma', 'UI/UX', 'Motion Design', 'Branding'],
-  },
-  {
-    id: 'USR-005', name: 'Vikram Singh', role: 'Core Team',
-    email: 'vikram.singh@dtu.ac.in', rollNumber: '2K22/CO/078', batch: '2022–26',
-    status: 'active', joined: '2022-10-01', reportsTo: 'USR-002', initials: 'VS',
-    skills: ['Project Management', 'Sponsorship', 'Community Building'],
-  },
-  {
-    id: 'USR-006', name: 'Neha Joshi', role: 'Member',
-    email: 'neha.joshi@dtu.ac.in', rollNumber: '2K23/CO/012', batch: '2023–27',
-    status: 'active', joined: '2023-09-10', reportsTo: 'USR-003', initials: 'NJ',
-    skills: ['Python', 'Scikit-learn', 'Data Analysis'],
-  },
-  {
-    id: 'USR-007', name: 'Aditya Rao', role: 'Member',
-    email: 'aditya.rao@dtu.ac.in', rollNumber: '2K23/CO/067', batch: '2023–27',
-    status: 'active', joined: '2023-09-11', reportsTo: 'USR-003', initials: 'AR',
-    skills: ['Deep Learning', 'GANs', 'Image Processing'],
-  },
-  {
-    id: 'USR-008', name: 'Ishaan Bhatia', role: 'Member',
-    email: 'ishaan.bhatia@dtu.ac.in', rollNumber: '2K23/IT/089', batch: '2023–27',
-    status: 'inactive', joined: '2023-09-15', reportsTo: 'USR-003', initials: 'IB',
-    skills: ['JavaScript', 'React', 'Node.js'],
-  },
-  {
-    id: 'USR-009', name: 'Kavya Reddy', role: 'Core Team',
-    email: 'kavya.reddy@dtu.ac.in', rollNumber: '2K22/EC/034', batch: '2022–26',
-    status: 'active', joined: '2022-09-20', reportsTo: 'USR-002', initials: 'KR',
-    skills: ['Content Strategy', 'Social Media', 'Copywriting'],
-  },
-  {
-    id: 'USR-010', name: 'Dhruv Pandey', role: 'Member',
-    email: 'dhruv.pandey@dtu.ac.in', rollNumber: '2K23/ME/045', batch: '2023–27',
-    status: 'active', joined: '2023-10-02', reportsTo: 'USR-004', initials: 'DP',
-    skills: ['Illustrator', 'Figma', 'Video Editing'],
-  },
+  }
 ];
 
 export const departments = [];
@@ -111,55 +63,7 @@ export const tasks = [
     assignedTo: ['USR-003', 'USR-007'], assignedBy: 'USR-001',
     progress: 90, tags: ['research', 'publication'],
     comments: 12, createdAt: '2026-06-15',
-  },
-  {
-    id: 'TASK-003', title: 'Set Up Recruitment Portal UI',
-    description: 'Build the frontend form for 2026 recruitment cycle.',
-    priority: 'high', status: 'todo', dueDate: '2026-08-15',
-    assignedTo: ['USR-006'], assignedBy: 'USR-002',
-    progress: 0, tags: ['development', 'recruitment'],
-    comments: 1, createdAt: '2026-07-28',
-  },
-  {
-    id: 'TASK-004', title: 'Finalize Sponsorship Deck for HackNeural',
-    description: 'Update sponsorship tiers and company pitch deck.',
-    priority: 'high', status: 'in_progress', dueDate: '2026-08-01',
-    assignedTo: ['USR-009'], assignedBy: 'USR-005',
-    progress: 40, tags: ['sponsorship', 'hackathon'],
-    comments: 5, createdAt: '2026-07-22',
-  },
-  {
-    id: 'TASK-005', title: 'Update Society Website Home Page',
-    description: 'Refresh hero section and add new stats from July.',
-    priority: 'medium', status: 'completed', dueDate: '2026-07-25',
-    assignedTo: ['USR-010'], assignedBy: 'USR-004',
-    progress: 100, tags: ['website', 'design'],
-    comments: 7, createdAt: '2026-07-10',
-  },
-  {
-    id: 'TASK-006', title: 'Organize Reading Group for Attention Papers',
-    description: 'Schedule weekly sessions on transformer attention mechanisms.',
-    priority: 'medium', status: 'in_progress', dueDate: '2026-08-20',
-    assignedTo: ['USR-003'], assignedBy: 'USR-001',
-    progress: 30, tags: ['research', 'reading-group'],
-    comments: 2, createdAt: '2026-07-25',
-  },
-  {
-    id: 'TASK-007', title: 'Book Seminar Hall for HackNeural',
-    description: 'Coordinate with DTU admin for venue booking.',
-    priority: 'medium', status: 'blocked', dueDate: '2026-07-30',
-    assignedTo: ['USR-005'], assignedBy: 'USR-001',
-    progress: 20, tags: ['logistics', 'hackathon'],
-    comments: 4, createdAt: '2026-07-18',
-  },
-  {
-    id: 'TASK-008', title: 'Social Media Content Calendar — August',
-    description: 'Prepare and schedule posts for the month.',
-    priority: 'low', status: 'todo', dueDate: '2026-08-01',
-    assignedTo: ['USR-009'], assignedBy: 'USR-002',
-    progress: 0, tags: ['social-media', 'content'],
-    comments: 0, createdAt: '2026-07-29',
-  },
+  }
 ];
 
 export const projects = [
@@ -188,46 +92,7 @@ export const projects = [
     repo: 'github.com/neural-ai-dtu/speakeasy',
     demo: 'speakeasy-demo.vercel.app',
     featured: true,
-  },
-  {
-    id: 'PROJ-003', title: 'TrafficFlowAI — DTU Campus Traffic Model',
-    description: 'Real-time traffic density prediction model for DTU campus using YOLO and LSTM.',
-    status: 'active', category: 'Computer Vision',
-    team: ['USR-006', 'USR-008', 'USR-007'],
-    lead: 'USR-006',
-    technologies: ['YOLOv8', 'LSTM', 'OpenCV', 'Streamlit'],
-    startDate: '2026-05-10', deadline: '2026-11-30',
-    progress: 33,
-    repo: 'github.com/neural-ai-dtu/trafficflowai',
-    demo: null,
-    featured: false,
-  },
-  {
-    id: 'PROJ-004', title: 'EduBot — Personalized Learning Assistant',
-    description: 'RAG-based Q&A bot trained on DTU curriculum documents.',
-    status: 'completed', category: 'NLP / LLMs',
-    team: ['USR-003', 'USR-007'],
-    lead: 'USR-003',
-    technologies: ['LangChain', 'FAISS', 'GPT-4o', 'Streamlit'],
-    startDate: '2025-11-01', deadline: '2026-03-31',
-    progress: 100,
-    repo: 'github.com/neural-ai-dtu/edubot',
-    demo: 'edubot.neural-ai.in',
-    featured: true,
-  },
-  {
-    id: 'PROJ-005', title: 'StyleForge — Neural Style Transfer App',
-    description: 'Web app for artistic style transfer using AdaIN.',
-    status: 'on_hold', category: 'Generative AI',
-    team: ['USR-004', 'USR-010'],
-    lead: 'USR-004',
-    technologies: ['PyTorch', 'FastAPI', 'React', 'Tailwind'],
-    startDate: '2026-01-15', deadline: '2026-08-01',
-    progress: 45,
-    repo: 'github.com/neural-ai-dtu/styleforge',
-    demo: null,
-    featured: false,
-  },
+  }
 ];
 
 export const events = [
@@ -252,40 +117,7 @@ export const events = [
     sponsors: [],
     volunteers: ['USR-006', 'USR-007'],
     status_detail: 'Registrations open',
-  },
-  {
-    id: 'EVT-003', title: 'Guest Lecture: Advances in LLMs',
-    type: 'Guest Lecture', status: 'upcoming',
-    description: 'Talk by Dr. Ananya Krishnan (IIT Delhi) on efficient fine-tuning of large language models.',
-    date: '2026-08-12', endDate: '2026-08-12',
-    venue: 'DTU Auditorium', registrations: 112, capacity: 300,
-    budget: 5000, budgetSpent: 0,
-    sponsors: [],
-    volunteers: ['USR-005'],
-    status_detail: 'Confirmed',
-  },
-  {
-    id: 'EVT-004', title: 'Paper Reading: ICLR Highlights',
-    type: 'Academic', status: 'ongoing',
-    description: 'Weekly session reviewing top papers from ICLR 2026.',
-    date: '2026-07-15', endDate: '2026-08-19',
-    venue: 'Research Lab, EC Block', registrations: 22, capacity: 30,
-    budget: 0, budgetSpent: 0,
-    sponsors: [],
-    volunteers: ['USR-003'],
-    status_detail: 'Session 3 of 6',
-  },
-  {
-    id: 'EVT-005', title: 'Neural AI Annual Day 2026',
-    type: 'Ceremony', status: 'past',
-    description: 'Annual celebration of society achievements and inducting new core team.',
-    date: '2026-06-20', endDate: '2026-06-20',
-    venue: 'DTU Amphitheatre', registrations: 210, capacity: 250,
-    budget: 50000, budgetSpent: 46000,
-    sponsors: ['DTU Administration'],
-    volunteers: ['USR-005', 'USR-009', 'USR-004'],
-    status_detail: 'Completed',
-  },
+  }
 ];
 
 export const notices = [
@@ -300,25 +132,7 @@ export const notices = [
     category: 'Recruitment', priority: 'high', status: 'published',
     content: 'Neural AI is recruiting for the 2026–27 session. Applications are due August 20. Shortlisted candidates will be contacted for interviews.',
     publishedAt: '2026-07-25', author: 'USR-001', featured: false, views: 567,
-  },
-  {
-    id: 'NTC-003', title: 'ML Bootcamp Schedule Released',
-    category: 'Workshops', priority: 'medium', status: 'published',
-    content: 'The complete schedule for the ML Bootcamp has been released. Check the Events section for week-by-week topics.',
-    publishedAt: '2026-07-22', author: 'USR-002', featured: false, views: 198,
-  },
-  {
-    id: 'NTC-004', title: 'Research Paper Submission Guidelines Updated',
-    category: 'Academic', priority: 'medium', status: 'published',
-    content: 'Updated submission guidelines for internal research reviews. All papers must follow the NeurIPS 2026 template.',
-    publishedAt: '2026-07-18', author: 'USR-003', featured: false, views: 89,
-  },
-  {
-    id: 'NTC-005', title: 'August Monthly Meeting — Draft',
-    category: 'General', priority: 'low', status: 'draft',
-    content: 'Draft notice for the monthly all-hands meeting in August.',
-    publishedAt: null, author: 'USR-001', featured: false, views: 0,
-  },
+  }
 ];
 
 export const recruitmentData = {
@@ -365,23 +179,7 @@ export const blogs = [
     excerpt: 'A beginner-friendly introduction to PyTorch with hands-on examples.',
     tags: ['pytorch', 'deep-learning', 'beginners'],
     featured: false,
-  },
-  {
-    id: 'BLOG-003', title: 'RAG vs Fine-tuning: When to Use Which',
-    author: 'USR-003', category: 'LLMs', status: 'published',
-    readTime: '10 min', publishedAt: '2026-06-28', views: 2187, likes: 145,
-    excerpt: 'A practical guide comparing retrieval-augmented generation and fine-tuning.',
-    tags: ['llms', 'rag', 'fine-tuning'],
-    featured: false,
-  },
-  {
-    id: 'BLOG-004', title: 'YOLOv8 vs RT-DETR: Object Detection Benchmark',
-    author: 'USR-007', category: 'Computer Vision', status: 'draft',
-    readTime: '15 min', publishedAt: null, views: 0, likes: 0,
-    excerpt: 'Side-by-side comparison of two state-of-the-art detectors on custom datasets.',
-    tags: ['yolo', 'detr', 'computer-vision'],
-    featured: false,
-  },
+  }
 ];
 
 export const achievements = [
@@ -396,19 +194,7 @@ export const achievements = [
     category: 'Competition', date: '2026-03-10',
     description: 'Team NeuralSight won 1st place in the healthcare category of SIH 2026.',
     members: ['USR-003', 'USR-007', 'USR-006'], featured: true, status: 'published',
-  },
-  {
-    id: 'ACH-003', title: 'Runner-up — Flipkart Grid 5.0',
-    category: 'Competition', date: '2026-01-22',
-    description: 'Team placed 2nd in the computer vision track of Flipkart Grid.',
-    members: ['USR-002', 'USR-006'], featured: false, status: 'published',
-  },
-  {
-    id: 'ACH-004', title: 'Google Developer Expert — Priya Mehta',
-    category: 'Individual', date: '2025-12-01',
-    description: 'Priya Mehta recognised as Google Developer Expert for ML.',
-    members: ['USR-002'], featured: false, status: 'published',
-  },
+  }
 ];
 
 export const analyticsData = {
@@ -458,27 +244,15 @@ export const analyticsData = {
 
 export const recentActivity = [
   { id: 1, type: 'task_completed', user: 'USR-004', message: 'Completed "Update Society Website Home Page"', time: '2 hours ago' },
-  { id: 2, type: 'blog_published', user: 'USR-003', message: 'Published "Understanding Attention Is All You Need"', time: '5 hours ago' },
-  { id: 3, type: 'member_joined', user: 'USR-010', message: 'Dhruv Pandey joined the society', time: '1 day ago' },
-  { id: 4, type: 'notice_published', user: 'USR-001', message: 'Published "HackNeural 4.0 — Registrations Open"', time: '3 days ago' },
-  { id: 5, type: 'project_update', user: 'USR-002', message: 'SpeakEasy progress updated to 72%', time: '3 days ago' },
-  { id: 6, type: 'achievement_added', user: 'USR-001', message: 'Added achievement: Best Paper Award — ICLR', time: '4 days ago' },
-  { id: 7, type: 'task_blocked', user: 'USR-005', message: 'Task "Book Seminar Hall" marked as Blocked', time: '5 days ago' },
-  { id: 8, type: 'event_created', user: 'USR-005', message: 'Created event "Guest Lecture: Advances in LLMs"', time: '6 days ago' },
+  { id: 2, type: 'blog_published', user: 'USR-003', message: 'Published "Understanding Attention Is All You Need"', time: '5 hours ago' }
 ];
 
 export const calendarEvents = [
   { id: 1, title: 'ML Bootcamp Week 1', date: '2026-08-05', type: 'workshop', color: 'cyan' },
-  { id: 2, title: 'Task Deadline: Sponsor Deck', date: '2026-08-01', type: 'deadline', color: 'amber' },
-  { id: 3, title: 'Guest Lecture: LLMs', date: '2026-08-12', type: 'event', color: 'violet' },
-  { id: 4, title: 'Application Deadline', date: '2026-08-20', type: 'recruitment', color: 'magenta' },
-  { id: 5, title: 'HackNeural 4.0', date: '2026-08-22', type: 'hackathon', color: 'violet' },
-  { id: 6, title: 'Paper Submission: AAAI', date: '2026-08-10', type: 'deadline', color: 'amber' },
+  { id: 2, title: 'Task Deadline: Sponsor Deck', date: '2026-08-01', type: 'deadline', color: 'amber' }
 ];
 
 export const notifications = [
   { id: 1, title: 'Task Overdue', message: 'Book Seminar Hall is past due date.', time: '1h ago', read: false, type: 'warning' },
-  { id: 2, title: 'New Application', message: '234 recruitment applications received so far.', time: '3h ago', read: false, type: 'info' },
-  { id: 3, title: 'Blog Published', message: 'Rohan published a new blog post.', time: '5h ago', read: true, type: 'success' },
-  { id: 4, title: 'Task Completed', message: 'Website home page update completed.', time: '2d ago', read: true, type: 'success' },
+  { id: 2, title: 'New Application', message: '234 recruitment applications received so far.', time: '3h ago', read: false, type: 'info' }
 ];

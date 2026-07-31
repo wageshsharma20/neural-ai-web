@@ -133,6 +133,17 @@ function NoticeBoardPage() {
                   </React.Fragment>
                 ))}
               </div>
+
+              <div className="rec-whatsapp-link-wrapper">
+                <a
+                  href="https://chat.whatsapp.com/invite-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rec-mid-btn"
+                >
+                  Join WhatsApp Group ↗
+                </a>
+              </div>
             </div>
           </div>
         </section>

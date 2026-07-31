@@ -8,7 +8,9 @@ import HomePage from './pages/HomePage';
 const SocietyPage    = lazy(() => import('./pages/SocietyPage'));
 const NoticeBoardPage = lazy(() => import('./pages/NoticeBoardPage'));
 const BlogsPage      = lazy(() => import('./pages/BlogsPage'));
+const BlogPostPage   = lazy(() => import('./pages/BlogPostPage'));
 const PortalPage     = lazy(() => import('./pages/PortalPage'));
+const ContactPage    = lazy(() => import('./pages/ContactPage'));
 
 // Minimal loading fallback — matches ink background to avoid flash
 function PageLoader() {
@@ -48,7 +50,9 @@ function App() {
           <Route path="/society" element={<SocietyPage />} />
           <Route path="/notices" element={<NoticeBoardPage />} />
           <Route path="/blogs"   element={<BlogsPage />} />
+          <Route path="/blogs/:id" element={<BlogPostPage />} />
           <Route path="/portal"  element={<PortalPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           {/* 404 fallback */}
           <Route
             path="*"

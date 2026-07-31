@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowUpRight, ChevronRight } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faInstagram, faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
 import './Hero.css';
 
 /**
@@ -52,6 +52,9 @@ function Hero() {
               </a>
               <a href="https://linkedin.com" className="hero__social-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <FontAwesomeIcon icon={faLinkedin} />
+              </a>
+              <a href="https://github.com" className="hero__social-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <FontAwesomeIcon icon={faGithub} />
               </a>
             </div>
           </div>

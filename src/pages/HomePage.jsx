@@ -12,9 +12,9 @@ function HomePage() {
       <Hero />
       <AboutPreview />
       <AIDomains />
-      <FeaturedProjects />
-      <FeaturedBlogs />
       <Achievements />
+      <FeaturedBlogs />
+      <FeaturedProjects />
     </PageLayout>
   );
 }
