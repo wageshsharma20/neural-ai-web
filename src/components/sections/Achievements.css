@@ -1,0 +1,72 @@
+/* Achievements */
+.ach__header {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-12);
+  border-top: var(--hairline);
+  padding-top: var(--space-16);
+  margin-bottom: var(--space-8);
+  align-items: start;
+}
+
+.ach__heading {
+  font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
+  font-weight: 400;
+  letter-spacing: var(--tracking-tight);
+  background: linear-gradient(
+    180deg,
+    #F8F8FF 0%,
+    #D0D0E8 22%,
+    #8888A8 52%,
+    #B8B8D0 78%,
+    #E4E4F4 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ach__list { border-top: var(--hairline); }
+
+.ach__item {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: var(--space-5);
+  align-items: center;
+  padding: var(--space-4) 0;
+  border-bottom: var(--hairline);
+}
+
+/* Stamp — slight rotation like a pressed seal */
+.ach__stamp {
+  width: 18px;
+  height: 18px;
+  transform: rotate(-3deg);
+  flex-shrink: 0;
+}
+
+.ach__item-title {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--bone);
+  margin-bottom: var(--space-1);
+}
+
+.ach__item-body {
+  font-size: var(--text-xs);
+  color: var(--mist);
+  line-height: var(--leading-normal);
+}
+
+.ach__item-year {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--mist);
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .ach__header { grid-template-columns: 1fr; gap: var(--space-4); }
+  .ach__item   { grid-template-columns: 28px 1fr; }
+  .ach__item-year { display: none; }
+}

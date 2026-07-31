@@ -1,0 +1,8 @@
+/* =========================================================
+   NEURAL AI — GLOBAL STYLES (entry point)
+   Imports all style layers in correct cascade order
+   ========================================================= */
+
+@import './tokens.css';
+@import './reset.css';
+@import './utilities.css';

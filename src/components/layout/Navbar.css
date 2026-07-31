@@ -1,0 +1,200 @@
+/* ================================================================
+   NAVBAR — DESIGN.md v3
+   Small Seal + wordmark left | nav centered | bordered login right
+   Hairline underline draws in on hover/active (120ms).
+   ================================================================ */
+
+.navbar {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 100;
+  height: var(--navbar-height);
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background   var(--dur-base) var(--ease-out);
+}
+
+.navbar--scrolled {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background: rgba(10, 10, 10, 0.82);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: var(--space-6);
+}
+
+/* ── Logo ── */
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.navbar__logo-img {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.navbar__wordmark {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--bone);
+  letter-spacing: 0.01em;
+}
+
+.navbar__wordmark-ai {
+  /* subtle distinction — slightly brighter, same weight */
+  color: var(--signal-cyan);
+}
+
+/* ── Desktop nav ── */
+.navbar__nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.navbar__link {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--mist);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-4);
+  transition: color var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+/* Hairline underline — draws in from left on hover/active */
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: var(--space-4);
+  right: var(--space-4);
+  height: 1px;
+  background: var(--signal-cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.navbar__link:hover            { color: var(--bone); }
+.navbar__link:hover::after,
+.navbar__link--active::after   { transform: scaleX(1); }
+.navbar__link--active          { color: var(--bone); }
+
+/* ── Member Login — understated bordered link ── */
+.navbar__login {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--mist);
+  border: 1px solid var(--ink-border);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  transition:
+    color         var(--dur-fast) var(--ease-out),
+    border-color  var(--dur-fast) var(--ease-out);
+}
+
+.navbar__login:hover {
+  color: var(--bone);
+  border-color: var(--signal-violet);
+}
+
+/* ── Hamburger — 2 lines (cleaner than 3) ── */
+.navbar__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-2);
+  margin-left: auto;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.navbar__hamburger span {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--bone-dim);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    opacity   var(--dur-base) var(--ease-out),
+    width     var(--dur-base) var(--ease-out);
+}
+
+.navbar__hamburger--open span:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+.navbar__hamburger--open span:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+/* ── Mobile menu ── */
+.navbar__mobile {
+  display: none;
+  position: fixed;
+  inset-block-start: var(--navbar-height);
+  inset-inline: 0;
+  background: var(--ink);
+  border-bottom: var(--hairline);
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition:
+    opacity   var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.navbar__mobile--open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.navbar__mobile-link {
+  display: block;
+  font-size: var(--text-base);
+  color: var(--mist);
+  text-decoration: none;
+  padding: var(--space-3) 0;
+  border-bottom: var(--hairline);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.navbar__mobile-link:hover,
+.navbar__mobile-link--active { color: var(--bone); }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .navbar__nav     { display: none; }
+  .navbar__login   { display: none; }
+  .navbar__hamburger { display: flex; }
+  .navbar__mobile    { display: block; }
+}

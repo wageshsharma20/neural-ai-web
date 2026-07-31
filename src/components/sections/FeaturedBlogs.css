@@ -1,0 +1,108 @@
+/* FeaturedBlogs */
+.blogs__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-top: var(--hairline);
+  padding-top: var(--space-16);
+  margin-bottom: var(--space-8);
+  gap: var(--space-4);
+}
+
+.blogs__heading {
+  font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
+  font-weight: 400;
+  letter-spacing: var(--tracking-tight);
+  margin-top: var(--space-2);
+  background: linear-gradient(
+    180deg,
+    #F8F8FF 0%,
+    #D0D0E8 22%,
+    #8888A8 52%,
+    #B8B8D0 78%,
+    #E4E4F4 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.blogs__all {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--signal-cyan);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity var(--dur-fast);
+}
+.blogs__all:hover { opacity: 0.7; }
+
+.blogs__list { border-top: var(--hairline); }
+
+.blog-row {
+  padding: var(--space-5) 0;
+  border-bottom: var(--hairline);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.blog-row:hover {
+  background: var(--ink-raised);
+  padding-inline: var(--space-4);
+  margin-inline: calc(-1 * var(--space-4));
+}
+
+.blog-row__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.blog-row__category {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+.blog-row__date {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--mist);
+}
+
+.blog-row__title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+  margin-bottom: var(--space-3);
+}
+
+.blog-row__title-link {
+  color: var(--bone);
+  text-decoration: none;
+  transition: color var(--dur-fast);
+}
+.blog-row__title-link:hover { color: var(--signal-cyan); }
+
+.blog-row__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.blog-row__author {
+  font-size: var(--text-xs);
+  color: var(--bone-dim);
+}
+
+.blog-row__read-time {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--mist);
+}

@@ -1,0 +1,307 @@
+/* ================================================================
+   SOCIETY DOMAINS — AIDomains.css
+   Premium glassmorphism cards with smooth absolute hover expansion
+   ================================================================ */
+
+/* ── Section header ── */
+.domains__header {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-12);
+  align-items: start;
+  border-top: var(--hairline);
+  padding-top: var(--space-16);
+  margin-bottom: var(--space-12);
+}
+
+.domains__heading {
+  font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
+  font-weight: 400;
+  letter-spacing: var(--tracking-tight);
+  background: linear-gradient(
+    180deg,
+    #F8F8FF 0%,
+    #D0D0E8 22%,
+    #8888A8 52%,
+    #B8B8D0 78%,
+    #E4E4F4 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Grid ── */
+.domains__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  padding-bottom: var(--space-24); /* extra space for hover expansion */
+}
+
+/* ── List Item (Cell) ── */
+.domains__item {
+  position: relative;
+  z-index: 1;
+}
+
+/* Elevate the hovered cell so its card overlaps neighbors */
+.domains__item:hover {
+  z-index: 10;
+}
+
+/* ── Invisible Placeholder ── */
+/* Matches the padding and content of the unexpanded card to keep grid stable */
+.domains__card-placeholder {
+  visibility: hidden;
+  pointer-events: none;
+  padding: var(--space-10) var(--space-8) var(--space-8);
+}
+
+/* ================================================================
+   CARD — BASE STATE (Absolutely positioned over placeholder)
+   ================================================================ */
+.domains__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* background/glassmorphism */
+  background: rgba(255, 255, 255, 0.028);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 2px solid rgba(107, 79, 160, 0.22);
+  border-radius: 6px;
+
+  /* Padding */
+  padding: var(--space-10) var(--space-8) var(--space-8);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  cursor: default;
+
+  transform-origin: top center;
+  transition:
+    background       300ms var(--ease-out),
+    border-color     300ms var(--ease-out),
+    border-top-color 300ms var(--ease-out),
+    box-shadow       300ms var(--ease-out),
+    transform        300ms var(--ease-out);
+}
+
+/* Noise/grain texture via pseudo — optional subtle layer */
+.domains__card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 160px;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  z-index: 0;
+}
+
+/* ================================================================
+   CARD — HOVER / EXPANDED STATE
+   ================================================================ */
+.domains__card--expanded {
+  background: linear-gradient(
+    145deg,
+    rgba(107, 79, 160, 0.14) 0%,
+    rgba(63, 199, 214, 0.04) 50%,
+    rgba(20, 18, 32, 0.85)  100%
+  );
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-color: rgba(107, 79, 160, 0.5);
+  border-top-color: var(--signal-violet);
+  box-shadow:
+    0 0   0 1px rgba(107, 79, 160, 0.12),
+    0 12px 40px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(107, 79, 160, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  /* Scale out slightly so it pops over neighbors */
+  transform: scale(1.04);
+}
+.domains__card--expanded::after { opacity: 1; }
+
+/* ── Sheen sweep on hover (left-to-right glint) ── */
+.domains__card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent 80%
+  );
+  transition: left 500ms var(--ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+.domains__card--expanded::before { left: 160%; }
+
+/* ── Corner bracket decoration ── */
+.domains__corner {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  border-top: 1px solid rgba(107, 79, 160, 0.25);
+  border-right: 1px solid rgba(107, 79, 160, 0.25);
+  border-radius: 0 2px 0 0;
+  transition:
+    width        300ms var(--ease-out),
+    height       300ms var(--ease-out),
+    border-color 300ms var(--ease-out);
+}
+.domains__card--expanded .domains__corner {
+  width: 24px;
+  height: 24px;
+  border-color: rgba(107, 79, 160, 0.65);
+}
+
+/* ================================================================
+   ALWAYS-VISIBLE CONTENT
+   ================================================================ */
+.domains__card-top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+  z-index: 2;
+}
+
+/* Step number */
+.domains__num {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--signal-violet);
+  opacity: 0.55;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  transition: opacity 300ms var(--ease-out), color 300ms var(--ease-out);
+}
+.domains__card--expanded .domains__num {
+  opacity: 1;
+  color: var(--signal-violet);
+}
+
+/* Domain name */
+.domains__name {
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-md), 1.6vw, var(--text-lg));
+  font-weight: 400;
+  color: var(--bone);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--leading-snug);
+  transition: color 300ms var(--ease-out);
+}
+.domains__card--expanded .domains__name {
+  color: #fff;
+}
+
+/* Short one-liner */
+.domains__desc {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--mist);
+  line-height: var(--leading-relaxed);
+  transition: color 300ms var(--ease-out);
+}
+.domains__card--expanded .domains__desc { color: var(--mist-light); }
+
+/* ================================================================
+   EXPANDED PANEL — SLIDES DOWN
+   ================================================================ */
+.domains__card-expand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+
+  /* Collapsed state */
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  margin-top: 0;
+  pointer-events: none;
+
+  transition:
+    max-height  380ms var(--ease-out),
+    opacity     280ms var(--ease-out) 40ms,
+    padding-top 300ms var(--ease-out),
+    margin-top  300ms var(--ease-out);
+}
+
+.domains__card--expanded .domains__card-expand {
+  max-height: 320px;
+  opacity: 1;
+  padding-top: var(--space-5);
+  margin-top: var(--space-5);
+  pointer-events: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Subdomains header */
+.domains__subhead {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: var(--space-2);
+}
+
+/* Subdomains list */
+.domains__subdomains {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.domains__subdomain-item {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--bone-dim);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.domains__subdomain-item::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--signal-cyan);
+  opacity: 0.6;
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .domains__grid { grid-template-columns: repeat(2, 1fr); }
+  .domains__header { grid-template-columns: 1fr; gap: var(--space-4); }
+}
+
+@media (max-width: 520px) {
+  .domains__grid { grid-template-columns: 1fr; gap: var(--space-4); }
+  .domains__card, .domains__card-placeholder { padding: var(--space-8) var(--space-6) var(--space-6); }
+  .domains__card--expanded { transform: scale(1.02); }
+}

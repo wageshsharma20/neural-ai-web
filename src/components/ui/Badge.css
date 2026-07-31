@@ -1,0 +1,40 @@
+/* =========================================================
+   BADGE COMPONENT
+   Design: rectangular, hairline border, Plex Mono, uppercase.
+   No pills, no filled blobs, no coloured dots.
+   ========================================================= */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid currentColor;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badge--default {
+  color: var(--mist);
+  border-color: var(--mist-dim);
+}
+
+.badge--cyan {
+  color: var(--signal-cyan);
+  border-color: rgba(63, 199, 214, 0.4);
+}
+
+.badge--magenta {
+  color: var(--signal-magenta);
+  border-color: rgba(199, 101, 168, 0.4);
+}
+
+.badge--amber {
+  color: var(--signal-amber);
+  border-color: rgba(201, 162, 39, 0.4);
+}

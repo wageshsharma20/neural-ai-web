@@ -1,0 +1,136 @@
+/* =========================================================
+   BUTTON COMPONENT
+   Design: rectangular, 4px radius, no glow, no gradient.
+   Hover = underline draws in from left (150ms), per design spec.
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-weight: 400;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  border: var(--hairline);
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Sizes ── */
+.btn--sm {
+  font-size: var(--text-xs);
+  padding: var(--space-2) var(--space-4);
+  height: 32px;
+}
+
+.btn--md {
+  font-size: var(--text-xs);
+  padding: var(--space-3) var(--space-6);
+  height: 40px;
+}
+
+.btn--lg {
+  font-size: var(--text-sm);
+  padding: var(--space-4) var(--space-8);
+  height: 48px;
+}
+
+/* ── Primary ── */
+.btn--primary {
+  background: var(--signal-cyan);
+  color: var(--ink);
+  border-color: var(--signal-cyan);
+}
+
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -100%;
+  width: 100%;
+  height: 1px;
+  background: var(--ink);
+  transition: left var(--duration-fast) var(--ease-out);
+}
+
+.btn--primary:hover::after,
+.btn--primary:focus-visible::after {
+  left: 0;
+}
+
+.btn--primary:hover {
+  background: #4fd9e8;
+}
+
+/* ── Ghost ── */
+.btn--ghost {
+  background: transparent;
+  color: var(--bone);
+  border-color: var(--ink-border);
+}
+
+.btn--ghost::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -100%;
+  width: 100%;
+  height: 1px;
+  background: var(--signal-cyan);
+  transition: left var(--duration-fast) var(--ease-out);
+}
+
+.btn--ghost:hover::after,
+.btn--ghost:focus-visible::after {
+  left: 0;
+}
+
+.btn--ghost:hover {
+  color: var(--signal-cyan);
+  border-color: var(--signal-cyan);
+}
+
+/* ── Text (link-style) ── */
+.btn--text {
+  background: transparent;
+  color: var(--signal-cyan);
+  border-color: transparent;
+  padding-inline: 0;
+  letter-spacing: var(--tracking-normal);
+  font-family: var(--font-mono);
+}
+
+.btn--text::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--signal-cyan);
+  transition: width var(--duration-fast) var(--ease-out);
+}
+
+.btn--text:hover::after,
+.btn--text:focus-visible::after {
+  width: 100%;
+}
+
+/* ── Disabled ── */
+.btn--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
