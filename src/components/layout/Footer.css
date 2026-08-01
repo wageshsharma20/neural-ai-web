@@ -1,34 +1,140 @@
-/* Footer v3 */
-.footer {
+/* Footer v3 - Animated Layout */
+.footer-modern {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: var(--space-32) auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
   border-top: var(--hairline);
-  margin-top: var(--space-20);
+  /* bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] */
+  background: radial-gradient(35% 128px at 50% 0%, rgba(255, 255, 255, 0.08), transparent);
+  padding: var(--space-12) var(--space-6);
 }
 
-.footer__inner {
+@media (min-width: 768px) {
+  .footer-modern {
+    border-top-left-radius: 4rem;
+    border-top-right-radius: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-modern {
+    padding: var(--space-20) 8vw;
+  }
+}
+
+/* Blur line at the top center */
+.footer-blur-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 1px;
+  width: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.2);
+  filter: blur(4px);
+}
+
+.footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr;
-  gap: var(--space-12);
-  padding-block: var(--space-12);
+  width: 100%;
+  gap: var(--space-8);
 }
 
-/* Brand */
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1.5fr;
+    gap: var(--space-16);
+  }
+}
+
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.footer-links-grid {
+  margin-top: var(--space-10);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .footer-links-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .footer-links-grid {
+    grid-column: span 2 / span 2;
+    margin-top: 0;
+  }
+}
+
+.footer-links-col {
+  margin-bottom: var(--space-10);
+}
+@media (min-width: 768px) {
+  .footer-links-col {
+    margin-bottom: 0;
+  }
+}
+
+.footer-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+
+.footer-link-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-sm);
+  color: var(--mist-light);
+  text-decoration: none;
+  transition: color 300ms var(--ease-out);
+}
+.footer-link-item:hover {
+  color: var(--bone);
+}
+
+/* Utilities inside the footer */
+.mt-8 { margin-top: var(--space-8); }
+.mt-4 { margin-top: var(--space-4); }
+@media (min-width: 768px) {
+  .md\:mt-0 { margin-top: 0; }
+}
+
+/* Typography elements re-used from previous footer */
 .footer__logo {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   text-decoration: none;
-  margin-bottom: var(--space-4);
 }
 
 .footer__logo-img { 
-  width: 22px; 
-  height: 22px; 
+  width: 28px; 
+  height: 28px; 
   object-fit: contain; 
 }
 
 .footer__wordmark {
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: 500;
   color: var(--bone);
 }
@@ -40,52 +146,35 @@
   max-width: 32ch;
 }
 
-/* Nav */
 .footer__nav-label {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
   color: var(--mist);
-  margin-bottom: var(--space-4);
 }
 
-.footer__nav-link {
-  display: block;
-  font-size: var(--text-sm);
-  color: var(--mist-light);
-  text-decoration: none;
-  padding-block: var(--space-1);
-  transition: color var(--dur-fast);
-}
-.footer__nav-link:hover { color: var(--bone); }
-
-/* Contact */
 .footer__address {
   font-style: normal;
   font-size: var(--text-xs);
   color: var(--mist);
   line-height: var(--leading-relaxed);
-  margin-bottom: var(--space-5);
 }
 
-.footer__email {
+.footer__copy, .footer__est {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--signal-cyan);
-  text-decoration: none;
-  display: block;
-  margin-top: var(--space-2);
-  transition: opacity var(--dur-fast);
+  color: var(--mist);
 }
-.footer__email:hover { opacity: 0.7; }
 
 /* Social links — small bordered rectangular buttons per spec */
 .footer__socials {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-top: var(--space-4);
+  margin-top: var(--space-6);
+  list-style: none;
+  padding: 0;
 }
 
 .footer__social {
@@ -100,39 +189,42 @@
   border-radius: var(--radius);
   text-decoration: none;
   transition:
-    color         var(--dur-fast) var(--ease-out),
-    border-color  var(--dur-fast) var(--ease-out),
-    transform     var(--dur-fast) var(--ease-out);
+    color         300ms var(--ease-out),
+    border-color  300ms var(--ease-out);
 }
 .footer__social:hover {
   color: var(--bone);
   border-color: var(--signal-violet);
-  transform: translateY(-2px);
 }
 
-/* Bottom bar */
-.footer__bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: var(--space-4);
-  border-top: var(--hairline);
+/* Kinetic Effect on Footer Social Icons */
+.footer__social-item {
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.25, 2.5, 0.3, 1);
+  display: inline-block;
 }
 
-.footer__copy,
-.footer__est {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--mist);
+/* Hover scales it up the most */
+.footer__social-item:hover {
+  transform: scale(1.3);
 }
 
-/* Responsive */
-@media (max-width: 860px) {
-  .footer__inner { grid-template-columns: 1fr 1fr; }
-  .footer__brand { grid-column: 1 / -1; }
+/* Two items before hover */
+.footer__social-item:has(+ .footer__social-item + .footer__social-item:hover) {
+  transform: scale(1.05);
 }
 
-@media (max-width: 500px) {
-  .footer__inner { grid-template-columns: 1fr; }
-  .footer__bottom { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+/* One item before hover */
+.footer__social-item:has(+ .footer__social-item:hover) {
+  transform: scale(1.15);
+}
+
+/* One item after hover */
+.footer__social-item:hover + .footer__social-item {
+  transform: scale(1.15);
+}
+
+/* Two items after hover */
+.footer__social-item:hover + .footer__social-item + .footer__social-item {
+  transform: scale(1.05);
 }

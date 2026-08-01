@@ -1,9 +1,12 @@
+import { ScrollAnimation } from '../components/ui/ScrollAnimation';
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/layout/PageLayout';
 import { ALL_BLOGS, RESOURCES, RESOURCE_TYPES, DIFFICULTY_LEVELS } from '../data/blogsData';
 import { BLOG_CATEGORIES } from '../data/mockData';
+import PhotonBeam from '../components/ui/PhotonBeam';
 import './BlogsPage.css';
+import { LineAnimation } from '../components/ui/LineAnimation';
 
 // ── Helpers ──
 function formatDate(iso) {
@@ -56,18 +59,32 @@ function BlogsPage() {
         {/* ── Page Header ── */}
         <header className="blogs__hero container" aria-labelledby="blogs-heading">
           <p className="eyebrow fade-in">Blogs &amp; Resources</p>
-          <h1 className="blogs__heading fade-in fade-in--d1" id="blogs-heading">
-            Knowledge,<br />Writing &amp; Resources.
-          </h1>
-          <p className="blogs__subhead fade-in fade-in--d2">
-            Technical writing, research notes, and curated learning resources from the Neural AI community.
-          </p>
+          <LineAnimation as="h1" className="blogs__heading" id="blogs-heading" text={"Knowledge,\nWriting & Resources."} direction="left" staggerDelay={0.1} />
+          <LineAnimation as="p" className="blogs__subhead" text="Technical writing, research notes, and curated learning resources from the Neural AI community." direction="left" staggerDelay={0.1} />
         </header>
+
+        {/* Photon Beam Separator */}
+        <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden', mixBlendMode: 'screen' }}>
+          <PhotonBeam
+            mirrored={true}
+            colorBg="transparent"
+            colorLine="#005f6f"
+            colorSignal="#00d9ff"
+            colorSignal2="#00ffff"
+            colorSignal3="#00b8d4"
+            lineCount={80}
+            spreadHeight={30.33}
+            signalCount={94}
+            speedGlobal={0.345}
+            trailLength={3}
+            bloomStrength={3.0}
+            bloomRadius={0.5}
+          />
+        </div>
 
         {/* ── Featured Blog ── */}
         {featuredBlog && (
-          <section
-            className="blogs-section reveal"
+          <ScrollAnimation as="section" className="blogs-section"
             id="featured-blog"
             aria-labelledby="featured-heading"
           >
@@ -76,9 +93,7 @@ function BlogsPage() {
                 <p className="eyebrow">Featured</p>
               </div>
               <div className="blogs-section__content">
-                <h2 className="blogs-section__heading" id="featured-heading">
-                  Latest Article.
-                </h2>
+                <LineAnimation as="h2" className="blogs-section__heading" id="featured-heading" text="Latest Article." direction="left" staggerDelay={0.1} />
                 <article className="featured-blog-card" id={featuredBlog.id} aria-labelledby={`${featuredBlog.id}-title`}>
                   <div className="featured-blog-card__body">
                     <div className="featured-blog-card__meta">
@@ -86,10 +101,8 @@ function BlogsPage() {
                       <span className="blog-date">{formatDate(featuredBlog.publishedAt)}</span>
                       <span className="blog-read-time">{featuredBlog.readTime}</span>
                     </div>
-                    <h3 className="featured-blog-card__title" id={`${featuredBlog.id}-title`}>
-                      {featuredBlog.title}
-                    </h3>
-                    <p className="featured-blog-card__excerpt">{featuredBlog.excerpt}</p>
+                    <LineAnimation as="h3" className="featured-blog-card__title" id={`${featuredBlog.id}-title`} text={featuredBlog.title} direction="left" staggerDelay={0.1} />
+                    <LineAnimation as="p" className="featured-blog-card__excerpt" text={featuredBlog.excerpt} direction="left" staggerDelay={0.1} />
                     <div className="featured-blog-card__footer">
                       <div className="blog-author">
                         <span className="blog-author__initials" aria-hidden="true">
@@ -110,12 +123,11 @@ function BlogsPage() {
                 </article>
               </div>
             </div>
-          </section>
+          </ScrollAnimation>
         )}
 
         {/* ── All Blogs ── */}
-        <section
-          className="blogs-section reveal"
+        <ScrollAnimation as="section" className="blogs-section"
           id="all-blogs"
           aria-labelledby="blogs-list-heading"
         >
@@ -124,9 +136,7 @@ function BlogsPage() {
               <p className="eyebrow">All Blogs</p>
             </div>
             <div className="blogs-section__content">
-              <h2 className="blogs-section__heading" id="blogs-list-heading">
-                From the community.
-              </h2>
+              <LineAnimation as="h2" className="blogs-section__heading" id="blogs-list-heading" text="From the community." direction="left" staggerDelay={0.1} />
 
               {/* Search + Category filters */}
               <div className="blogs-controls">
@@ -170,8 +180,8 @@ function BlogsPage() {
                       <span className="blog-cat-tag">{blog.category}</span>
                       <span className="blog-read-time">{blog.readTime}</span>
                     </div>
-                    <h3 className="blog-card__title" id={`${blog.id}-title`}>{blog.title}</h3>
-                    <p className="blog-card__excerpt">{blog.excerpt}</p>
+                    <LineAnimation as="h3" className="blog-card__title" id={`${blog.id}-title`} text={blog.title} direction="left" staggerDelay={0.1} />
+                    <LineAnimation as="p" className="blog-card__excerpt" text={blog.excerpt} direction="left" staggerDelay={0.1} />
                     
                     <div className="blog-card__footer">
                       <div className="blog-author blog-author--sm">
@@ -194,22 +204,20 @@ function BlogsPage() {
               )}
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
         {/* ── Learning Resources ── */}
-        <section
-          className="blogs-section reveal"
+        <ScrollAnimation as="section" className="blogs-section"
           id="resources"
           aria-labelledby="resources-heading"
+          viewport={{ once: true, amount: 0.1, margin: "0px" }}
         >
           <div className="container blogs-section__inner">
             <div className="blogs-section__label">
               <p className="eyebrow">Resources</p>
             </div>
             <div className="blogs-section__content">
-              <h2 className="blogs-section__heading" id="resources-heading">
-                Learning Resources.
-              </h2>
+              <LineAnimation as="h2" className="blogs-section__heading" id="resources-heading" text="Learning Resources." direction="left" staggerDelay={0.1} />
 
               {/* Resource filters */}
               <div className="resource-filters-row">
@@ -261,8 +269,8 @@ function BlogsPage() {
                           {res.difficulty}
                         </span>
                       </div>
-                      <p className="resource-row__title">{res.title}</p>
-                      <p className="resource-row__desc">{res.description}</p>
+                      <LineAnimation as="p" className="resource-row__title" text={res.title} direction="left" staggerDelay={0.1} />
+                      <LineAnimation as="p" className="resource-row__desc" text={res.description} direction="left" staggerDelay={0.1} />
                       <div className="resource-row__tags">
                         {res.tags.map(tag => (
                           <span key={tag} className="blog-tag">{tag}</span>
@@ -286,7 +294,7 @@ function BlogsPage() {
               )}
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
       </div>
     </PageLayout>

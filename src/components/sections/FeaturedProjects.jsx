@@ -1,49 +1,52 @@
+import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
+import { LineAnimation } from '../../components/ui/LineAnimation';
 import React from 'react';
 import { FEATURED_PROJECTS } from '../../data/mockData';
 import './FeaturedProjects.css';
 
 function FeaturedProjects() {
   return (
-    <section className="projects section reveal" id="projects" aria-labelledby="projects-heading">
+    <ScrollAnimation as="section" className="projects section" id="projects" aria-labelledby="projects-heading">
       <div className="container">
         <div className="projects__header">
           <div>
-            <p className="eyebrow">Research &amp; Projects</p>
-            <h2 className="projects__heading" id="projects-heading">
-              Research that ships.
-            </h2>
+            <LineAnimation as="p" className="eyebrow" text="Research & Projects" direction="left" staggerDelay={0.1} />
+            <LineAnimation 
+              as="h2" 
+              className="projects__heading" 
+              id="projects-heading"
+              text="Research that ships."
+              direction="left"
+              staggerDelay={0.1}
+            />
           </div>
-          <a href="/blogs#projects" className="projects__all">View all →</a>
+          <LineAnimation as="a" href="/blogs#projects" className="projects__all" text="View all →" direction="left" staggerDelay={0.1} />
         </div>
 
         <ul className="projects__list" role="list">
           {FEATURED_PROJECTS.map((p) => (
             <li key={p.id} className="project-row" id={p.id}>
               <div className="project-row__meta">
-                <span className="project-row__domain">{p.domain}</span>
-                <span className="project-row__year">{p.year}</span>
+                <LineAnimation as="span" className="project-row__domain" text={p.domain} direction="left" staggerDelay={0.1} />
+                <LineAnimation as="span" className="project-row__year" text={p.year} direction="left" staggerDelay={0.1} />
               </div>
               <div className="project-row__main">
-                <h3 className="project-row__title">{p.title}</h3>
-                <p className="project-row__tagline">{p.tagline}</p>
+                <LineAnimation as="h3" className="project-row__title" text={p.title} direction="left" staggerDelay={0.1} />
+                <LineAnimation as="p" className="project-row__tagline" text={p.tagline} direction="left" staggerDelay={0.1} />
               </div>
               <div className="project-row__links">
                 {p.github && (
-                  <a href={p.github} className="project-row__link" target="_blank" rel="noopener noreferrer">
-                    GitHub ↗
-                  </a>
+                  <LineAnimation as="a" href={p.github} className="project-row__link" target="_blank" rel="noopener noreferrer" text="GitHub ↗" direction="left" staggerDelay={0.1} />
                 )}
                 {p.demo && (
-                  <a href={p.demo} className="project-row__link project-row__link--accent" target="_blank" rel="noopener noreferrer">
-                    Demo ↗
-                  </a>
+                  <LineAnimation as="a" href={p.demo} className="project-row__link project-row__link--accent" target="_blank" rel="noopener noreferrer" text="Demo ↗" direction="left" staggerDelay={0.1} />
                 )}
               </div>
             </li>
           ))}
         </ul>
       </div>
-    </section>
+    </ScrollAnimation>
   );
 }
 

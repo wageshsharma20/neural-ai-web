@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PageLayout from '../components/layout/PageLayout';
 import './ContactPage.css';
+import { LineAnimation } from '../components/ui/LineAnimation';
 
 function ContactPage() {
   const [formData, setFormData] = useState({
@@ -37,10 +38,8 @@ function ContactPage() {
           
           {/* Left Section */}
           <section className="contact-info">
-            <h1 className="contact-info__heading">Collaborate with us!</h1>
-            <p className="contact-info__desc">
-              Whether you're looking to partner on cutting-edge research, recruit top student talent, or sponsor our next major hackathon, Neural AI is your gateway to the brightest minds in artificial intelligence. Let's collaborate to push boundaries and drive community-driven innovation.
-            </p>
+            <LineAnimation as="h1" className="contact-info__heading" text="Collaborate with us!" direction="left" staggerDelay={0.1} />
+            <LineAnimation as="p" className="contact-info__desc" text="Whether you're looking to partner on cutting-edge research, recruit top student talent, or sponsor our next major hackathon, Neural AI is your gateway to the brightest minds in artificial intelligence. Let's collaborate to push boundaries and drive community-driven innovation." direction="left" staggerDelay={0.1} />
             
 
             <div className="contact-details">

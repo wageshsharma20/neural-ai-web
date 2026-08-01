@@ -1,0 +1,70 @@
+.dock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-4);
+  width: max-content;
+  height: 80px; /* Fixed height prevents layout shifting when icons magnify */
+  border-radius: 9999px;
+  /* If you want a background behind all icons, add it here. The screenshot didn't have one, just the icons themselves. */
+}
+
+.dock--top {
+  align-items: flex-start;
+}
+.dock--middle {
+  align-items: center;
+}
+.dock--bottom {
+  align-items: flex-end;
+}
+
+.dock-icon {
+  display: flex;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  /* Styling to match the original social buttons */
+  background: rgba(255, 255, 255, 0.03); /* slight glass fill */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--mist);
+  transition: color var(--dur-fast), background var(--dur-fast), border-color var(--dur-fast);
+}
+
+.dock-icon:hover {
+  color: var(--bone);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dock-icon__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.dock-icon__inner a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.dock-icon__inner svg {
+  width: 45%;
+  height: 45%;
+  transition: transform var(--dur-fast);
+}
+
+.dock-icon:active .dock-icon__inner svg {
+  transform: scale(0.9);
+}

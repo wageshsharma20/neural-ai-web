@@ -1,6 +1,9 @@
+import { ScrollAnimation } from '../components/ui/ScrollAnimation';
 import React, { useState } from 'react';
 import PageLayout from '../components/layout/PageLayout';
 import { ALL_NOTICES, ALL_EVENTS } from '../data/noticeData';
+import { LineAnimation } from '../components/ui/LineAnimation';
+import PhotonBeam from '../components/ui/PhotonBeam';
 import './NoticeBoardPage.css';
 
 // ── Helpers ──
@@ -40,6 +43,8 @@ const NOTICE_CATS   = ['All', 'Recruitment', 'Competitions', 'Academic', 'Worksh
 const EVENT_TABS    = ['Upcoming', 'Ongoing', 'Past'];
 const COMBINED_CATS = ['Notices', 'Events'];
 
+import { animate, eases } from 'animejs';
+
 /**
  * Notice Board Page
  * Sections:
@@ -50,6 +55,73 @@ function NoticeBoardPage() {
   const [boardTab,     setBoardTab]     = useState('Notices');
   const [noticeFilter, setNoticeFilter] = useState('All');
   const [eventTab,     setEventTab]     = useState('Upcoming');
+  
+  const recFlowRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          const cards = recFlowRef.current.querySelectorAll('.rec-round-card');
+          const arrows = recFlowRef.current.querySelectorAll('.rec-flow__arrow');
+          
+          const button = recFlowRef.current.querySelector('.rec-mid-btn');
+          
+          if (cards.length >= 3) {
+            // 1st Card: Slowest, starts first
+            animate(cards[0], {
+              x: ['-20vw', 0],
+              opacity: [0, 1],
+              duration: 1400,
+              ease: 'outQuad'
+            });
+            
+            // 2nd Card: Faster, starts after a delay
+            animate(cards[1], {
+              x: ['-20vw', 0],
+              opacity: [0, 1],
+              duration: 900,
+              delay: 400,
+              ease: eases.outQuad
+            });
+            
+            // 3rd Card: Very fast, starts last
+            animate(cards[2], {
+              x: ['-20vw', 0],
+              opacity: [0, 1],
+              duration: 400,
+              delay: 800,
+              ease: 'out(6)' // Anime.js v4 specific custom ease
+            });
+          }
+          
+          if (arrows.length > 0) {
+             animate(arrows[0], { opacity: [0, 1], duration: 400, delay: 500, ease: 'inOutQuad' });
+             animate(arrows[1], { opacity: [0, 1], duration: 400, delay: 900, ease: 'inOutQuad' });
+          }
+
+          if (button) {
+            animate(button, {
+              x: ['20vw', 0],
+              opacity: [0, 1],
+              duration: 2000,
+              delay: 1100,
+              ease: 'outQuad'
+            });
+          }
+
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    
+    if (recFlowRef.current) {
+      observer.observe(recFlowRef.current);
+    }
+    
+    return () => observer.disconnect();
+  }, []);
 
   const filteredNotices = noticeFilter === 'All'
     ? ALL_NOTICES
@@ -68,17 +140,31 @@ function NoticeBoardPage() {
         {/* ── Page Header ── */}
         <header className="nb__hero container" aria-labelledby="nb-heading">
           <p className="eyebrow fade-in">Notice Board</p>
-          <h1 className="nb__heading fade-in fade-in--d1" id="nb-heading">
-            Announcements,<br />Events &amp; Recruitment.
-          </h1>
-          <p className="nb__subhead fade-in fade-in--d2">
-            The central communication record for Neural AI — all notices, events, and openings.
-          </p>
+          <LineAnimation as="h1" className="nb__heading" id="nb-heading" text={"Announcements,\nEvents & Recruitment."} direction="left" staggerDelay={0.1} />
+          <LineAnimation as="p" className="nb__subhead" text={"The central communication record for Neural AI \u2014 all notices, events, and openings."} direction="left" staggerDelay={0.1} />
         </header>
 
+        {/* Photon Beam Separator */}
+        <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden', mixBlendMode: 'screen' }}>
+          <PhotonBeam
+            mirrored={true}
+            colorBg="transparent"
+            colorLine="#005f6f"
+            colorSignal="#00d9ff"
+            colorSignal2="#00ffff"
+            colorSignal3="#00b8d4"
+            lineCount={80}
+            spreadHeight={30.33}
+            signalCount={94}
+            speedGlobal={0.345}
+            trailLength={3}
+            bloomStrength={3.0}
+            bloomRadius={0.5}
+          />
+        </div>
+
         {/* ── Recruitment Panel ── */}
-        <section
-          className="nb-section reveal"
+        <ScrollAnimation as="section" className="nb-section"
           id="recruitment"
           aria-labelledby="rec-heading"
         >
@@ -87,10 +173,8 @@ function NoticeBoardPage() {
               <p className="eyebrow">Recruitment</p>
             </div>
 
-            <div className="nb-section__content">
-              <h2 className="nb-section__heading" id="rec-heading">
-                How to join.
-              </h2>
+            <div className="nb-section__content" ref={recFlowRef}>
+              <LineAnimation as="h2" className="nb-section__heading" id="rec-heading" text="How to join." direction="left" staggerDelay={0.1} />
 
               {/* 3-round horizontal flow */}
               <div className="rec-flow" role="list" aria-label="Recruitment rounds">
@@ -102,6 +186,7 @@ function NoticeBoardPage() {
                       id={round.id}
                       role="listitem"
                       data-num={round.num}
+                      style={{ opacity: 0 }}
                     >
                       <span className="rec-round-card__num" aria-hidden="true">
                         {round.num}
@@ -112,7 +197,7 @@ function NoticeBoardPage() {
 
                     {/* Arrow connector (not after the last card) */}
                     {i < RECRUITMENT_ROUNDS.length - 1 && (
-                      <div className="rec-flow__arrow" aria-hidden="true">
+                      <div className="rec-flow__arrow" aria-hidden="true" style={{ opacity: 0 }}>
                         <div className="rec-flow__arrow-line" />
                         <svg
                           className="rec-flow__arrow-head"
@@ -140,17 +225,17 @@ function NoticeBoardPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rec-mid-btn"
+                  style={{ opacity: 0 }}
                 >
                   Join WhatsApp Group ↗
                 </a>
               </div>
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
         {/* ── Combined Notice Board ── */}
-        <section
-          className="nb-section reveal"
+        <ScrollAnimation as="section" className="nb-section"
           id="notice-board"
           aria-labelledby="board-heading"
         >
@@ -160,9 +245,7 @@ function NoticeBoardPage() {
             </div>
 
             <div className="nb-section__content">
-              <h2 className="nb-section__heading" id="board-heading">
-                Announcements &amp; Events.
-              </h2>
+              <LineAnimation as="h2" className="nb-section__heading" id="board-heading" text="Announcements & Events." direction="left" staggerDelay={0.1} />
 
               {/* Primary tabs: Notices / Events */}
               <div className="board-tabs" role="tablist" aria-label="Notice board sections">
@@ -196,8 +279,8 @@ function NoticeBoardPage() {
                       aria-label="Pinned announcement"
                     >
                       <span className="notice-pinned__tag">Pinned</span>
-                      <p className="notice-pinned__title">{pinnedNotice.title}</p>
-                      <p className="notice-pinned__desc">{pinnedNotice.description}</p>
+                      <LineAnimation as="p" className="notice-pinned__title" text={pinnedNotice.title} direction="left" staggerDelay={0.1} />
+                      <LineAnimation as="p" className="notice-pinned__desc" text={pinnedNotice.description} direction="left" staggerDelay={0.1} />
                       <span className="notice-pinned__date">{formatDate(pinnedNotice.date)}</span>
                     </div>
                   )}
@@ -224,8 +307,8 @@ function NoticeBoardPage() {
                           <span className="notice-card__cat">{notice.category}</span>
                           <span className="notice-card__date">{formatDate(notice.date)}</span>
                         </div>
-                        <p className="notice-card__title">{notice.title}</p>
-                        <p className="notice-card__desc">{notice.description}</p>
+                        <LineAnimation as="p" className="notice-card__title" text={notice.title} direction="left" staggerDelay={0.1} />
+                        <LineAnimation as="p" className="notice-card__desc" text={notice.description} direction="left" staggerDelay={0.1} />
                       </li>
                     ))}
                   </ul>
@@ -268,8 +351,8 @@ function NoticeBoardPage() {
                             {evt.endDate ? ` — ${formatDate(evt.endDate)}` : ''}
                           </span>
                         </div>
-                        <h3 className="event-card__title">{evt.title}</h3>
-                        <p className="event-card__desc">{evt.description}</p>
+                        <LineAnimation as="h3" className="event-card__title" text={evt.title} direction="left" staggerDelay={0.1} />
+                        <LineAnimation as="p" className="event-card__desc" text={evt.description} direction="left" staggerDelay={0.1} />
                         <div className="event-card__details">
                           <span className="event-card__detail-item">
                             <span className="event-card__detail-key">Time</span>
@@ -313,7 +396,7 @@ function NoticeBoardPage() {
               )}
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
       </div>
     </PageLayout>

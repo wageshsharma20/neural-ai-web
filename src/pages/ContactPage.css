@@ -44,7 +44,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
 }
+
+
 
 .contact-info__desc {
   font-size: var(--text-base);
@@ -144,14 +147,14 @@ a.contact-detail__text:hover {
   letter-spacing: var(--tracking-wide);
   color: var(--bone);
   text-transform: uppercase;
-}
-
-.form-label span {
   color: var(--mist);
   text-transform: none;
   font-family: var(--font-body);
   margin-left: 4px;
+
 }
+
+
 
 .form-input {
   background: rgba(255, 255, 255, 0.03);

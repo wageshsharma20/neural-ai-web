@@ -6,7 +6,7 @@
 .nb__hero {
   padding-top: calc(var(--navbar-height) + var(--space-20));
   padding-bottom: var(--space-16);
-  border-bottom: var(--hairline);
+  
 }
 
 .nb__heading {
@@ -16,11 +16,21 @@
   line-height: var(--leading-tight);
   margin-bottom: var(--space-5);
   margin-top: var(--space-4);
-  background: linear-gradient(90deg, #3FC7D6 0%, #9B6BFF 40%, #C765A8 65%, #FF2D87 100%);
+  background: linear-gradient(
+    180deg,
+    #F8F8FF 0%,
+    #D0D0E8 22%,
+    #8888A8 52%,
+    #B8B8D0 78%,
+    #E4E4F4 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
 }
+
+
 
 .nb__subhead {
   font-family: var(--font-mono);
@@ -56,7 +66,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
 }
+
+
 
 /* ================================================================
    RECRUITMENT — 3-ROUND HORIZONTAL FLOW

@@ -6,7 +6,7 @@
 .society__hero {
   padding-top: calc(var(--navbar-height) + var(--space-20));
   padding-bottom: var(--space-16);
-  border-bottom: var(--hairline);
+  
 }
 
 .society__heading {
@@ -20,7 +20,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
 }
+
+
 
 .society__subhead {
   font-family: var(--font-mono);
@@ -31,12 +34,17 @@
 
 /* ── Shared section layout — label-rail + content ── */
 .society-section { border-top: var(--hairline); }
+.society-section:first-of-type { border-top: none; }
 
 .society-section__inner {
   display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: var(--space-12);
+  grid-template-columns: var(--rail-width) 1fr;
+  gap: var(--space-10);
   padding-block: var(--space-16);
+}
+
+.society-section__content {
+  min-width: 0;
 }
 
 .society-section__heading {
@@ -55,7 +63,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
 }
+
+
 
 .society-section__body {
   font-size: var(--text-base);
@@ -421,56 +432,15 @@
 /* ── Hall of Fame ── */
 .hof-list { border-top: var(--hairline); }
 
-.hof-row {
+.hof-card-grid {
   display: grid;
-  grid-template-columns: 36px 1fr auto;
-  gap: var(--space-4);
-  align-items: center;
-  padding: var(--space-4) 0;
-  border-bottom: var(--hairline);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+  border-top: var(--hairline);
+  padding-top: var(--space-8);
 }
 
-.hof-row__initials {
-  width: 32px;
-  height: 32px;
-  border: var(--hairline);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: var(--mist);
-}
 
-.hof-row__name {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--bone);
-}
-
-.hof-row__org {
-  font-size: var(--text-xs);
-  color: var(--signal-cyan);
-  font-family: var(--font-mono);
-  letter-spacing: var(--tracking-wide);
-  margin-top: 2px;
-}
-
-.hof-row__role {
-  font-size: var(--text-xs);
-  color: var(--mist-light);
-  text-align: right;
-}
-
-.hof-row__batch {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--mist);
-  text-align: right;
-  margin-top: 2px;
-}
 
 /* ── CTA block ── */
 .society-cta__inner {
@@ -487,7 +457,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
 }
+
+
 
 .society-cta__body {
   font-size: var(--text-base);
@@ -522,8 +495,7 @@
   .vm-grid                { grid-template-columns: 1fr; }
   .team-row               { grid-template-columns: 36px 1fr; }
   .team-row__role         { display: none; }
-  .hof-row                { grid-template-columns: 36px 1fr; }
-  .hof-row__right         { display: none; }
+
   
   .values-timeline {
     grid-template-columns: repeat(2, 1fr);

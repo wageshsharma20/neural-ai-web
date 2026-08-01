@@ -1,12 +1,46 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { animate } from 'animejs';
 import { FEATURED_BLOGS } from '../../data/mockData';
 import './FeaturedBlogs.css';
 
 function FeaturedBlogs() {
   const displayBlogs = FEATURED_BLOGS.slice(0, 3);
-  
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const cards = sectionRef.current.querySelectorAll('.blog-card');
+    cards.forEach(card => card.style.opacity = '0');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // Define completely different speeds (durations) for the 4 boxes, much slower now
+          const speeds = [2800, 2000, 1500, 3500]; // 1: Slow, 2: Medium, 3: Fast (relatively), 4: Very Slow
+          
+          cards.forEach((card, index) => {
+            animate(card, {
+              x: ['-20vw', 0],
+              opacity: [0, 1],
+              duration: speeds[index % speeds.length],
+              ease: 'outQuint'
+            });
+          });
+
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="blogs section reveal" id="blogs" aria-labelledby="blogs-heading">
+    <section className="blogs section" id="blogs" aria-labelledby="blogs-heading" ref={sectionRef}>
       <div className="container">
         <div className="blogs__header">
           <h2 className="eyebrow" id="blogs-heading" style={{ marginBottom: 0 }}>Blogs</h2>

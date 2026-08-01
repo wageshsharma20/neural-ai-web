@@ -1,9 +1,15 @@
-import React from 'react';
+import { ScrollAnimation } from '../components/ui/ScrollAnimation';
+import { LineAnimation } from '../components/ui/LineAnimation';
+import React, { useRef } from 'react';
+import { useScroll } from 'framer-motion';
 import PageLayout from '../components/layout/PageLayout';
 import { EXECUTIVE_TEAM, LEGACY_TIMELINE, ACHIEVEMENTS, HALL_OF_FAME } from '../data/mockData';
 import { CORE_VALUES } from '../data/societyData';
 import TeamSlider from '../components/ui/TeamSlider';
+import PhotonBeam from '../components/ui/PhotonBeam';
+import { Timeline } from '../components/ui/Timeline';
 import './SocietyPage.css';
+
 
 /**
  * Society Page
@@ -12,52 +18,103 @@ import './SocietyPage.css';
  * Hall of Fame, Society Achievements, Gallery
  */
 function SocietyPage() {
+  const teamSectionRef = useRef(null);
+  const { scrollYProgress: teamScrollProgress } = useScroll({
+    target: teamSectionRef,
+    offset: ["start start", "end end"]
+  });
+
+  const hofSectionRef = useRef(null);
+  const { scrollYProgress: hofScrollProgress } = useScroll({
+    target: hofSectionRef,
+    offset: ["start start", "end end"]
+  });
+
   return (
     <PageLayout>
       <div className="society">
-
         {/* ── Page header ── */}
         <header className="society__hero container" aria-labelledby="society-heading">
           <p className="eyebrow fade-in">Society</p>
-          <h1 className="society__heading fade-in fade-in--d1" id="society-heading">
-            Neural AI —<br />Our Story, People<br />&amp; Legacy.
-          </h1>
-          <p className="society__subhead fade-in fade-in--d2">
-            Founded in 2019. Chartered at DTU. Building at the frontier of AI.
-          </p>
+          <LineAnimation 
+            as="h1" 
+            className="society__heading" 
+            id="society-heading"
+            text={"Neural AI —\nOur Story, People & Legacy."}
+            direction="left"
+            staggerDelay={0.1}
+          />
+          <LineAnimation 
+            as="p" 
+            className="society__subhead" 
+            text="Founded in 2019. Chartered at DTU. Building at the frontier of AI."
+            direction="left"
+            staggerDelay={0.1}
+          />
         </header>
 
+        {/* Photon Beam Separator */}
+        <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden', mixBlendMode: 'screen' }}>
+          <PhotonBeam
+            mirrored={true}
+            colorBg="transparent"
+            colorLine="#6b4fa0"
+            useColor2={true}
+            useColor3={true}
+            colorSignal="#3fc7d6"
+            colorSignal2="#9b6bff"
+            colorSignal3="#ff2d87"
+            lineCount={80}
+            spreadHeight={30.33}
+            signalCount={94}
+            speedGlobal={0.345}
+            trailLength={3}
+            bloomStrength={3.0}
+            bloomRadius={0.5}
+          />
+        </div>
+
         {/* ── Our Story ── */}
-        <section className="society-section reveal" id="story" aria-labelledby="story-heading">
+        <ScrollAnimation as="section" className="society-section" id="story" aria-labelledby="story-heading">
           <div className="container society-section__inner">
             <div className="society-section__label">
               <p className="eyebrow">Our Story</p>
             </div>
             <div className="society-section__content">
-              <h2 className="society-section__heading" id="story-heading">
-                A society born from curiosity and a whiteboard.
-              </h2>
-              <p className="society-section__body">
-                In September 2019, twelve students gathered in a borrowed
-                seminar room with one shared conviction: that AI was too important to be left to individual
-                reading. They drafted a charter, elected the first set of office bearers, and registered
-                Neural AI as the university's first dedicated AI research society.
-              </p>
-              <p className="society-section__body">
-                What began as a reading group for foundational papers has grown into a community of
-                240+ members, six research clusters, an annual hackathon drawing 400+ participants,
-                and publications at ICLR, Springer, and NeurIPS workshops.
-              </p>
-              <p className="society-section__body">
-                We remain, at our core, a group of students who believe the best way to understand
-                AI is to build things with it — then break them, question them, and build better ones.
-              </p>
+              <LineAnimation 
+                as="h2" 
+                className="society-section__heading" 
+                text="A society born from curiosity and a whiteboard."
+                direction="left"
+                staggerDelay={0.1}
+              />
+              <LineAnimation 
+                as="p" 
+                className="society-section__body" 
+                text="In September 2019, twelve students gathered in a borrowed seminar room with one shared conviction: that AI was too important to be left to individual reading. They drafted a charter, elected the first set of office bearers, and registered Neural AI as the university's first dedicated AI research society."
+                direction="left"
+                staggerDelay={0.1}
+              />
+              <LineAnimation 
+                as="p" 
+                className="society-section__body" 
+                text="What began as a reading group for foundational papers has grown into a community of 240+ members, six research clusters, an annual hackathon drawing 400+ participants, and publications at ICLR, Springer, and NeurIPS workshops."
+                direction="left"
+                staggerDelay={0.1}
+              />
+              <LineAnimation 
+                as="p" 
+                className="society-section__body" 
+                text="We remain, at our core, a group of students who believe the best way to understand AI is to build things with it — then break them, question them, and build better ones."
+                direction="left"
+                staggerDelay={0.1}
+              />
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
         {/* ── Vision & Mission ── */}
-        <section className="society-section reveal" id="vision" aria-labelledby="vision-heading">
+        <ScrollAnimation as="section" className="society-section" id="vision" aria-labelledby="vision-heading">
           <div className="container society-section__inner">
             <div className="society-section__label">
               <p className="eyebrow">Vision &amp; Mission</p>
@@ -66,49 +123,62 @@ function SocietyPage() {
               <div className="vm-grid">
                 <div className="vm-item">
                   <p className="vm-item__label">Vision</p>
-                  <h2 className="vm-item__statement" id="vision-heading">
-                    To be the most rigorous student AI society in India — where theory and
-                    practice meet, and where the next generation of AI researchers are formed.
-                  </h2>
+                  <LineAnimation 
+                    as="h2" 
+                    className="vm-item__statement" 
+                    id="vision-heading"
+                    text="To be the most rigorous student AI society in India — where theory and practice meet, and where the next generation of AI researchers are formed."
+                    direction="left"
+                    staggerDelay={0.1}
+                  />
                 </div>
                 <div className="vm-item">
                   <p className="vm-item__label">Mission</p>
-                  <p className="vm-item__body">
-                    To create an environment where DTU students can go deep into AI —
-                    through structured research, real project experience, peer mentorship,
-                    and access to the broader research community.
-                  </p>
+                  <LineAnimation 
+                    as="p" 
+                    className="vm-item__body" 
+                    text="To create an environment where DTU students can go deep into AI — through structured research, real project experience, peer mentorship, and access to the broader research community."
+                    direction="left"
+                    staggerDelay={0.1}
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
         {/* ── Core Values ── */}
-        <section className="society-section reveal" id="values" aria-labelledby="values-heading">
+        <ScrollAnimation as="section" className="society-section" id="values" aria-labelledby="values-heading">
           <div className="container society-section__inner">
             <div className="society-section__label">
               <p className="eyebrow">Core Values</p>
             </div>
             <div className="society-section__content">
-              <h2 className="society-section__heading" id="values-heading">What we stand by.</h2>
+              <LineAnimation 
+                as="h2" 
+                className="society-section__heading" 
+                id="values-heading"
+                text="What we stand by."
+                direction="left"
+                staggerDelay={0.1}
+              />
               <div className="values-timeline" role="list">
                 {CORE_VALUES.map((v, i) => (
                   <div key={v.id} className="values-item" id={v.id} role="listitem">
                     <span className="values-item__num" aria-hidden="true">
                       0{i + 1}
                     </span>
-                    <p className="values-item__title">{v.title}</p>
-                    <p className="values-item__body">{v.body}</p>
+                    <LineAnimation as="p" className="values-item__title" text={v.title} direction="left" staggerDelay={0.1} />
+                    <LineAnimation as="p" className="values-item__body" text={v.body} direction="left" staggerDelay={0.1} />
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
         {/* ── Faculty Advisor ── */}
-        <section className="society-section reveal" id="faculty" aria-labelledby="faculty-heading">
+        <ScrollAnimation as="section" className="society-section" id="faculty" aria-labelledby="faculty-heading">
           <div className="container society-section__inner">
             <div className="society-section__label">
               <p className="eyebrow">Faculty Advisor</p>
@@ -119,71 +189,71 @@ function SocietyPage() {
                   <span>PK</span>
                 </div>
                 <div>
-                  <h2 className="faculty-card__name" id="faculty-heading">Prof. Pradeep Kumar</h2>
-                  <p className="faculty-card__role">Associate Professor, Department of Computer Science</p>
-                  <p className="faculty-card__dept">Delhi Technological University</p>
-                  <p className="faculty-card__bio">
-                    Prof. Kumar specialises in machine learning, neural architecture design, and
-                    AI for healthcare. He has guided Neural AI since its founding, providing research
-                    mentorship and connecting the society with industry and academic collaborators.
-                  </p>
+                  <LineAnimation as="h2" className="faculty-card__name" id="faculty-heading" text="Prof. Pradeep Kumar" direction="left" staggerDelay={0.1} />
+                  <LineAnimation as="p" className="faculty-card__role" text="Associate Professor, Department of Computer Science" direction="left" staggerDelay={0.1} />
+                  <LineAnimation as="p" className="faculty-card__dept" text="Delhi Technological University" direction="left" staggerDelay={0.1} />
+                  <LineAnimation 
+                    as="p" 
+                    className="faculty-card__bio" 
+                    text="Prof. Kumar specialises in machine learning, neural architecture design, and AI for healthcare. He has guided Neural AI since its founding, providing research mentorship and connecting the society with industry and academic collaborators." 
+                    direction="left" 
+                    staggerDelay={0.1} 
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
-        {/* ── Executive Team ── */}
-        <section className="society-section reveal" id="team" aria-labelledby="team-heading">
-          <div className="container society-section__inner">
-            <div className="society-section__label">
-              <p className="eyebrow">Executive Team</p>
-            </div>
-            <div className="society-section__content">
-              <h2 className="society-section__heading" id="team-heading">2025–26 Office Bearers.</h2>
-              <TeamSlider members={EXECUTIVE_TEAM} />
-            </div>
+        {/* ── 5. Executive Team ── */}
+        <div ref={teamSectionRef} className="society-section team-hscroll" id="team" aria-labelledby="team-heading">
+          <div className="team-hscroll__sticky">
+            <ScrollAnimation as="div" viewport={{ once: true, amount: 0.05 }}>
+              <div className="container society-section__inner">
+                <div className="society-section__label">
+                  <p className="eyebrow">Executive Team</p>
+                </div>
+                <div className="society-section__content">
+                  <h2 className="society-section__heading" id="team-heading">2025–26 Office Bearers.</h2>
+                  <TeamSlider members={EXECUTIVE_TEAM} scrollYProgress={teamScrollProgress} />
+                </div>
+              </div>
+            </ScrollAnimation>
           </div>
-        </section>
-
-
+        </div>
 
         {/* ── Legacy Timeline ── */}
-        <section className="society-section reveal" id="timeline" aria-labelledby="timeline-heading">
-          <div className="container society-section__inner">
-            <div className="society-section__label">
-              <p className="eyebrow">Legacy Timeline</p>
-            </div>
-            <div className="society-section__content">
+        <ScrollAnimation as="section" className="society-section" id="timeline" aria-labelledby="timeline-heading">
+          <div className="container" style={{ paddingBlock: 'var(--space-16)' }}>
+            <div style={{ marginBottom: 'var(--space-8)' }}>
+              <p className="eyebrow" style={{ marginBottom: 'var(--space-4)' }}>Legacy Timeline</p>
               <h2 className="society-section__heading" id="timeline-heading">Six years of progress.</h2>
-              <ol className="timeline-list" role="list">
-                {LEGACY_TIMELINE.map((era) => (
-                  <li key={era.id} className="timeline-item" id={era.id}>
-                    {/* Seal stamp beside each era */}
-                    <svg className="timeline-item__seal" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <circle cx="8" cy="8" r="6.5" stroke="var(--signal-violet)" strokeWidth="0.7" opacity="0.5" />
-                      <circle cx="8" cy="8" r="1.2" fill="var(--signal-violet)" opacity="0.8" />
-                    </svg>
-                    <div className="timeline-item__content">
-                      <p className="timeline-item__year">{era.year}</p>
-                      <p className="timeline-item__heading">{era.heading}</p>
-                      <p className="timeline-item__body">{era.body}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
             </div>
+            
+            <Timeline data={LEGACY_TIMELINE.map((era) => ({
+              title: era.year,
+              content: (
+                <div>
+                  <h4 style={{ fontSize: 'var(--text-xl)', fontWeight: 'bold', marginBottom: '0.75rem', color: 'var(--bone)' }}>
+                    {era.heading}
+                  </h4>
+                  <p style={{ color: 'var(--mist-light)', lineHeight: '1.6' }}>
+                    {era.body}
+                  </p>
+                </div>
+              )
+            }))} />
           </div>
-        </section>
+        </ScrollAnimation>
 
         {/* ── Achievements ── */}
-        <section className="society-section reveal" id="achievements" aria-labelledby="soc-ach-heading">
+        <ScrollAnimation as="section" className="society-section" id="achievements" aria-labelledby="soc-ach-heading">
           <div className="container society-section__inner">
             <div className="society-section__label">
               <p className="eyebrow">Achievements</p>
             </div>
             <div className="society-section__content">
-              <h2 className="society-section__heading" id="soc-ach-heading">Stated factually.</h2>
+              <LineAnimation as="h2" className="society-section__heading" id="soc-ach-heading" text="Stated factually." direction="left" staggerDelay={0.1} />
               <ul className="ach-list" role="list">
                 {ACHIEVEMENTS.map((a) => (
                   <li key={a.id} className="ach-row" id={`society-${a.id}`}>
@@ -197,36 +267,35 @@ function SocietyPage() {
               </ul>
             </div>
           </div>
-        </section>
+        </ScrollAnimation>
 
         {/* ── Hall of Fame ── */}
-        <section className="society-section reveal" id="hall-of-fame" aria-labelledby="hof-heading">
-          <div className="container society-section__inner">
-            <div className="society-section__label">
-              <p className="eyebrow">Hall of Fame</p>
-            </div>
-            <div className="society-section__content">
-              <h2 className="society-section__heading" id="hof-heading">
-                Where our alumni are now.
-              </h2>
-              <TeamSlider members={HALL_OF_FAME} />
-            </div>
+        <div ref={hofSectionRef} className="society-section team-hscroll" id="hall-of-fame" aria-labelledby="hof-heading">
+          <div className="team-hscroll__sticky">
+            <ScrollAnimation as="div" viewport={{ once: true, amount: 0.05 }}>
+              <div className="container society-section__inner">
+                <div className="society-section__label">
+                  <p className="eyebrow">Hall of Fame</p>
+                </div>
+                <div className="society-section__content">
+                  <LineAnimation as="h2" className="society-section__heading" id="hof-heading" text="Where our alumni are now." direction="left" staggerDelay={0.1} />
+                  <TeamSlider members={HALL_OF_FAME} scrollYProgress={hofScrollProgress} />
+                </div>
+              </div>
+            </ScrollAnimation>
           </div>
-        </section>
-
+        </div>
         {/* ── CTA ── */}
-        <section className="society-cta section reveal container">
+        <ScrollAnimation as="section" className="society-cta section container">
           <div className="society-cta__inner">
             <p className="society-cta__label eyebrow">Apply to Join</p>
-            <h2 className="society-cta__heading">Be part of what comes next.</h2>
-            <p className="society-cta__body">
-              Recruitment for 2025–26 is open. Applications close 10 August 2025.
-            </p>
+            <LineAnimation as="h2" className="society-cta__heading" text="Be part of what comes next." direction="left" staggerDelay={0.1} />
+            <LineAnimation as="p" className="society-cta__body" text={"Recruitment for 2025\u201326 is open. Applications close 10 August 2025."} direction="left" staggerDelay={0.1} />
             <a href="/notices#recruitment" className="society-cta__btn">
               View Recruitment Details →
             </a>
           </div>
-        </section>
+        </ScrollAnimation>
 
       </div>
     </PageLayout>

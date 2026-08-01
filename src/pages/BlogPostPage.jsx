@@ -1,3 +1,4 @@
+import { ScrollAnimation } from '../components/ui/ScrollAnimation';
 import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageLayout from '../components/layout/PageLayout';
@@ -30,7 +31,7 @@ export default function BlogPostPage() {
 
   return (
     <PageLayout>
-      <article className="blog-post-page reveal">
+      <ScrollAnimation as="article" className="blog-post-page">
         <header className="blog-post-header">
           <div className="container">
             <Link to="/blogs" className="back-link">← Back to Blogs</Link>
@@ -72,7 +73,7 @@ export default function BlogPostPage() {
             </div>
           </div>
         </section>
-      </article>
+      </ScrollAnimation>
     </PageLayout>
   );
 }

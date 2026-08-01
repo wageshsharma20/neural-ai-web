@@ -1,10 +1,11 @@
+import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
 import React from 'react';
 import { SOCIETY_STATS } from '../../data/mockData';
 import './StatsSection.css';
 
 function StatsSection() {
   return (
-    <section className="stats-section reveal" id="stats" aria-labelledby="stats-heading">
+    <ScrollAnimation as="section" className="stats-section" id="stats" aria-labelledby="stats-heading">
       <div className="container">
         <div className="stats-section__inner">
           <div className="stats-section__left">
@@ -23,7 +24,7 @@ function StatsSection() {
           </dl>
         </div>
       </div>
-    </section>
+    </ScrollAnimation>
   );
 }
 

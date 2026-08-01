@@ -1,78 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useTransform, useSpring } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import './TeamSlider.css';
 
-export default function TeamSlider({ members }) {
-  const [page, setPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(3);
+export default function TeamSlider({ members, scrollYProgress }) {
+  const contentRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(0);
 
+  // Measure the total scrollable width of the cards
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) setItemsPerPage(3);
-      else if (window.innerWidth >= 768) setItemsPerPage(2);
-      else setItemsPerPage(1);
+    const measure = () => {
+      if (contentRef.current && contentRef.current.parentElement) {
+        const totalWidth = contentRef.current.scrollWidth;
+        const startX = contentRef.current.parentElement.getBoundingClientRect().left;
+        const visibleWidth = window.innerWidth - startX;
+        
+        // The distance we need to translate left is the total width minus the visible width available to it.
+        // Since the content already has padding-right: 5vw, this mathematically aligns the right edge perfectly.
+        setContainerWidth(Math.max(0, totalWidth - visibleWidth));
+      }
     };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    measure();
+    window.addEventListener('resize', measure);
+    
+    // Slight delay to ensure images/fonts load before measuring
+    const timeout = setTimeout(measure, 100);
+    return () => {
+      window.removeEventListener('resize', measure);
+      clearTimeout(timeout);
+    };
+  }, [members]);
 
-  const totalPages = Math.ceil(members.length / itemsPerPage);
+  // Spring physics for ultra-smooth buttery scrubbing
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 150,
+    damping: 25,
+    mass: 0.1
+  });
 
-  useEffect(() => {
-    // Reset page if totalPages changes and page is out of bounds
-    if (page >= totalPages) {
-      setPage(0);
-    }
-  }, [totalPages, page]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPage(prev => (prev + 1) % totalPages);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [totalPages]);
-
-  const visibleMembers = members.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+  const x = useTransform(smoothProgress, [0, 1], [0, -containerWidth]);
 
   return (
-    <div className="team-slider">
-      <div className="team-slider__grid">
-        {visibleMembers.map((m) => (
-          <div key={m.id} className="team-card slide-up">
-            <div className="team-card__image-container">
-              {m.image ? (
-                <img src={m.image} alt={m.name} className="team-card__image" />
-              ) : (
-                <div className="team-card__fallback">{m.name.charAt(0)}</div>
-              )}
-            </div>
-            <div className="team-card__content">
-              <h3 className="team-card__name">{m.name}</h3>
-              <p className="team-card__role">{m.role}</p>
-              <p className="team-card__dept">{m.dept}</p>
-              {m.linkedin && (
-                <a href={m.linkedin} className="team-card__linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                  <FontAwesomeIcon icon={faLinkedin} />
-                </a>
-              )}
-            </div>
+    <motion.div 
+      style={{ x }} 
+      className="team-hscroll__content" 
+      ref={contentRef}
+    >
+      {members.map((member) => (
+        <div key={member.id} className="team-card">
+          <div className="team-card__image-container">
+            {member.image ? (
+              <img src={member.image} alt={member.name} className="team-card__image" loading="lazy" />
+            ) : (
+              <div className="team-card__fallback">{member.name.charAt(0)}</div>
+            )}
           </div>
-        ))}
-      </div>
-      {totalPages > 1 && (
-        <div className="team-slider__dots">
-          {Array.from({ length: totalPages }).map((_, idx) => (
-            <button 
-              key={idx} 
-              className={`team-slider__dot ${idx === page ? 'active' : ''}`}
-              onClick={() => setPage(idx)}
-              aria-label={`Go to page ${idx + 1}`}
-            />
-          ))}
+          <div className="team-card__info">
+            <h3 className="team-card__name">{member.name}</h3>
+            <p className="team-card__role">{member.role}</p>
+            <p className="team-card__dept">{member.dept}</p>
+            <a href={member.linkedin} className="team-card__linkedin" aria-label={`LinkedIn of ${member.name}`}>
+              <FontAwesomeIcon icon={faLinkedin} />
+            </a>
+          </div>
         </div>
-      )}
-    </div>
+      ))}
+    </motion.div>
   );
 }

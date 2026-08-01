@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../../data/mockData';
+import ScrollProgress from '../ui/ScrollProgress';
 import './Navbar.css';
 
 /**
@@ -12,6 +13,8 @@ import './Navbar.css';
 function Navbar() {
   const [scrolled, setScrolled]     = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ left: 0, width: 0, opacity: 0 });
+  const [activeMenu, setActiveMenu] = useState(null);
   const location                    = useLocation();
   const navRef                      = useRef(null);
 
@@ -49,10 +52,27 @@ function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="navbar__nav" aria-label="Primary navigation">
+        <nav
+          className="navbar__nav"
+          aria-label="Primary navigation"
+          onMouseLeave={() => {
+            setCursorPosition((prev) => ({ ...prev, opacity: 0 }));
+            setActiveMenu(null);
+          }}
+        >
           <ul className="navbar__links" role="list">
             {NAV_LINKS.map((link) => (
-              <li key={link.id}>
+              <li
+                key={link.id}
+                onMouseEnter={(e) => {
+                  setCursorPosition({
+                    width: e.currentTarget.offsetWidth,
+                    left: e.currentTarget.offsetLeft,
+                    opacity: 1,
+                  });
+                  setActiveMenu(link.id);
+                }}
+              >
                 <NavLink
                   to={link.href}
                   id={link.id}
@@ -62,17 +82,95 @@ function Navbar() {
                   }
                   aria-current={location.pathname === link.href ? 'page' : undefined}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
                 </NavLink>
               </li>
             ))}
+            <li
+              className="navbar__cursor"
+              style={{
+                left: cursorPosition.left,
+                width: cursorPosition.width,
+                opacity: cursorPosition.opacity,
+              }}
+            />
           </ul>
+
+          {/* ── Mega Menus ── */}
+          <DropdownPanel isOpen={activeMenu === 'nav-society'}>
+            <div className="navbar__mega-grid">
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">About Us</h3>
+                <Link to="/society#vision" className="navbar__mega-link">Our Vision & Mission</Link>
+                <Link to="/society#values" className="navbar__mega-link">Core Values</Link>
+                <Link to="/society#timeline" className="navbar__mega-link">Legacy Timeline</Link>
+              </div>
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">People</h3>
+                <Link to="/society#team" className="navbar__mega-link">Executive Team</Link>
+                <Link to="/society#hall-of-fame" className="navbar__mega-link">Hall of Fame</Link>
+                <Link to="/society#faculty" className="navbar__mega-link">Faculty Advisor</Link>
+              </div>
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">Join Us</h3>
+                <Link to="/notices#recruitment" className="navbar__mega-link">Recruitment Process</Link>
+                <Link to="/society#values" className="navbar__mega-link">Membership Perks</Link>
+              </div>
+            </div>
+          </DropdownPanel>
+
+          <DropdownPanel isOpen={activeMenu === 'nav-notices'}>
+            <div className="navbar__mega-grid">
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">Updates</h3>
+                <Link to="/notices#notice-board" className="navbar__mega-link">Latest Announcements</Link>
+                <Link to="/notices#notice-board" className="navbar__mega-link">Important Notices</Link>
+              </div>
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">Events</h3>
+                <Link to="/notices#notice-board" className="navbar__mega-link">Upcoming Events</Link>
+                <Link to="/notices#notice-board" className="navbar__mega-link">Hackathons</Link>
+                <Link to="/notices#notice-board" className="navbar__mega-link">Workshops</Link>
+              </div>
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">Milestones</h3>
+                <Link to="/society#achievements" className="navbar__mega-link">Recent Achievements</Link>
+                <Link to="/society#achievements" className="navbar__mega-link">Awards & Mentions</Link>
+              </div>
+            </div>
+          </DropdownPanel>
+
+          <DropdownPanel isOpen={activeMenu === 'nav-blogs'}>
+            <div className="navbar__mega-grid">
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">Content</h3>
+                <Link to="/blogs#all-blogs" className="navbar__mega-link">Latest Articles</Link>
+                <Link to="/blogs#all-blogs" className="navbar__mega-link">Research Papers</Link>
+                <Link to="/blogs#featured-blog" className="navbar__mega-link">Editor's Picks</Link>
+              </div>
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">Learning</h3>
+                <Link to="/blogs#resources" className="navbar__mega-link">ML Roadmaps</Link>
+                <Link to="/blogs#resources" className="navbar__mega-link">Tutorials & Guides</Link>
+                <Link to="/blogs#resources" className="navbar__mega-link">Recommended Courses</Link>
+              </div>
+              <div className="navbar__mega-section">
+                <h3 className="navbar__mega-title">AI Domains</h3>
+                <Link to="/blogs#all-blogs" className="navbar__mega-link">Machine Learning</Link>
+                <Link to="/blogs#all-blogs" className="navbar__mega-link">Deep Learning</Link>
+                <Link to="/blogs#all-blogs" className="navbar__mega-link">Generative AI</Link>
+                <Link to="/blogs#all-blogs" className="navbar__mega-link">Agentic Systems</Link>
+              </div>
+            </div>
+          </DropdownPanel>
         </nav>
 
-        {/* Member Login — bordered, understated */}
-        <a href="/portal" className="navbar__login" id="navbar-login">
-          Member Login
-        </a>
+        {/* Member Login */}
+        <div className="navbar__actions">
+          <Link to="/portal" className="navbar__login-btn">
+            <span>MEMBER LOGIN</span>
+          </Link>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -116,6 +214,36 @@ function Navbar() {
         </nav>
       </div>
     </header>
+  );
+}
+
+/**
+ * DropdownPanel handles the delayed unmount so CSS transitions can finish
+ * before the element is removed from the DOM.
+ */
+function DropdownPanel({ isOpen, children }) {
+  const [visible, setVisible] = useState(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      setVisible(true);
+    } else {
+      const timeout = setTimeout(() => setVisible(false), 400);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      className={`navbar__mega-menu${isOpen ? ' navbar__mega-menu--open' : ''}`}
+      onMouseEnter={(e) => e.stopPropagation()} 
+    >
+      <div className="navbar__mega-menu-inner">
+        {children}
+      </div>
+    </div>
   );
 }
 

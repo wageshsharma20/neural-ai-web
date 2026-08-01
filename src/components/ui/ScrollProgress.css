@@ -1,0 +1,11 @@
+.scroll-progress-bar {
+  position: absolute;
+  bottom: 0; 
+  left: 0;
+  right: 0;
+  height: 3px; 
+  background: linear-gradient(to right, var(--signal-cyan), var(--signal-violet));
+  transform-origin: left;
+  z-index: 9999;
+  border-radius: 0 2px 2px 0;
+}

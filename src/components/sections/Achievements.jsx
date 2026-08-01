@@ -1,10 +1,45 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { animate } from 'animejs';
 import { ACHIEVEMENTS } from '../../data/mockData';
 import './Achievements.css';
 
 function Achievements() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const cards = sectionRef.current.querySelectorAll('.ach__card');
+    cards.forEach(card => card.style.opacity = '0');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          cards.forEach((card, index) => {
+            // Box 1 (index 1) is on the right, all others (0, 2, 3) are on the left side
+            const fromLeft = index !== 1;
+            
+            animate(card, {
+              x: [fromLeft ? '-20vw' : '20vw', 0],
+              opacity: [0, 1],
+              duration: 2500, // Slower duration
+              delay: index * 300, // slightly more stagger
+              ease: 'outQuad'
+            });
+          });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="ach section reveal" id="achievements" aria-labelledby="ach-heading">
+    <section className="ach section" id="achievements" aria-labelledby="ach-heading" ref={sectionRef}>
       <div className="container">
         <div className="ach__header">
           <h2 className="ach__heading" id="ach-heading">Recent achievements.</h2>

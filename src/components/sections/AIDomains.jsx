@@ -1,3 +1,4 @@
+import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
 import React, { useState } from 'react';
 import { AI_DOMAINS } from '../../data/mockData';
 import './AIDomains.css';
@@ -6,7 +7,7 @@ function AIDomains() {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <section className="domains section reveal" id="domains" aria-labelledby="domains-heading">
+    <ScrollAnimation as="section" className="domains section" id="domains" aria-labelledby="domains-heading">
       <div className="container">
 
         <div className="domains__header">
@@ -67,7 +68,7 @@ function AIDomains() {
         </ul>
 
       </div>
-    </section>
+    </ScrollAnimation>
   );
 }
 
