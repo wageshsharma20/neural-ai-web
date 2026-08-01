@@ -12,6 +12,13 @@ export const SOCIETY_STATS = [
   { label: 'Research Papers', value: '18', id: 'stat-papers' },
 ];
 
+export const currentUser = {
+  name: 'Aryan Sharma',
+  initials: 'AS',
+  role: 'Core Member',
+  email: 'a.sharma@dtu.ac.in',
+};
+
 // ── Featured projects ──
 export const FEATURED_PROJECTS = [
   {

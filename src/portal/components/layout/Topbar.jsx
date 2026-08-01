@@ -42,7 +42,6 @@ export default function PortalTopbar({ activeModule, onMobileMenuToggle }) {
         className="topbar-toggle"
         onClick={onMobileMenuToggle}
         aria-label="Toggle menu"
-        style={{ display: 'none' }} // shown via CSS on mobile
       >
         <Menu size={16} />
       </button>

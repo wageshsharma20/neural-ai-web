@@ -73,6 +73,7 @@
   background-clip: text;
   animation: hero-gradient-shift 5s ease-in-out infinite alternate;
   padding: 0.15em 0;
+  will-change: background-position;
 }
 
 @keyframes hero-gradient-shift {

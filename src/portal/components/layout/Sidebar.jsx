@@ -112,19 +112,39 @@ export default function PortalSidebar({ activeModule, onNavigate }) {
         ))}
       </nav>
 
-      {/* User */}
-      <button
-        className="sidebar-user"
-        onClick={() => onNavigate('profile')}
-        title={collapsed ? currentUser.name : undefined}
-      >
-        <div className="sidebar-user__avatar">{currentUser.initials}</div>
-        <div className="sidebar-user__info">
-          <div className="sidebar-user__name">{currentUser.name}</div>
-          <div className="sidebar-user__role">{currentUser.role}</div>
-        </div>
-        {!collapsed && <LogOut size={12} style={{ color: 'var(--mist)', flexShrink: 0 }} />}
-      </button>
+      {/* Footer Area */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+        <button
+          className="sidebar-user"
+          onClick={() => onNavigate('profile')}
+          title={collapsed ? currentUser.name : undefined}
+        >
+          <div className="sidebar-user__avatar">{currentUser.initials}</div>
+          <div className="sidebar-user__info">
+            <div className="sidebar-user__name">{currentUser.name}</div>
+            <div className="sidebar-user__role">{currentUser.role}</div>
+          </div>
+        </button>
+
+        {!collapsed ? (
+          <button 
+            className="btn btn-outline w-full"
+            onClick={() => window.location.href = '/'}
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', margin: '0 var(--space-4) var(--space-4) var(--space-4)', width: 'calc(100% - var(--space-8))', opacity: 0.8 }}
+          >
+            <LogOut size={14} /> Log Out
+          </button>
+        ) : (
+          <button 
+            className="btn btn-ghost"
+            onClick={() => window.location.href = '/'}
+            title="Log Out"
+            style={{ margin: '0 auto var(--space-4) auto', padding: '8px', color: 'var(--mist)' }}
+          >
+            <LogOut size={16} />
+          </button>
+        )}
+      </div>
     </aside>
   );
 }

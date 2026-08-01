@@ -56,12 +56,7 @@ export default function PortalPage() {
       )}
       
       {/* Sidebar */}
-      <div style={{
-        position: 'relative',
-        zIndex: 100,
-        transform: mobileMenuOpen ? 'translateX(0)' : undefined, // Simplistic mobile handling
-        transition: 'transform var(--transition-base)'
-      }} className="portal-sidebar-wrapper">
+      <div className={`portal-sidebar-wrapper ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <Sidebar activeModule={activeModule} onNavigate={(mod) => {
           setActiveModule(mod);
           setMobileMenuOpen(false);

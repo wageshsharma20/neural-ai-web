@@ -1,177 +1,71 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import PageLayout from '../components/layout/PageLayout';
-import './LoginTerminal.css';
-
-const AUTH_LOG = [
-  { delay: 0,    text: '',                                          type: 'blank'   },
-  { delay: 250,  text: 'Authenticating...',                        type: 'muted'   },
-  { delay: 750,  text: '\x1b[32m●\x1b[0m  Credentials verified',  type: 'ok'      },
-  { delay: 500,  text: '\x1b[32m●\x1b[0m  Session token issued',  type: 'ok'      },
-  { delay: 400,  text: '2FA challenge dispatched to device',       type: 'muted'   },
-  { delay: 700,  text: '\x1b[32m●\x1b[0m  Redirecting...',        type: 'ok'      },
-];
-
-function pause(ms) { return new Promise(r => setTimeout(r, ms)); }
+import './Auth.css';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [phase, setPhase]       = useState('email');
-  const [email, setEmail]       = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [runLines, setRunLines] = useState([]);
-  const [blink, setBlink]       = useState(true);
-  const screenRef   = useRef(null);
-  const emailRef    = useRef(null);
-  const passwordRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const t = setInterval(() => setBlink(b => !b), 530);
-    return () => clearInterval(t);
-  }, []);
-
-  useEffect(() => {
-    const s = screenRef.current;
-    if (s) s.scrollTop = s.scrollHeight;
-  });
-
-  useEffect(() => {
-    if (phase === 'email')    setTimeout(() => emailRef.current?.focus(), 60);
-    if (phase === 'password') setTimeout(() => passwordRef.current?.focus(), 60);
-  }, [phase]);
-
-  const submitEmail = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (email.trim()) setPhase('password');
-  };
-
-  const submitPassword = async (e) => {
-    e.preventDefault();
-    setPhase('running');
-    for (const log of AUTH_LOG) {
-      await pause(log.delay);
-      setRunLines(prev => [...prev, log]);
-    }
-    await pause(400);
-    navigate('/2fa');
+    
+    setLoading(true);
+    // Simulate network request
+    setTimeout(() => {
+      navigate('/2fa');
+    }, 1200);
   };
 
   return (
     <PageLayout>
-      <div className="trm-page">
-        <div className="trm-window fade-in">
-
-          {/* ── Toolbar ── */}
-          <div className="trm-bar">
-            <div className="trm-lights">
-              <span className="trm-light trm-light--r" />
-              <span className="trm-light trm-light--y" />
-              <span className="trm-light trm-light--g" />
+      <div className="auth-page">
+        <div className="auth-card">
+          <p className="text-2xs text-mono uppercase tracking-widest text-signal-cyan auth-eyebrow">Portal Access</p>
+          <h1 className="auth-heading">Welcome Back.</h1>
+          <p className="auth-subhead">Sign in with your DTU organizational email to access the Neural AI members portal.</p>
+          
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                className="auth-input"
+                placeholder="you@dtu.ac.in"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+              />
             </div>
-            <span className="trm-bar-title">neural-auth — zsh</span>
-            <div style={{ width: 56 }} />
-          </div>
-
-          {/* ── Shell screen ── */}
-          <div className="trm-screen" ref={screenRef}>
-
-            {/* Static header */}
-            <p className="trm-header-line">
-              <span className="sh-dim">Last login: {new Date().toDateString()} on ttys001</span>
-            </p>
-            <p className="trm-header-line trm-header-line--gap">
-              <span className="sh-dim">neural-ai-portal</span>
-              <span className="sh-sep"> · </span>
-              <span className="sh-dim">secure auth shell v2.4</span>
-            </p>
-
-            {/* Email prompt */}
-            {phase === 'email' && (
-              <form onSubmit={submitEmail} className="trm-row">
-                <Ps1 />
-                <span className="sh-cmd">login</span>
-                <span className="sh-flag"> --user</span>
-                <span className="sh-op">=</span>
-                <input
-                  ref={emailRef}
-                  className="trm-input"
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  autoComplete="email"
-                  spellCheck={false}
-                  placeholder="you@dtu.ac.in"
-                />
-                <span className={`trm-cur ${blink ? 'trm-cur--on' : ''}`} />
-              </form>
-            )}
-
-            {/* Locked email */}
-            {(phase === 'password' || phase === 'running') && (
-              <div className="trm-row trm-row--done">
-                <Ps1 />
-                <span className="sh-cmd">login</span>
-                <span className="sh-flag"> --user</span>
-                <span className="sh-op">=</span>
-                <span className="sh-str">{email}</span>
+            
+            <div className="form-group">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label>Password</label>
+                <a href="#" style={{ fontSize: '11px', color: 'var(--mist)', textDecoration: 'none' }}>Forgot password?</a>
               </div>
-            )}
-
-            {/* Password prompt */}
-            {phase === 'password' && (
-              <form onSubmit={submitPassword} className="trm-row">
-                <Ps1 />
-                <span className="sh-cmd">login</span>
-                <span className="sh-flag"> --password</span>
-                <span className="sh-op">=</span>
-                <input
-                  ref={passwordRef}
-                  className="trm-input trm-input--pw"
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                  placeholder="enter password"
-                />
-                <span className={`trm-cur ${blink ? 'trm-cur--on' : ''}`} />
-                <button type="submit" hidden />
-              </form>
-            )}
-
-            {/* Locked password */}
-            {phase === 'running' && (
-              <div className="trm-row trm-row--done">
-                <Ps1 />
-                <span className="sh-cmd">login</span>
-                <span className="sh-flag"> --password</span>
-                <span className="sh-op">=</span>
-                <span className="sh-masked">{'*'.repeat(Math.max(password.length, 8))}</span>
-              </div>
-            )}
-
-            {/* Auth log */}
-            {runLines.map((l, i) => (
-              <div key={i} className={`trm-log-line trm-log-line--${l.type}`}>
-                {l.text || '\u00A0'}
-              </div>
-            ))}
-
-          </div>
+              <input
+                type="password"
+                className="auth-input"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+            </div>
+            
+            <button type="submit" className="auth-submit" disabled={loading}>
+              {loading ? (
+                <div className="spinner"></div>
+              ) : (
+                <>Sign In <ArrowRight size={16} /></>
+              )}
+            </button>
+          </form>
         </div>
       </div>
     </PageLayout>
-  );
-}
-
-function Ps1() {
-  return (
-    <span className="ps1">
-      <span className="ps1-user">neural</span>
-      <span className="ps1-at">@</span>
-      <span className="ps1-host">dtu</span>
-      <span className="ps1-sep"> </span>
-      <span className="ps1-dir">~/portal</span>
-      <span className="ps1-pct"> % </span>
-    </span>
   );
 }
