@@ -70,7 +70,7 @@ function Navbar() {
         </nav>
 
         {/* Member Login — bordered, understated */}
-        <a href="/portal" className="navbar__login" id="navbar-login">
+        <a href="/login" className="navbar__login" id="navbar-login">
           Member Login
         </a>
 
@@ -110,7 +110,7 @@ function Navbar() {
               </li>
             ))}
             <li>
-              <a href="/portal" className="navbar__mobile-link">Member Login</a>
+              <a href="/login" className="navbar__mobile-link">Member Login</a>
             </li>
           </ul>
         </nav>

@@ -97,11 +97,17 @@ function TaskRow({ task }) {
 function TaskModal({ allMembers, onClose, onConfirm }) {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
+  const [targetRole, setTargetRole] = useState('');
+  const [scope, setScope] = useState('mass');
   const [assigneeId, setAssigneeId] = useState('');
-  const [scope, setScope] = useState('individual');
-  
-  const selectedMember = allMembers.find(m => m.id === assigneeId);
-  const hasTeam = selectedMember ? allMembers.some(m => m.reportsTo === selectedMember.id) : false;
+
+  const roleMap = {
+    'heads': ['Super Admin', 'Admin'],
+    'co-heads': ['Core Team'],
+    'members': ['Member']
+  };
+
+  const availableMembers = targetRole ? allMembers.filter(m => roleMap[targetRole]?.includes(m.role)) : [];
 
   return (
     <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
@@ -127,17 +133,21 @@ function TaskModal({ allMembers, onClose, onConfirm }) {
             />
           </div>
           <div>
-            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Assign To</label>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Target Group</label>
             <select 
               className="input w-full"
-              value={assigneeId}
-              onChange={e => { setAssigneeId(e.target.value); setScope('individual'); }}
+              value={targetRole}
+              onChange={e => { 
+                setTargetRole(e.target.value); 
+                setScope('mass');
+                setAssigneeId(''); 
+              }}
               style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)', appearance: 'none' }}
             >
-              <option value="" disabled>Select a member...</option>
-              {allMembers.map(m => (
-                <option key={m.id} value={m.id}>{m.name} ({m.role})</option>
-              ))}
+              <option value="" disabled>Select a group...</option>
+              <option value="heads">Heads (Admins)</option>
+              <option value="co-heads">Co-Heads (Core Team)</option>
+              <option value="members">Members</option>
             </select>
           </div>
           <div>
@@ -152,36 +162,53 @@ function TaskModal({ allMembers, onClose, onConfirm }) {
             />
           </div>
 
-          {hasTeam && (
+          {targetRole && (
             <div style={{ marginTop: 'var(--space-2)' }}>
               <label className="text-xs font-mono text-mist uppercase tracking-wider mb-3 block">Assignment Scope</label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                 <label style={{ 
                   display: 'flex', gap: '12px', padding: '12px', 
-                  border: `1px solid ${scope === 'individual' ? 'var(--signal-violet)' : 'var(--surface-border)'}`, 
-                  borderRadius: 'var(--radius)', background: scope === 'individual' ? 'var(--signal-violet-muted)' : 'var(--surface-1)',
+                  border: `1px solid ${scope === 'mass' ? 'var(--signal-violet)' : 'var(--surface-border)'}`, 
+                  borderRadius: 'var(--radius)', background: scope === 'mass' ? 'var(--signal-violet-muted)' : 'var(--surface-1)',
                   cursor: 'pointer', transition: 'all 0.2s'
                 }}>
-                  <input type="radio" name="scope" value="individual" checked={scope === 'individual'} onChange={() => setScope('individual')} style={{ marginTop: 2 }} />
+                  <input type="radio" name="scope" value="mass" checked={scope === 'mass'} onChange={() => { setScope('mass'); setAssigneeId(''); }} style={{ marginTop: 2 }} />
                   <div>
-                    <div style={{ fontSize: 'var(--text-sm)', color: 'var(--bone)', fontWeight: 500 }}>Individual Task</div>
-                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--mist)', marginTop: 2 }}>Assign exclusively to {selectedMember.name.split(' ')[0]}.</div>
+                    <div style={{ fontSize: 'var(--text-sm)', color: 'var(--bone)', fontWeight: 500 }}>Mass Assign</div>
+                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--mist)', marginTop: 2 }}>Assign to all selected members simultaneously.</div>
                   </div>
                 </label>
                 
                 <label style={{ 
                   display: 'flex', gap: '12px', padding: '12px', 
-                  border: `1px solid ${scope === 'team' ? 'var(--signal-cyan)' : 'var(--surface-border)'}`, 
-                  borderRadius: 'var(--radius)', background: scope === 'team' ? 'var(--signal-cyan-muted)' : 'var(--surface-1)',
+                  border: `1px solid ${scope === 'individual' ? 'var(--signal-cyan)' : 'var(--surface-border)'}`, 
+                  borderRadius: 'var(--radius)', background: scope === 'individual' ? 'var(--signal-cyan-muted)' : 'var(--surface-1)',
                   cursor: 'pointer', transition: 'all 0.2s'
                 }}>
-                  <input type="radio" name="scope" value="team" checked={scope === 'team'} onChange={() => setScope('team')} style={{ marginTop: 2 }} />
+                  <input type="radio" name="scope" value="individual" checked={scope === 'individual'} onChange={() => setScope('individual')} style={{ marginTop: 2 }} />
                   <div>
-                    <div style={{ fontSize: 'var(--text-sm)', color: 'var(--bone)', fontWeight: 500 }}>Team Task (Public)</div>
-                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--mist)', marginTop: 2 }}>Assign to {selectedMember.name.split(' ')[0]} and their entire reporting downline.</div>
+                    <div style={{ fontSize: 'var(--text-sm)', color: 'var(--bone)', fontWeight: 500 }}>Assign Individually</div>
+                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--mist)', marginTop: 2 }}>Assign to a specific member within this group.</div>
                   </div>
                 </label>
               </div>
+            </div>
+          )}
+
+          {targetRole && scope === 'individual' && (
+            <div style={{ marginTop: 'var(--space-2)' }}>
+              <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Select Member</label>
+              <select 
+                className="input w-full"
+                value={assigneeId}
+                onChange={e => setAssigneeId(e.target.value)}
+                style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)', appearance: 'none' }}
+              >
+                <option value="" disabled>Select a member...</option>
+                {availableMembers.map(m => (
+                  <option key={m.id} value={m.id}>{m.name} ({m.role})</option>
+                ))}
+              </select>
             </div>
           )}
         </div>
@@ -190,9 +217,10 @@ function TaskModal({ allMembers, onClose, onConfirm }) {
           <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
           <button 
             className="btn btn-primary" 
-            disabled={!taskTitle.trim() || !assigneeId}
+            disabled={!taskTitle.trim() || !targetRole || (scope === 'individual' && !assigneeId)}
             onClick={() => {
-              onConfirm(taskTitle, assigneeId, scope);
+              const finalAssignee = scope === 'mass' ? targetRole : assigneeId;
+              onConfirm(taskTitle, finalAssignee, scope);
               onClose();
             }}
           >
