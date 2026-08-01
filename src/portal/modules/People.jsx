@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Plus, X, Check, Users, ChevronDown, ChevronUp } from 'lucide-react';
-import { members } from '../data/mockData';
+import { members, currentUser } from '../data/mockData';
 import { RoleBadge } from '../components/shared/Primitives';
 
 const AVATAR_COLOR_MAP = { 'Super Admin': 'magenta', 'Admin': 'violet', 'Core Team': 'cyan', 'Member': 'mist' };
 
 function MemberProfileCard({ member, directReports, onAssignTask, isExpanded, onToggleExpand }) {
   const color = AVATAR_COLOR_MAP[member.role] || 'mist';
+  const isSuperAdmin = currentUser.role === 'Super Admin';
+  const canRemove = isSuperAdmin && member.id !== currentUser.id;
   
   return (
     <div className="card hover:border-surface-border-hover transition-colors" style={{ 
@@ -29,6 +31,11 @@ function MemberProfileCard({ member, directReports, onAssignTask, isExpanded, on
             <p className="text-xs text-mist mt-1">{member.email}</p>
           </div>
         </div>
+        {canRemove && (
+          <button className="btn btn-ghost" style={{ padding: '4px', color: 'var(--signal-red)', opacity: 0.7 }} title="Remove Member">
+            <X size={16} />
+          </button>
+        )}
       </div>
       
       <div className="flex justify-between items-center">
@@ -88,6 +95,11 @@ export default function PeopleModule() {
           <h1 className="page-header__title">Team Hierarchy</h1>
           <p className="page-header__desc">View the society structure and assign tasks across teams.</p>
         </div>
+        {currentUser.role === 'Super Admin' && (
+          <div className="page-header__actions">
+            <button className="btn btn-primary btn-sm"><Plus size={14}/> Add Member</button>
+          </div>
+        )}
       </div>
 
       <div className="hierarchy-container" style={{

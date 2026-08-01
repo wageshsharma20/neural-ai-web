@@ -16,6 +16,7 @@ import Gallery from '../portal/modules/Gallery';
 import Achievements from '../portal/modules/Achievements';
 import Analytics from '../portal/modules/Analytics';
 import Calendar from '../portal/modules/Calendar';
+import PlatformHealth from '../portal/modules/PlatformHealth';
 import Profile from '../portal/modules/Profile';
 import Settings from '../portal/modules/Settings';
 
@@ -33,6 +34,7 @@ const MODULES = {
   achievements: Achievements,
   analytics: Analytics,
   calendar: Calendar,
+  health: PlatformHealth,
   profile: Profile,
   settings: Settings,
 };

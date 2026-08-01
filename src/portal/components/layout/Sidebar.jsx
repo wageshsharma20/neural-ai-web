@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Users, CheckSquare, TrendingUp, FolderOpen,
   Calendar, Megaphone, FileText, Image, Trophy, BarChart2,
   Settings, User, ChevronLeft, Menu, Zap, LogOut,
-  Building2,
+  Building2, Activity,
 } from 'lucide-react';
 import { currentUser } from '../../data/mockData';
 
@@ -39,6 +39,7 @@ const NAV_GROUPS = [
     items: [
       { id: 'analytics', label: 'Analytics', icon: BarChart2 },
       { id: 'calendar', label: 'Calendar', icon: Calendar },
+      { id: 'health', label: 'Platform Health', icon: Activity },
     ],
   },
   {

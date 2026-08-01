@@ -11,7 +11,8 @@ const BlogsPage      = lazy(() => import('./pages/BlogsPage'));
 const BlogPostPage   = lazy(() => import('./pages/BlogPostPage'));
 const PortalPage     = lazy(() => import('./pages/PortalPage'));
 const ContactPage    = lazy(() => import('./pages/ContactPage'));
-
+const LoginPage      = lazy(() => import('./pages/LoginPage'));
+const TwoFAPage      = lazy(() => import('./pages/TwoFAPage'));
 // Minimal loading fallback — matches ink background to avoid flash
 function PageLoader() {
   return (
@@ -53,6 +54,8 @@ function App() {
           <Route path="/blogs/:id" element={<BlogPostPage />} />
           <Route path="/portal"  element={<PortalPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/login"   element={<LoginPage />} />
+          <Route path="/2fa"     element={<TwoFAPage />} />
           {/* 404 fallback */}
           <Route
             path="*"

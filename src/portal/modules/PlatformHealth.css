@@ -1,0 +1,260 @@
+/* ════════════════════════════════════════════
+   PLATFORM HEALTH DASHBOARD CSS
+   ════════════════════════════════════════════ */
+
+.health-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Service Health Grid ── */
+.health-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.health-service-card {
+  background: var(--ink);
+  border: 1px solid var(--ink-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.health-service-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.health-service-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.health-service-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--bone);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+.health-service-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  color: var(--mist);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.status-dot.operational {
+  background: var(--signal-cyan);
+  box-shadow: 0 0 8px rgba(46, 204, 212, 0.4);
+}
+.status-dot.degraded {
+  background: var(--signal-amber);
+  box-shadow: 0 0 8px rgba(254, 188, 46, 0.4);
+}
+.status-dot.outage {
+  background: var(--signal-magenta);
+  box-shadow: 0 0 8px rgba(255, 110, 180, 0.4);
+}
+
+.health-service-metrics {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: var(--space-3);
+  margin-top: auto;
+}
+.health-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.health-metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: var(--tracking-wide);
+  font-family: var(--font-mono);
+}
+.health-metric-value {
+  font-size: var(--text-sm);
+  color: var(--bone);
+  font-family: var(--font-mono);
+}
+
+/* ── Infrastructure Metrics ── */
+.health-infra-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+@media (max-width: 1024px) {
+  .health-infra-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .health-infra-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.infra-metric-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--ink-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.infra-metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+.infra-metric-title {
+  font-size: var(--text-sm);
+  color: var(--bone);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.infra-metric-value {
+  font-size: var(--text-xl);
+  font-family: var(--font-mono);
+  color: var(--bone);
+  font-weight: 300;
+}
+
+/* Progress bar for infra metrics */
+.infra-progress-bg {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: var(--space-3);
+}
+.infra-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease-in-out;
+}
+
+/* ── Tables (Logs, Deployments) ── */
+.health-table-container {
+  overflow-x: auto;
+}
+.health-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.health-table th {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 500;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--ink-border);
+}
+.health-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--bone);
+  vertical-align: middle;
+}
+.health-table tr:last-child td {
+  border-bottom: none;
+}
+.health-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.table-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.table-tag.success { background: rgba(46, 204, 212, 0.1); color: var(--signal-cyan); }
+.table-tag.error { background: rgba(255, 110, 180, 0.1); color: var(--signal-magenta); }
+.table-tag.warning { background: rgba(254, 188, 46, 0.1); color: var(--signal-amber); }
+.table-tag.neutral { background: rgba(255, 255, 255, 0.1); color: var(--mist); }
+
+/* ── Timeline ── */
+.health-timeline {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 12px;
+}
+.health-timeline::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 3px;
+  width: 2px;
+  background: var(--ink-border);
+}
+.timeline-item {
+  position: relative;
+  padding-left: var(--space-5);
+  padding-bottom: var(--space-4);
+}
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+.timeline-dot {
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--mist);
+  z-index: 2;
+}
+.timeline-dot.resolved { border-color: var(--signal-cyan); }
+.timeline-dot.active { border-color: var(--signal-magenta); background: var(--signal-magenta); }
+.timeline-dot.investigating { border-color: var(--signal-amber); }
+
+.timeline-time {
+  font-size: var(--text-xs);
+  color: var(--mist);
+  font-family: var(--font-mono);
+  margin-bottom: 2px;
+}
+.timeline-title {
+  color: var(--bone);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.timeline-desc {
+  color: rgba(255,255,255,0.6);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
