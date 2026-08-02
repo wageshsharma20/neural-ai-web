@@ -60,11 +60,11 @@ const TextAnimation = ({
       initial="hidden"
       variants={containerVariants}
       viewport={viewport}
-      className={cn(`inline-block text-foreground uppercase`, classname)}
+      className={cn(classname)}
       {...props}
     >
       {lineAnime ? (
-        <motion.span className={`inline-block`} variants={modifiedVariants}>
+        <motion.span style={{ display: 'inline-block' }} variants={modifiedVariants}>
           {text}
         </motion.span>
       ) : (
@@ -72,7 +72,7 @@ const TextAnimation = ({
           {text.split(' ').map((word, index) => (
             <motion.span
               key={`${word}-${index}`}
-              className={`inline-block`}
+              style={{ display: 'inline-block' }}
               variants={letterAnime === false ? modifiedVariants : {}}
             >
               {letterAnime ? (
@@ -80,7 +80,7 @@ const TextAnimation = ({
                   {word.split('').map((letter, letterIndex) => (
                     <motion.span
                       key={letterIndex}
-                      className={`inline-block`}
+                      style={{ display: 'inline-block' }}
                       variants={modifiedVariants}
                     >
                       {letter}
