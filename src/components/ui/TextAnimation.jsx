@@ -12,18 +12,18 @@ const containerVariants = {
 };
 
 const generateVariants = (direction) => {
-  const axis = direction === 'left' || direction === 'right' ? 'X' : 'Y';
+  const axis = direction === 'left' || direction === 'right' ? 'x' : 'y';
   const value = direction === 'right' || direction === 'down' ? 100 : -100;
   return {
     hidden: {
       filter: 'blur(10px)',
       opacity: 0,
-      [`translate${axis}`]: value,
+      [axis]: value,
     },
     visible: {
       filter: 'blur(0px)',
       opacity: 1,
-      [`translate${axis}`]: 0,
+      [axis]: 0,
       transition: {
         duration: 0.4,
         ease: 'easeOut',
@@ -32,7 +32,7 @@ const generateVariants = (direction) => {
   };
 };
 
-const defaultViewport = { amount: 0.3, margin: '0px 0px 0px 0px' };
+const defaultViewport = { amount: 0.3, margin: '0px 0px 0px 0px', once: true };
 
 const TextAnimation = ({
   as = 'h1',
