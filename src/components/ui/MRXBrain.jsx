@@ -222,15 +222,28 @@ const MRXBrain = ({ imageUrl = '/mrx-brain.png' }) => {
       const ia = img.width / img.height;
       const ca = srcW / srcH;
       let dw, dh, dx, dy;
-      if (ca > ia) { dw = srcW; dh = srcW / ia; dx = 0; dy = (srcH - dh) / 2; }
-      else         { dh = srcH; dw = srcH * ia; dy = 0; dx = (srcW - dw) / 2; }
       
-      const zoom = 1.0;
+      // Use "contain" math so it doesn't get heavily cut off on extreme aspect ratios
+      if (ca > ia) { 
+        dh = srcH; 
+        dw = srcH * ia; 
+        dy = 0; 
+        dx = (srcW - dw) / 2; 
+      } else { 
+        dw = srcW; 
+        dh = srcW / ia; 
+        dx = 0; 
+        dy = (srcH - dh) / 2; 
+      }
+      
+      // Scale it up a bit manually so it feels massive
+      const zoom = 1.35;
       dw *= zoom;
       dh *= zoom;
       
-      dx = (srcW - dw) / 2 + (srcW * 0.08); 
-      dy = (srcH - dh) / 2 + (srcH * 0.05); 
+      // Keep it centered (adjust dx and dy for the zoom)
+      dx = (srcW - dw) / 2;
+      dy = (srcH - dh) / 2;
       
       srcCtx.drawImage(img, dx, dy, dw, dh);
       srcPixels = srcCtx.getImageData(0, 0, srcW, srcH).data;
