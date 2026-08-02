@@ -14,8 +14,16 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
   const containerRef = useRef(null);
   const location = useLocation();
 
-  const handleNavClick = () => {
+  const handleForceNavigation = (e, href) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsMenuOpen(false);
+    
+    // Fallback: If React Router is failing to push state inside this animated modal on iOS,
+    // we force the browser to physically navigate to the page.
+    setTimeout(() => {
+      window.location.href = href;
+    }, 10);
   };
 
   // Close menu when route changes
@@ -163,26 +171,28 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
               <ul className="menu-list">
                 {NAV_LINKS.map((link, index) => (
                   <li className="menu-list-item" data-shape={(index % 5) + 1} key={link.id}>
-                    <Link 
-                      to={link.href} 
+                    <a 
+                      href={link.href} 
                       className="nav-link" 
-                      onClick={handleNavClick}
+                      onClick={(e) => handleForceNavigation(e, link.href)}
+                      onTouchEnd={(e) => handleForceNavigation(e, link.href)}
                     >
                       <p className="nav-link-text">{link.label}</p>
                       <div className="nav-link-hover-bg"></div>
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
               
               <div className="mobile-menu-footer">
-                <Link 
-                  to="/login" 
+                <a 
+                  href="/login" 
                   className="mobile-login-btn"
-                  onClick={handleNavClick}
+                  onClick={(e) => handleForceNavigation(e, "/login")}
+                  onTouchEnd={(e) => handleForceNavigation(e, "/login")}
                 >
                   Member Login
-                </Link>
+                </a>
               </div>
             </div>
           </nav>
