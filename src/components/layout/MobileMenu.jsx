@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { NAV_LINKS } from "../../data/mockData";
@@ -13,35 +13,10 @@ if (typeof window !== "undefined") {
 export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
   const containerRef = useRef(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
-  // Nuclear option: Native DOM event listeners to guarantee clicks fire on iOS
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const links = containerRef.current.querySelectorAll('.nav-link, .mobile-login-btn');
-    
-    const onClick = (e) => {
-      // Intentionally NOT calling e.preventDefault() to force a native hard-navigation fallback
-      e.stopPropagation();
-      const href = e.currentTarget.getAttribute('href');
-      if (href) {
-        setIsMenuOpen(false);
-        // We still call navigate to update the history state if possible, but the native click will trigger a full load
-        navigate(href);
-      }
-    };
-
-    links.forEach(link => {
-      link.addEventListener('click', onClick);
-      // Removed touchstart as it can trigger accidentally while scrolling, click is enough now that iOS double-tap bug is fixed
-    });
-
-    return () => {
-      links.forEach(link => {
-        link.removeEventListener('click', onClick);
-      });
-    };
-  }, [navigate, setIsMenuOpen]);
+  const handleNavClick = () => {
+    setIsMenuOpen(false);
+  };
 
   // Close menu when route changes
   useEffect(() => {
@@ -188,24 +163,26 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
               <ul className="menu-list">
                 {NAV_LINKS.map((link, index) => (
                   <li className="menu-list-item" data-shape={(index % 5) + 1} key={link.id}>
-                    <a 
-                      href={link.href} 
+                    <Link 
+                      to={link.href} 
                       className="nav-link" 
+                      onClick={handleNavClick}
                     >
                       <p className="nav-link-text">{link.label}</p>
                       <div className="nav-link-hover-bg"></div>
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
               
               <div className="mobile-menu-footer">
-                <a 
-                  href="/login" 
-                  className="mobile-login-btn" 
+                <Link 
+                  to="/login" 
+                  className="mobile-login-btn"
+                  onClick={handleNavClick}
                 >
                   Member Login
-                </a>
+                </Link>
               </div>
             </div>
           </nav>
