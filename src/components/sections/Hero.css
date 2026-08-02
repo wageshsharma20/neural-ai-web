@@ -35,8 +35,9 @@
   top: calc(-1 * var(--space-20));
   bottom: 0;
   right: 0;
-  width: 55%;
+  width: 50vw;
   overflow: hidden;
+  z-index: 1;
 }
 
 .hero__eyebrow {

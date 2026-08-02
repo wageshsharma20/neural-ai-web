@@ -226,12 +226,12 @@ const MRXBrain = ({ imageUrl = '/mrx-brain.png' }) => {
       if (ca > ia) { dw = srcW; dh = srcW / ia; dx = 0; dy = (srcH - dh) / 2; }
       else         { dh = srcH; dw = srcH * ia; dy = 0; dx = (srcW - dw) / 2; }
       
-      const zoom = 2.1;
+      const zoom = 2.4;
       dw *= zoom;
       dh *= zoom;
       
-      dx = (srcW - dw) / 2 + (srcW * 0.02); 
-      dy = (srcH - dh) / 2 + (srcH * 0.02); 
+      dx = (srcW - dw) / 2 + (srcW * 0.25); 
+      dy = (srcH - dh) / 2 + (srcH * 0.05); 
       
       srcCtx.drawImage(img, dx, dy, dw, dh);
       srcPixels = srcCtx.getImageData(0, 0, srcW, srcH).data;

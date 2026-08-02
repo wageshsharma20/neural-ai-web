@@ -73,14 +73,14 @@ function Hero() {
               </Dock>
             </div>
           </div>
-          
-          {/* Right Side: Visual */}
-          <div className="hero__visual fade-in fade-in--d5">
-            <MRXBrain />
-          </div>
-
         </div>
       </div>
+      
+      {/* Right Side: Visual (Moved outside container to span to viewport edge) */}
+      <div className="hero__visual fade-in fade-in--d5">
+        <MRXBrain />
+      </div>
+
       <div className="hero__rule" aria-hidden="true" />
     </section>
   );
