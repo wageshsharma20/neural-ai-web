@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Trophy } from 'lucide-react';
 import { ACHIEVEMENTS } from '../../data/mockData';
 import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
-import { LineAnimation } from '../../components/ui/LineAnimation';
+import TextAnimation from '../../components/ui/TextAnimation';
 import './Achievements.css';
 
 function Achievements({ variant = 'default' }) {
@@ -35,14 +35,13 @@ function Achievements({ variant = 'default' }) {
     <>
       <div className={`ach__header ${variant === 'society' ? 'ach__header--society' : ''}`}>
         <div>
-          <LineAnimation as="p" className="eyebrow" text="Achievements" direction="left" staggerDelay={0.1} />
-          <LineAnimation 
+          <TextAnimation as="p" classname="eyebrow" text="Achievements" direction="left" />
+          <TextAnimation 
             as="h2" 
-            className="ach__heading" 
+            classname="ach__heading" 
             id="ach-heading"
             text={variant === 'society' ? 'Stated factually.' : 'Recent achievements.'}
             direction="left"
-            staggerDelay={0.1}
           />
         </div>
       </div>
