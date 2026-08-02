@@ -1,9 +1,24 @@
 import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
-import { LineAnimation } from '../../components/ui/LineAnimation';
+import TextAnimation from '../../components/ui/TextAnimation';
 import React from 'react';
 import { FEATURED_PROJECTS } from '../../data/mockData';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 import './FeaturedProjects.css';
+
+const cardVariants = {
+  hidden: { opacity: 0, x: -100, filter: 'blur(10px)' },
+  visible: (i) => ({
+    opacity: 1, 
+    x: 0, 
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.4,
+      ease: 'easeOut',
+      delay: i * 0.1
+    }
+  })
+};
 
 function FeaturedProjects() {
   return (
@@ -11,22 +26,30 @@ function FeaturedProjects() {
       <div className="container">
         <div className="projects__header">
           <div>
-            <LineAnimation as="p" className="eyebrow" text="Research & Projects" direction="left" staggerDelay={0.1} />
-            <LineAnimation 
+            <TextAnimation as="p" classname="eyebrow" text="Research & Projects" direction="left" />
+            <TextAnimation 
               as="h2" 
-              className="projects__heading" 
+              classname="projects__heading" 
               id="projects-heading"
               text="Research that ships."
               direction="left"
-              staggerDelay={0.1}
             />
           </div>
-          <LineAnimation as="a" href="/blogs#projects" className="projects__all" text="View all →" direction="left" staggerDelay={0.1} />
+          <TextAnimation as="a" href="/blogs#projects" classname="projects__all" text="View all →" direction="left" />
         </div>
 
         <ul className="projects__grid" role="list">
-          {FEATURED_PROJECTS.map((p) => (
-            <li key={p.id} className="project-card" id={p.id}>
+          {FEATURED_PROJECTS.map((p, index) => (
+            <motion.li 
+              key={p.id} 
+              className="project-card" 
+              id={p.id}
+              custom={index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.3 }}
+              variants={cardVariants}
+            >
               <div className="project-card__content">
                 <div className="project-card__meta">
                   <span className="project-card__domain">{p.domain}</span>
@@ -40,7 +63,7 @@ function FeaturedProjects() {
                   Read more <ArrowRight size={14} />
                 </a>
               </div>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </div>
