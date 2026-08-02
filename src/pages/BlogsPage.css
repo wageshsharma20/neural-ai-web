@@ -530,7 +530,7 @@
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
-  .blogs-section__inner  { grid-template-columns: 1fr; gap: var(--space-6); }
+  .blogs-section__inner  { grid-template-columns: 1fr; gap: var(--space-6); padding-block: var(--space-10); }
   .blogs-grid            { grid-template-columns: 1fr; }
   .resource-filter-group { flex-direction: column; align-items: flex-start; }
   .resource-row          { flex-direction: column; gap: var(--space-4); }
@@ -538,6 +538,7 @@
 }
 
 @media (max-width: 768px) {
+  .blogs-section__inner { padding-block: var(--space-6); }
   .featured-blog-card__footer { flex-direction: column; align-items: flex-start; }
   .blog-filters { gap: var(--space-1); }
 }

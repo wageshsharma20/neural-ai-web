@@ -118,6 +118,7 @@ function BlogsPage() {
                           <span key={tag} className="blog-tag">{tag}</span>
                         ))}
                       </div>
+                      <Link to={`/blogs/${featuredBlog.id}`} className="blog-read-more" style={{ marginTop: '1rem', display: 'flex', width: '100%' }}>Read More <span aria-hidden="true" style={{ marginLeft: '0.5rem' }}>→</span></Link>
                     </div>
                   </div>
                 </article>
