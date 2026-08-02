@@ -177,7 +177,6 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
                             onClick={(e) => handleForceNavigation(e, item.href)}
                             onTouchEnd={(e) => handleForceNavigation(e, item.href)}
                         >
-                            <span className="nav-link-number">0{index + 1}</span>
                             <span className="nav-link-text">{item.label}</span>
                         </a>
                     </li>
@@ -189,7 +188,6 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
                         onClick={(e) => handleForceNavigation(e, "/login")}
                         onTouchEnd={(e) => handleForceNavigation(e, "/login")}
                     >
-                        <span className="nav-link-number">0{NAV_LINKS.length + 1}</span>
                         <span className="nav-link-text">Member Login</span>
                     </a>
                 </li>
