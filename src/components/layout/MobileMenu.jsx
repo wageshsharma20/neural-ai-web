@@ -67,13 +67,15 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
             });
         };
 
-        item.addEventListener("mouseenter", onEnter);
-        item.addEventListener("mouseleave", onLeave);
-        
-        item._cleanup = () => {
-            item.removeEventListener("mouseenter", onEnter);
-            item.removeEventListener("mouseleave", onLeave);
-        };
+        if (window.matchMedia("(hover: hover)").matches) {
+            item.addEventListener("mouseenter", onEnter);
+            item.addEventListener("mouseleave", onLeave);
+            
+            item._cleanup = () => {
+                item.removeEventListener("mouseenter", onEnter);
+                item.removeEventListener("mouseleave", onLeave);
+            };
+        }
       });
       
     }, containerRef);
@@ -166,9 +168,9 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
               </ul>
               
               <div className="mobile-menu-footer">
-                <a href="/login" className="mobile-login-btn" onClick={closeMenu}>
+                <Link to="/login" className="mobile-login-btn" onClick={closeMenu}>
                   Member Login
-                </a>
+                </Link>
               </div>
             </div>
           </nav>

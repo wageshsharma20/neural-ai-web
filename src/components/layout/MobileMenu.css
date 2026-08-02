@@ -83,8 +83,10 @@
   transition: color 0.3s ease;
 }
 
-.nav-link:hover .nav-link-text {
-  color: var(--signal-cyan, #2eccd4);
+@media (hover: hover) {
+  .nav-link:hover .nav-link-text {
+    color: var(--signal-cyan, #2eccd4);
+  }
 }
 
 .nav-link-hover-bg {
@@ -126,4 +128,12 @@
   background: var(--bone);
   color: var(--ink);
   border-color: var(--bone);
+}
+
+.nav-link {
+  touch-action: manipulation;
+}
+
+.mobile-login-btn {
+  touch-action: manipulation;
 }
