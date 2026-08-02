@@ -181,16 +181,7 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
                         </a>
                     </li>
                 ))}
-                <li className="menu-list-item" data-menu-fade data-shape="1" style={{ marginTop: '2rem' }}>
-                    <a
-                        href="/login"
-                        className="nav-link"
-                        onClick={(e) => handleForceNavigation(e, "/login")}
-                        onTouchEnd={(e) => handleForceNavigation(e, "/login")}
-                    >
-                        <span className="nav-link-text">Member Login</span>
-                    </a>
-                </li>
+
               </ul>
               
               <div className="mobile-menu-footer">
