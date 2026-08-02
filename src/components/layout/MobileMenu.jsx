@@ -21,11 +21,12 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
     const links = containerRef.current.querySelectorAll('.nav-link, .mobile-login-btn');
     
     const onClick = (e) => {
-      e.preventDefault();
+      // Intentionally NOT calling e.preventDefault() to force a native hard-navigation fallback
       e.stopPropagation();
       const href = e.currentTarget.getAttribute('href');
       if (href) {
         setIsMenuOpen(false);
+        // We still call navigate to update the history state if possible, but the native click will trigger a full load
         navigate(href);
       }
     };

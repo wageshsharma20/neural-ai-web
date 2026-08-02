@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ReactLenis, useLenis } from 'lenis/react';
 import Navbar from './Navbar';
+import { MobileMenu } from './MobileMenu';
 import Footer from './Footer';
 import ScrollProgress from '../ui/ScrollProgress';
 import './PageLayout.css';
@@ -54,12 +55,15 @@ function HashScroller() {
  * Injects Navbar, generic main content area, and Footer.
  */
 function PageLayout({ children }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <ReactLenis root>
       <ScrollToTop />
       <HashScroller />
       <div className="page-layout">
-        <Navbar />
+        <Navbar mobileOpen={isMenuOpen} setMobileOpen={setIsMenuOpen} />
+        <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <ScrollProgress />
         <main className="page-layout__main" id="main-content" tabIndex={-1}>
           {children}

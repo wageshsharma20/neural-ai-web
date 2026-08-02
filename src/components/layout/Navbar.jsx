@@ -10,13 +10,17 @@ import './Navbar.css';/**
  * No pill buttons, no glow, no icon decoration per link.
  * Nav links: hairline underline draws in on hover/active (150ms).
  */
-function Navbar() {
-  const [scrolled, setScrolled]     = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState({ left: 0, width: 0, opacity: 0 });
+export function Navbar({ mobileOpen: externalMobileOpen, setMobileOpen: externalSetMobileOpen }) {
+  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
-  const location                    = useLocation();
-  const navRef                      = useRef(null);
+  const [internalMobileOpen, setInternalMobileOpen] = useState(false);
+  
+  const mobileOpen = externalMobileOpen !== undefined ? externalMobileOpen : internalMobileOpen;
+  const setMobileOpen = externalSetMobileOpen !== undefined ? externalSetMobileOpen : setInternalMobileOpen;
+
+  const [cursorPosition, setCursorPosition] = useState({ left: 0, width: 0, opacity: 0 });
+  const navRef = useRef(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 16);
@@ -204,7 +208,7 @@ function Navbar() {
         </button>
       </div>
 
-      {typeof document !== 'undefined' ? createPortal(<MobileMenu isMenuOpen={mobileOpen} setIsMenuOpen={setMobileOpen} />, document.body) : null}
+      {/* Portal removed here - MobileMenu is now hoisted to PageLayout to fix iOS Safari portal click bug */}
     </header>
   );
 }
