@@ -27,7 +27,7 @@
   bottom: 0;
   width: 100%;
   max-width: 480px;
-  background: var(--ink, #0f0f11);
+  background: #1a1a24 !important;
   box-shadow: -20px 0 40px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   display: flex;
@@ -75,7 +75,7 @@
   font-family: var(--font-display, sans-serif);
   font-size: clamp(2rem, 8vw, 3rem);
   font-weight: 700;
-  color: var(--bone, #f8f8ff);
+  color: #ffffff !important;
   margin: 0;
   line-height: 1.1;
   text-transform: uppercase;
