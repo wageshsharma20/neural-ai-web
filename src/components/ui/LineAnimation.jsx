@@ -11,10 +11,9 @@ import { ScrollAnimation } from './ScrollAnimation';
  */
 export function LineAnimation({ 
   text = '', 
-  direction = 'left',
+  direction = 'up',
   className = '',
   as: Component = 'div',
-  staggerDelay = 0.1,
   ...rest
 }) {
   // If the text contains literal \n or newline characters, we split it to preserve intentional line breaks

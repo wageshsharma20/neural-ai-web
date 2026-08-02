@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, MessageSquare, Paperclip, Calendar, User, Filter, X, Check } from 'lucide-react';
+import { Plus, MessageSquare, X, Check } from 'lucide-react';
 import { tasks, members } from '../data/mockData';
-import { PriorityBadge, StatusBadge, SectionHeader, Avatar } from '../components/shared/Primitives';
+import { PriorityBadge, StatusBadge } from '../components/shared/Primitives';
 
 const COLUMNS = [
   { id: 'todo', label: 'To Do', color: 'var(--mist)' },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Users, CheckCircle, Clock, Search } from 'lucide-react';
+import { Users, CheckCircle, Clock, Search } from 'lucide-react';
 import { recruitmentData, recruitmentApplications, recruitmentInterviews } from '../data/mockData';
 import { SectionHeader } from '../components/shared/Primitives';
 

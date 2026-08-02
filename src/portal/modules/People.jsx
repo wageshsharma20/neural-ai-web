@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Plus, X, Check, Users, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { members, currentUser } from '../data/mockData';
 import { RoleBadge } from '../components/shared/Primitives';
 
 const AVATAR_COLOR_MAP = { 'Super Admin': 'magenta', 'Admin': 'violet', 'Core Team': 'cyan', 'Member': 'mist' };
 
-function MemberProfileCard({ member, directReports, onAssignTask, isExpanded, onToggleExpand }) {
+function MemberProfileCard({ member, directReports, isExpanded, onToggleExpand }) {
   const color = AVATAR_COLOR_MAP[member.role] || 'mist';
   const isSuperAdmin = currentUser.role === 'Super Admin';
   const canRemove = isSuperAdmin && member.id !== currentUser.id;

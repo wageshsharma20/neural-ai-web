@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { NAV_LINKS } from "../../data/mockData";
@@ -92,12 +92,14 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
       
     }, containerRef);
 
+    const currentContainer = containerRef.current;
+    
     return () => {
-        ctx.revert();
-        if (containerRef.current) {
-            const items = containerRef.current.querySelectorAll(".menu-list-item[data-shape]");
-            items.forEach((item) => item._cleanup && item._cleanup());
-        }
+      ctx.revert();
+      if (currentContainer) {
+        const items = currentContainer.querySelectorAll(".menu-list-item[data-shape]");
+        items.forEach((item) => item._cleanup && item._cleanup());
+      }
     };
   }, []);
 
@@ -108,10 +110,8 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
     if (!containerRef.current) return;
     
     const ctx = gsap.context(() => {
-      const navWrap = containerRef.current.querySelector(".nav-overlay-wrapper");
       const menu = containerRef.current.querySelector(".menu-content");
       const overlay = containerRef.current.querySelector(".overlay");
-      const bgPanels = containerRef.current.querySelectorAll(".backdrop-layer");
       const menuLinks = containerRef.current.querySelectorAll(".nav-link");
       const fadeTargets = containerRef.current.querySelectorAll("[data-menu-fade]");
       
@@ -169,24 +169,35 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
           <nav className="menu-content">
             <div className="menu-content-wrapper">
               <ul className="menu-list">
-                {NAV_LINKS.map((link, index) => (
-                  <li className="menu-list-item" data-shape={(index % 5) + 1} key={link.id}>
-                    <a 
-                      href={link.href} 
-                      className="nav-link" 
-                      onClick={(e) => handleForceNavigation(e, link.href)}
-                      onTouchEnd={(e) => handleForceNavigation(e, link.href)}
-                    >
-                      <p className="nav-link-text">{link.label}</p>
-                      <div className="nav-link-hover-bg"></div>
-                    </a>
-                  </li>
+                {NAV_LINKS.map((item, index) => (
+                    <li key={item.href} className="menu-list-item" data-menu-fade data-shape={(index % 5) + 1}>
+                        <a
+                            href={item.href}
+                            className="nav-link"
+                            onClick={(e) => handleForceNavigation(e, item.href)}
+                            onTouchEnd={(e) => handleForceNavigation(e, item.href)}
+                        >
+                            <span className="nav-link-number">0{index + 1}</span>
+                            <span className="nav-link-text">{item.label}</span>
+                        </a>
+                    </li>
                 ))}
+                <li className="menu-list-item" data-menu-fade data-shape="1" style={{ marginTop: '2rem' }}>
+                    <a
+                        href="/login"
+                        className="nav-link"
+                        onClick={(e) => handleForceNavigation(e, "/login")}
+                        onTouchEnd={(e) => handleForceNavigation(e, "/login")}
+                    >
+                        <span className="nav-link-number">0{NAV_LINKS.length + 1}</span>
+                        <span className="nav-link-text">Member Login</span>
+                    </a>
+                </li>
               </ul>
               
               <div className="mobile-menu-footer">
-                <a 
-                  href="/login" 
+                <a
+                  href="/login"
                   className="mobile-login-btn"
                   onClick={(e) => handleForceNavigation(e, "/login")}
                   onTouchEnd={(e) => handleForceNavigation(e, "/login")}

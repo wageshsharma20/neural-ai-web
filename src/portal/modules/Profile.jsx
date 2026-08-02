@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mail, Briefcase, Calendar, MapPin, Edit2, Shield } from 'lucide-react';
 import { currentUser } from '../data/mockData';
-import { SectionHeader, RoleBadge, TagList } from '../components/shared/Primitives';
+import { SectionHeader, TagList } from '../components/shared/Primitives';
 
 export default function ProfileModule() {
   return (

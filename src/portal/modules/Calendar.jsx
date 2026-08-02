@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Plus, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { calendarEvents } from '../data/mockData';
-import { SectionHeader } from '../components/shared/Primitives';
 
 const EVENT_COLORS = {
   workshop: 'signal-cyan',
@@ -12,7 +11,7 @@ const EVENT_COLORS = {
 };
 
 export default function CalendarModule() {
-  const [currentMonth, setCurrentMonth] = useState('August 2026');
+  const [currentMonth] = useState('August 2026');
 
   // Simple mock calendar grid generation
   const daysInMonth = 31;

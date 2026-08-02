@@ -71,7 +71,6 @@ function ProjectCard({ project }) {
 
 export default function ProjectsModule() {
   const [statusFilter, setStatusFilter] = useState('All');
-  const [view, setView] = useState('grid');
 
   const filtered = projects.filter((p) =>
     statusFilter === 'All' || p.status === statusFilter

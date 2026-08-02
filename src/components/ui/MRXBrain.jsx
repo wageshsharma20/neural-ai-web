@@ -117,7 +117,6 @@ const MRXBrain = ({ imageUrl = '/mrx-brain.png' }) => {
     let srcW = 0, srcH = 0;
 
     let cellData = null; 
-    let signals = []; 
 
     const srcCanvas = document.createElement('canvas');
     const srcCtx = srcCanvas.getContext('2d', { willReadFrequently: true });

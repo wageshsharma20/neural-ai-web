@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Filter, Upload, Image as ImageIcon } from 'lucide-react';
-import { SectionHeader } from '../components/shared/Primitives';
+import { Upload, Image as ImageIcon } from 'lucide-react';
 
 // Mock gallery data
 const galleryItems = [

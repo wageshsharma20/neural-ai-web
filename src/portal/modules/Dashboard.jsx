@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-  Users, CheckSquare, TrendingUp, Calendar, FolderOpen, Megaphone,
-  ArrowRight, Plus, Activity, BookOpen, Clock, Target, Shield, Briefcase, FileText,
+  ArrowRight, Plus, Target,
   AlertCircle
 } from 'lucide-react';
 import {
-  AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import {
   stats, recentActivity, analyticsData, events, tasks, notices, currentUser,
@@ -327,7 +326,7 @@ function CoHeadDashboard({ onNavigate }) {
   );
 }
 
-function MemberDashboard({ onNavigate }) {
+function MemberDashboard() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
       <div className="page-header">

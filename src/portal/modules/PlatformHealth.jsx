@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Activity, Server, Clock, Database, ShieldAlert, Cpu, 
-  HardDrive, Key, Globe, Bell, FileCode2, GitBranch,
-  ArrowUpRight, ArrowDownRight, CheckCircle2
+  HardDrive, Key, Globe, Bell, GitBranch
 } from 'lucide-react';
 import './PlatformHealth.css';
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, Bell, Menu, X } from 'lucide-react';
+import { Search, Bell, Menu } from 'lucide-react';
 import { notifications } from '../../data/mockData';
 
 const MODULE_LABELS = {

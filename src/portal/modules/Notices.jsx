@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Eye, Star, Trash2, Edit2, X, Check } from 'lucide-react';
 import { notices, members } from '../data/mockData';
-import { StatusBadge, SectionHeader } from '../components/shared/Primitives';
+import { StatusBadge } from '../components/shared/Primitives';
 
 const AVATAR_COLORS = { 'Super Admin': 'magenta', 'Admin': 'violet', 'Core Team': 'cyan', 'Member': 'mist' };
 function getMember(id) { return members.find((m) => m.id === id); }

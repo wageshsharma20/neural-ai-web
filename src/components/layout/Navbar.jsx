@@ -1,9 +1,6 @@
-import { createPortal } from 'react-dom';
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../../data/mockData';
-import ScrollProgress from '../ui/ScrollProgress';
-import { MobileMenu } from './MobileMenu';
 import './Navbar.css';/**
  * Navbar — DESIGN.md v3
  * "Small Seal + wordmark left, flat text nav centered/right, one bordered Member Login far right."
@@ -28,7 +25,7 @@ export function Navbar({ mobileOpen: externalMobileOpen, setMobileOpen: external
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+  useEffect(() => { setMobileOpen(false); }, [location.pathname, setMobileOpen]);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -37,7 +34,7 @@ export function Navbar({ mobileOpen: externalMobileOpen, setMobileOpen: external
     };
     document.addEventListener('pointerdown', onDown);
     return () => document.removeEventListener('pointerdown', onDown);
-  }, [mobileOpen]);
+  }, [mobileOpen, setMobileOpen]);
 
   return (
     <header

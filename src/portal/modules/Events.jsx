@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Plus, Users, MapPin, DollarSign, Calendar } from 'lucide-react';
+import { Plus, MapPin, Calendar } from 'lucide-react';
 import { events, members } from '../data/mockData';
-import { StatusBadge, SectionHeader } from '../components/shared/Primitives';
 
 const AVATAR_COLORS = { 'Super Admin': 'magenta', 'Admin': 'violet', 'Core Team': 'cyan', 'Member': 'mist' };
 function getMember(id) { return members.find((m) => m.id === id); }
 
 function EventCard({ event }) {
-  const budgetPct = event.budget > 0 ? Math.round((event.budgetSpent / event.budget) * 100) : 0;
-  const regPct = event.capacity > 0 ? Math.round((event.registrations / event.capacity) * 100) : 0;
+  // const budgetPct = event.budget > 0 ? Math.round((event.budgetSpent / event.budget) * 100) : 0;
+  // const regPct = event.capacity > 0 ? Math.round((event.registrations / event.capacity) * 100) : 0;
 
   const typeColor = {
     'Hackathon': 'signal-violet',

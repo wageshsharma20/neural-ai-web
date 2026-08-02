@@ -1,10 +1,10 @@
 import React from 'react';
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, Tooltip, ResponsiveContainer, Legend,
+  XAxis, YAxis, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { analyticsData, recruitmentData } from '../data/mockData';
-import { KpiCard, SectionHeader } from '../components/shared/Primitives';
+import { KpiCard } from '../components/shared/Primitives';
 import { TrendingUp, Users, CheckSquare, Calendar } from 'lucide-react';
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -138,9 +138,9 @@ export default function AnalyticsModule() {
             <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'var(--text-lg)', color: 'var(--bone)', letterSpacing: 'var(--tracking-tight)' }}>Funnel</h2>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-            {analyticsData.recruitmentStats.map((stage, i) => {
+            {analyticsData.recruitmentStats.map((stage) => {
               const max = analyticsData.recruitmentStats[0].count;
-              const pct = max > 0 ? (stage.count / max) * 100 : 0;
+              // const pct = max > 0 ? (stage.count / max) * 100 : 0; // Removing unused
               return (
                 <div key={stage.stage}>
                   <div className="flex justify-between" style={{ marginBottom: 4 }}>

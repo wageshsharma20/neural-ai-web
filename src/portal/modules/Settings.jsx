@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Save, User, Bell, Shield, Laptop, 
-  Smartphone, Mail, MessageSquare, Key, Fingerprint
+  Smartphone, MessageSquare, Key, Fingerprint
 } from 'lucide-react';
 import { SectionHeader } from '../components/shared/Primitives';
 import './Settings.css';

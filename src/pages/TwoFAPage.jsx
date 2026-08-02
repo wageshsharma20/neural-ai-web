@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import PageLayout from '../components/layout/PageLayout';
@@ -8,14 +8,15 @@ export default function TwoFAPage() {
   const navigate = useNavigate();
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
-  const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
+  const inputRefs = React.useMemo(() => [
+    React.createRef(), React.createRef(), React.createRef(), 
+    React.createRef(), React.createRef(), React.createRef()
+  ], []);
 
   // Focus first input on mount
   useEffect(() => {
     inputRefs[0].current?.focus();
-  }, []);
-
-  const isComplete = code.every(digit => digit !== '');
+  }, [inputRefs]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

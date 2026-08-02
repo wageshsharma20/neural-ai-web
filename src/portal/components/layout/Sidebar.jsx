@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   LayoutDashboard, Users, CheckSquare, TrendingUp, FolderOpen,
   Calendar, Megaphone, FileText, Image, Trophy, BarChart2,
-  Settings, User, ChevronLeft, Menu, Zap, LogOut,
+  Settings, User, ChevronLeft, LogOut,
   Building2, Activity,
 } from 'lucide-react';
 import { currentUser } from '../../data/mockData';
