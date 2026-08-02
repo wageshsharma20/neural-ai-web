@@ -11,7 +11,7 @@
   align-items: start;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .contact-page__grid {
     grid-template-columns: 1fr;
     gap: var(--space-12);
@@ -245,7 +245,7 @@ a.contact-detail__text:hover {
   to { transform: rotate(360deg); }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .contact-form-card {
     padding: var(--space-6);
   }

@@ -62,7 +62,7 @@
   color: var(--mist);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
   .stats-section__inner {
     grid-template-columns: 1fr;
     gap: var(--space-10);

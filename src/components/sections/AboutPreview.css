@@ -46,6 +46,6 @@
 }
 .about__link:hover { opacity: 0.7; }
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   .about__inner { grid-template-columns: 1fr; gap: var(--space-6); }
 }

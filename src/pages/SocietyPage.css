@@ -489,7 +489,7 @@
   border-color: #7B5CB0;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .society-section__inner { grid-template-columns: 1fr; gap: var(--space-6); }
   .dept-grid              { grid-template-columns: repeat(2, 1fr); }
   .vm-grid                { grid-template-columns: 1fr; }
@@ -503,7 +503,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .values-timeline {
     grid-template-columns: 1fr;
     gap: var(--space-12);
@@ -536,6 +536,6 @@
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 480px) {
   .dept-grid { grid-template-columns: 1fr; }
 }

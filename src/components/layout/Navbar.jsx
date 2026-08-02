@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../../data/mockData';
 import ScrollProgress from '../ui/ScrollProgress';
-import './Navbar.css';
-
-/**
+import { MobileMenu } from './MobileMenu';
+import './Navbar.css';/**
  * Navbar — DESIGN.md v3
  * "Small Seal + wordmark left, flat text nav centered/right, one bordered Member Login far right."
  * No pill buttons, no glow, no icon decoration per link.
@@ -170,47 +169,41 @@ function Navbar() {
           Member Login
         </a>
 
-        {/* Mobile hamburger */}
+        {/* Mobile toggle button */}
         <button
-          className={`navbar__hamburger${mobileOpen ? ' navbar__hamburger--open' : ''}`}
+          className={`nav-close-btn${mobileOpen ? ' open' : ''}`}
           onClick={() => setMobileOpen((o) => !o)}
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           id="navbar-hamburger"
         >
-          <span aria-hidden="true" />
-          <span aria-hidden="true" />
+          <div className="menu-button-text">
+            <p className="p-large" style={{ transform: mobileOpen ? 'translateY(-100%)' : 'translateY(0)' }}>Menu</p>
+            <p className="p-large" style={{ transform: mobileOpen ? 'translateY(-100%)' : 'translateY(0)' }}>Close</p>
+          </div>
+          <div className="icon-wrap">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              className="menu-button-icon"
+              style={{ transform: mobileOpen ? 'rotate(315deg)' : 'rotate(0deg)', transition: 'transform 0.4s ease' }}
+            >
+              <path d="M7.33333 16L7.33333 -3.2055e-07L8.66667 -3.78832e-07L8.66667 16L7.33333 16Z" fill="currentColor"></path>
+              <path d="M16 8.66667L-2.62269e-07 8.66667L-3.78832e-07 7.33333L16 7.33333L16 8.66667Z" fill="currentColor"></path>
+              <path d="M6 7.33333L7.33333 7.33333L7.33333 6C7.33333 6.73637 6.73638 7.33333 6 7.33333Z" fill="currentColor"></path>
+              <path d="M10 7.33333L8.66667 7.33333L8.66667 6C8.66667 6.73638 9.26362 7.33333 10 7.33333Z" fill="currentColor"></path>
+              <path d="M6 8.66667L7.33333 8.66667L7.33333 10C7.33333 9.26362 6.73638 8.66667 6 8.66667Z" fill="currentColor"></path>
+              <path d="M10 8.66667L8.66667 8.66667L8.66667 10C8.66667 9.26362 9.26362 8.66667 10 8.66667Z" fill="currentColor"></path>
+            </svg>
+          </div>
         </button>
       </div>
 
-      {/* Mobile menu */}
-      <div
-        id="mobile-menu"
-        className={`navbar__mobile${mobileOpen ? ' navbar__mobile--open' : ''}`}
-        aria-hidden={!mobileOpen}
-      >
-        <nav aria-label="Mobile navigation">
-          <ul role="list">
-            {NAV_LINKS.map((link) => (
-              <li key={link.id}>
-                <NavLink
-                  to={link.href}
-                  end={link.href === '/'}
-                  className={({ isActive }) =>
-                    `navbar__mobile-link${isActive ? ' navbar__mobile-link--active' : ''}`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-            <li>
-              <a href="/login" className="navbar__mobile-link">Member Login</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <MobileMenu isMenuOpen={mobileOpen} setIsMenuOpen={setMobileOpen} />
     </header>
   );
 }

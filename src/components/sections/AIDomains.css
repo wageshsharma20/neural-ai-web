@@ -294,13 +294,12 @@
   opacity: 0.6;
 }
 
-/* ── Responsive ── */
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   .domains__grid { grid-template-columns: repeat(2, 1fr); }
   .domains__header { grid-template-columns: 1fr; gap: var(--space-4); }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 768px) {
   .domains__grid { grid-template-columns: 1fr; gap: var(--space-4); }
   .domains__card, .domains__card-placeholder { padding: var(--space-8) var(--space-6) var(--space-6); }
   .domains__card--expanded { transform: scale(1.02); }

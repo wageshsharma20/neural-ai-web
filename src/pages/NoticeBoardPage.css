@@ -573,7 +573,7 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .nb-section__inner { grid-template-columns: 1fr; gap: var(--space-6); }
 
   /* Stack cards vertically on tablet */
@@ -610,7 +610,7 @@
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 768px) {
   .event-card__details { flex-direction: column; gap: var(--space-3); }
   .board-tab           { padding: var(--space-3) var(--space-4); }
 }

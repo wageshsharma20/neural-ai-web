@@ -60,6 +60,16 @@
   color: var(--signal-cyan);
 }
 
+@media (max-width: 480px) {
+  .navbar__logo-img {
+    width: 32px;
+    height: 32px;
+  }
+  .navbar__wordmark {
+    font-size: var(--text-lg);
+  }
+}
+
 /* ── Desktop nav ── */
 .navbar__nav {
   flex: 1;
@@ -140,77 +150,52 @@
   transform: translateY(0);
 }
 
-/* ── Hamburger — 2 lines (cleaner than 3) ── */
-.navbar__hamburger {
+/* ── Mobile toggle button ── */
+.nav-close-btn {
   display: none;
-  flex-direction: column;
-  gap: 6px;
-  padding: var(--space-2);
-  margin-left: auto;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: var(--bone);
   cursor: pointer;
+  padding: 8px 12px;
+  overflow: hidden;
+  height: 40px;
+  margin-left: auto;
+}
+
+.menu-button-text {
+  display: flex;
+  flex-direction: column;
+  height: 20px;
+  overflow: hidden;
+}
+
+.menu-button-text p {
+  margin: 0;
+  height: 20px;
+  line-height: 20px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-button-icon {
+  color: var(--bone);
   flex-shrink: 0;
 }
 
-.navbar__hamburger span {
-  display: block;
-  width: 20px;
-  height: 1px;
-  background: var(--bone-dim);
-  transition:
-    transform var(--dur-base) var(--ease-out),
-    opacity   var(--dur-base) var(--ease-out),
-    width     var(--dur-base) var(--ease-out);
-}
 
-.navbar__hamburger--open span:first-child {
-  transform: translateY(3.5px) rotate(45deg);
-}
-.navbar__hamburger--open span:last-child {
-  transform: translateY(-3.5px) rotate(-45deg);
-}
-
-/* ── Mobile menu ── */
-.navbar__mobile {
-  display: none;
-  position: fixed;
-  inset-block-start: var(--navbar-height);
-  inset-inline: 0;
-  background: var(--ink);
-  border-bottom: var(--hairline);
-  padding: var(--space-6) var(--space-6) var(--space-8);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-4px);
-  transition:
-    opacity   var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-out);
-}
-
-.navbar__mobile--open {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-
-.navbar__mobile-link {
-  display: block;
-  font-size: var(--text-base);
-  color: var(--mist);
-  text-decoration: none;
-  padding: var(--space-3) 0;
-  border-bottom: var(--hairline);
-  transition: color var(--dur-fast) var(--ease-out);
-}
-
-.navbar__mobile-link:hover,
-.navbar__mobile-link--active { color: var(--bone); }
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .navbar__nav     { display: none; }
   .navbar__login   { display: none; }
-  .navbar__hamburger { display: flex; }
-  .navbar__mobile    { display: block; }
+  .nav-close-btn   { display: flex; }
 }
 
 /* ── Mega Menu Dropdowns ── */
@@ -303,4 +288,8 @@
   color: var(--bone);
   font-weight: 600;
   transform: translateX(6px);
+}
+
+.nav-close-btn.open {
+  display: flex !important;
 }

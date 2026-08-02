@@ -529,7 +529,7 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .blogs-section__inner  { grid-template-columns: 1fr; gap: var(--space-6); }
   .blogs-grid            { grid-template-columns: 1fr; }
   .resource-filter-group { flex-direction: column; align-items: flex-start; }
@@ -537,7 +537,7 @@
   .resource-row__link    { align-self: flex-start; }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 768px) {
   .featured-blog-card__footer { flex-direction: column; align-items: flex-start; }
   .blog-filters { gap: var(--space-1); }
 }

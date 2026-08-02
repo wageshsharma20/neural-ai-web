@@ -169,11 +169,7 @@
   line-height: var(--leading-relaxed);
 }
 
-@media (max-width: 900px) {
-  .ach__grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .ach__header { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
   .ach__grid { grid-template-columns: 1fr; }
   .ach__card-year { font-size: 10px; }

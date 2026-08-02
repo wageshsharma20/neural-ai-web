@@ -10,12 +10,24 @@
   padding-inline: var(--space-8);
 }
 
-@media (max-width: 640px) { .container { padding-inline: var(--space-5); } }
+@media (max-width: 1024px) { .container { padding-inline: var(--space-6); } }
+@media (max-width: 768px) { .container { padding-inline: var(--space-4); } }
 
 /* ── Section spacing ── */
 .section      { padding-block: var(--space-20); }
 .section--sm  { padding-block: var(--space-12); }
 .section--lg  { padding-block: var(--space-32); }
+
+@media (max-width: 1024px) {
+  .section      { padding-block: var(--space-16); }
+  .section--sm  { padding-block: var(--space-10); }
+  .section--lg  { padding-block: var(--space-24); }
+}
+@media (max-width: 768px) {
+  .section      { padding-block: var(--space-12); }
+  .section--sm  { padding-block: var(--space-8); }
+  .section--lg  { padding-block: var(--space-16); }
+}
 
 /* ── Hairline divider ── */
 hr.rule, .rule {
