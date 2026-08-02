@@ -3,8 +3,8 @@ import { cn } from '../../utils/cn';
 import { motion } from 'motion/react';
 
 const containerVariants = {
-  hidden: {},
-  visible: {
+  textHidden: {},
+  textVisible: {
     transition: {
       staggerChildren: 0.1,
     },
@@ -15,12 +15,12 @@ const generateVariants = (direction) => {
   const axis = direction === 'left' || direction === 'right' ? 'x' : 'y';
   const value = direction === 'right' || direction === 'down' ? 100 : -100;
   return {
-    hidden: {
+    textHidden: {
       filter: 'blur(10px)',
       opacity: 0,
       [axis]: value,
     },
-    visible: {
+    textVisible: {
       filter: 'blur(0px)',
       opacity: 1,
       [axis]: 0,
@@ -47,17 +47,17 @@ const TextAnimation = ({
 }) => {
   const baseVariants = variants || generateVariants(direction);
   const modifiedVariants = {
-    hidden: baseVariants.hidden,
-    visible: {
-      ...baseVariants.visible,
+    textHidden: baseVariants.textHidden,
+    textVisible: {
+      ...baseVariants.textVisible,
     },
   };
   const MotionComponent = motion[as];
 
   return (
     <MotionComponent
-      whileInView="visible"
-      initial="hidden"
+      whileInView="textVisible"
+      initial="textHidden"
       variants={containerVariants}
       viewport={viewport}
       className={cn(classname)}
