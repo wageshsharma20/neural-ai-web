@@ -137,3 +137,7 @@
 .mobile-login-btn {
   touch-action: manipulation;
 }
+
+.nav-link * {
+  pointer-events: none;
+}

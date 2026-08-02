@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { NAV_LINKS } from "../../data/mockData";
@@ -13,6 +13,13 @@ if (typeof window !== "undefined") {
 export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
   const containerRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setIsMenuOpen(false);
+    navigate(href);
+  };
 
   // Close menu when route changes
   useEffect(() => {
@@ -159,18 +166,30 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
               <ul className="menu-list">
                 {NAV_LINKS.map((link, index) => (
                   <li className="menu-list-item" data-shape={(index % 5) + 1} key={link.id}>
-                    <Link to={link.href} className="nav-link w-inline-block" onClick={closeMenu}>
+                    <a 
+                      href={link.href} 
+                      className="nav-link" 
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      onTouchEnd={(e) => {
+                        // Optional: can call handleNavClick here if needed, but onClick should be fine
+                        // We'll let onClick handle it to prevent double-firing, but we ensure it's a native element
+                      }}
+                    >
                       <p className="nav-link-text">{link.label}</p>
                       <div className="nav-link-hover-bg"></div>
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
               
               <div className="mobile-menu-footer">
-                <Link to="/login" className="mobile-login-btn" onClick={closeMenu}>
+                <a 
+                  href="/login" 
+                  className="mobile-login-btn" 
+                  onClick={(e) => handleNavClick(e, '/login')}
+                >
                   Member Login
-                </Link>
+                </a>
               </div>
             </div>
           </nav>
