@@ -58,19 +58,22 @@ function PageLayout({ children }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <ReactLenis root>
-      <ScrollToTop />
-      <HashScroller />
-      <div className="page-layout">
-        <Navbar mobileOpen={isMenuOpen} setMobileOpen={setIsMenuOpen} />
-        <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-        <ScrollProgress />
-        <main className="page-layout__main" id="main-content" tabIndex={-1}>
-          {children}
-        </main>
-        <Footer />
-      </div>
-    </ReactLenis>
+    <>
+      <ReactLenis root>
+        <ScrollToTop />
+        <HashScroller />
+        <div className="page-layout">
+          <Navbar mobileOpen={isMenuOpen} setMobileOpen={setIsMenuOpen} />
+          <ScrollProgress />
+          <main className="page-layout__main" id="main-content" tabIndex={-1}>
+            {children}
+          </main>
+          <Footer />
+        </div>
+      </ReactLenis>
+      {/* MobileMenu sits outside Lenis so it never has touch events intercepted */}
+      <MobileMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+    </>
   );
 }
 
