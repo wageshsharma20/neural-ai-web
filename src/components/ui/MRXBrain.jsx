@@ -226,7 +226,7 @@ const MRXBrain = ({ imageUrl = '/mrx-brain.png' }) => {
       if (ca > ia) { dw = srcW; dh = srcW / ia; dx = 0; dy = (srcH - dh) / 2; }
       else         { dh = srcH; dw = srcH * ia; dy = 0; dx = (srcW - dw) / 2; }
       
-      const zoom = 1.6;
+      const zoom = 1.0;
       dw *= zoom;
       dh *= zoom;
       
