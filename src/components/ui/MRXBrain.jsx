@@ -112,7 +112,6 @@ const MRXBrain = ({ imageUrl = '/mrx-brain.png' }) => {
     let destroyed = false;
 
     const img = new Image();
-    img.crossOrigin = 'anonymous';
     let loaded = false;
     let srcPixels = null;
     let srcW = 0, srcH = 0;

@@ -263,7 +263,8 @@
     bottom: auto;
     right: auto;
     width: 100%;
-    min-height: 350px;
+    height: 400px;
+    margin-top: var(--space-8);
   }
 }
 
