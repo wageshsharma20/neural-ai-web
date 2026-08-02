@@ -90,3 +90,9 @@
 .nav-link-hover-bg {
   display: none;
 }
+
+.nav-overlay-wrapper.open {
+  visibility: visible;
+  pointer-events: auto;
+}
+

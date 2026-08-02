@@ -103,11 +103,11 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
       
       const tl = gsap.timeline({ 
         paused: true,
-        onStart: () => {
-          gsap.set(navWrap, { visibility: "visible", pointerEvents: "auto" });
+        onStart: () => { /* removed */ 
+          
         },
-        onReverseComplete: () => {
-          gsap.set(navWrap, { visibility: "hidden", pointerEvents: "none" });
+        onReverseComplete: () => { /* removed */ 
+          
         }
       });
       tlRef.current = tl;
@@ -150,7 +150,7 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
   return (
     <div ref={containerRef}>
       <section className="fullscreen-menu-container">
-        <div data-nav="closed" className="nav-overlay-wrapper">
+        <div data-nav="closed" className={`nav-overlay-wrapper ${isMenuOpen ? "open" : ""}`}>
           <div className="overlay" onClick={closeMenu}></div>
           <nav className="menu-content">
             <div className="menu-content-wrapper">
