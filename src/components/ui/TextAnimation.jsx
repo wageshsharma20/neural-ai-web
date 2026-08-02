@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 const containerVariants = {
   textHidden: {},
@@ -16,12 +16,10 @@ const generateVariants = (direction) => {
   const value = direction === 'right' || direction === 'down' ? 100 : -100;
   return {
     textHidden: {
-      filter: 'blur(10px)',
       opacity: 0,
       [axis]: value,
     },
     textVisible: {
-      filter: 'blur(0px)',
       opacity: 1,
       [axis]: 0,
       transition: {
@@ -32,7 +30,7 @@ const generateVariants = (direction) => {
   };
 };
 
-const defaultViewport = { amount: 0.3, margin: '0px 0px 0px 0px', once: true };
+const defaultViewport = { amount: 0.3, once: true };
 
 const TextAnimation = ({
   as = 'h1',
