@@ -15,11 +15,32 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
-    setIsMenuOpen(false);
-    navigate(href);
-  };
+  // Nuclear option: Native DOM event listeners to guarantee clicks fire on iOS
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const links = containerRef.current.querySelectorAll('.nav-link, .mobile-login-btn');
+    
+    const onClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const href = e.currentTarget.getAttribute('href');
+      if (href) {
+        setIsMenuOpen(false);
+        navigate(href);
+      }
+    };
+
+    links.forEach(link => {
+      link.addEventListener('click', onClick);
+      // Removed touchstart as it can trigger accidentally while scrolling, click is enough now that iOS double-tap bug is fixed
+    });
+
+    return () => {
+      links.forEach(link => {
+        link.removeEventListener('click', onClick);
+      });
+    };
+  }, [navigate, setIsMenuOpen]);
 
   // Close menu when route changes
   useEffect(() => {
@@ -169,11 +190,6 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
                     <a 
                       href={link.href} 
                       className="nav-link" 
-                      onClick={(e) => handleNavClick(e, link.href)}
-                      onTouchEnd={(e) => {
-                        // Optional: can call handleNavClick here if needed, but onClick should be fine
-                        // We'll let onClick handle it to prevent double-firing, but we ensure it's a native element
-                      }}
                     >
                       <p className="nav-link-text">{link.label}</p>
                       <div className="nav-link-hover-bg"></div>
@@ -186,7 +202,6 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
                 <a 
                   href="/login" 
                   className="mobile-login-btn" 
-                  onClick={(e) => handleNavClick(e, '/login')}
                 >
                   Member Login
                 </a>

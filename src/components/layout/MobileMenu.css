@@ -141,3 +141,15 @@
 .nav-link * {
   pointer-events: none;
 }
+
+.menu-content {
+  pointer-events: auto !important;
+}
+
+.nav-link {
+  pointer-events: auto !important;
+}
+
+.mobile-login-btn {
+  pointer-events: auto !important;
+}
