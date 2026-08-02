@@ -163,13 +163,13 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
                     </Link>
                   </li>
                 ))}
-                <li className="menu-list-item" data-shape="5">
-                  <a href="/login" className="nav-link w-inline-block">
-                    <p className="nav-link-text">Member Login</p>
-                    <div className="nav-link-hover-bg"></div>
-                  </a>
-                </li>
               </ul>
+              
+              <div className="mobile-menu-footer">
+                <a href="/login" className="mobile-login-btn">
+                  Member Login
+                </a>
+              </div>
             </div>
           </nav>
         </div>

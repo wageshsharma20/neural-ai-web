@@ -27,7 +27,7 @@
   bottom: 0;
   width: 100%;
   max-width: 480px;
-  background: #1a1a24 !important;
+  background: var(--ink, #0f0f11);
   box-shadow: -20px 0 40px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
   display: flex;
@@ -75,7 +75,7 @@
   font-family: var(--font-display, sans-serif);
   font-size: clamp(2rem, 8vw, 3rem);
   font-weight: 700;
-  color: #ffffff !important;
+  color: var(--bone, #f8f8ff);
   margin: 0;
   line-height: 1.1;
   text-transform: uppercase;
@@ -96,3 +96,34 @@
   pointer-events: auto;
 }
 
+
+.mobile-menu-footer {
+  margin-top: auto;
+  padding-top: var(--space-8);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.mobile-login-btn {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: transparent;
+  text-decoration: none;
+  padding: 12px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-login-btn:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
