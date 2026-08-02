@@ -237,7 +237,7 @@ const MRXBrain = ({ imageUrl = '/mrx-brain.png' }) => {
       }
       
       // Scale it up a bit manually so it feels massive
-      const zoom = 1.35;
+      const zoom = 1.6;
       dw *= zoom;
       dh *= zoom;
       
