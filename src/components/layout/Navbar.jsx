@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../../data/mockData';
@@ -203,7 +204,7 @@ function Navbar() {
         </button>
       </div>
 
-      <MobileMenu isMenuOpen={mobileOpen} setIsMenuOpen={setMobileOpen} />
+      {typeof document !== 'undefined' ? createPortal(<MobileMenu isMenuOpen={mobileOpen} setIsMenuOpen={setMobileOpen} />, document.body) : null}
     </header>
   );
 }
