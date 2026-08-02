@@ -157,7 +157,7 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
               <ul className="menu-list">
                 {NAV_LINKS.map((link, index) => (
                   <li className="menu-list-item" data-shape={(index % 5) + 1} key={link.id}>
-                    <Link to={link.href} className="nav-link w-inline-block">
+                    <Link to={link.href} className="nav-link w-inline-block" onClick={closeMenu}>
                       <p className="nav-link-text">{link.label}</p>
                       <div className="nav-link-hover-bg"></div>
                     </Link>
@@ -166,7 +166,7 @@ export function MobileMenu({ isMenuOpen, setIsMenuOpen }) {
               </ul>
               
               <div className="mobile-menu-footer">
-                <a href="/login" className="mobile-login-btn">
+                <a href="/login" className="mobile-login-btn" onClick={closeMenu}>
                   Member Login
                 </a>
               </div>
