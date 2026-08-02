@@ -230,7 +230,7 @@ const MRXBrain = ({ imageUrl = '/mrx-brain.png' }) => {
       dw *= zoom;
       dh *= zoom;
       
-      dx = (srcW - dw) / 2 + (srcW * 0.20); 
+      dx = (srcW - dw) / 2 + (srcW * 0.08); 
       dy = (srcH - dh) / 2 + (srcH * 0.05); 
       
       srcCtx.drawImage(img, dx, dy, dw, dh);
