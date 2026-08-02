@@ -1,7 +1,37 @@
 .kinetic-text {
   display: inline-flex;
   flex-wrap: wrap;
-  font-weight: 500;
+  font-weight: 500; /* base weight */
+}
+
+.kinetic-letter {
+  will-change: font-weight;
+  transition: font-weight 0.6s cubic-bezier(0.25, 2.5, 0.3, 1);
+  display: inline-block;
+}
+
+.kinetic-letter:hover {
+  font-weight: 900;
+}
+
+/* Two letters before hover */
+.kinetic-letter:has(+ .kinetic-letter + .kinetic-letter:hover) {
+  font-weight: 600;
+}
+
+/* One letter before hover */
+.kinetic-letter:has(+ .kinetic-letter:hover) {
+  font-weight: 700;
+}
+
+/* One letter after hover */
+.kinetic-letter:hover + .kinetic-letter {
+  font-weight: 700;
+}
+
+/* Two letters after hover */
+.kinetic-letter:hover + .kinetic-letter + .kinetic-letter {
+  font-weight: 600;
 }
 
 .sr-only {
