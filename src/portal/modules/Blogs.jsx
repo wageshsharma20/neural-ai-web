@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Clock, Eye, Heart, Star, Edit2 } from 'lucide-react';
+import { Plus, Clock, Eye, Heart, Star, Edit2, X, Check } from 'lucide-react';
 import { blogs, members } from '../data/mockData';
 import { StatusBadge, TagList, SectionHeader } from '../components/shared/Primitives';
 
@@ -86,9 +86,78 @@ function BlogCard({ blog }) {
   );
 }
 
+function BlogModal({ onClose }) {
+  return (
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="modal" style={{ maxWidth: 700 }} onClick={e => e.stopPropagation()}>
+        <div className="modal__header">
+          <div>
+            <p className="text-2xs text-mono uppercase tracking-widest text-mist mb-1">Content</p>
+            <h2 className="modal__title">Write Blog</h2>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={onClose}><X size={16} /></button>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', marginTop: 'var(--space-4)' }}>
+          <div>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Heading</label>
+            <input 
+              type="text" 
+              className="input w-full" 
+              placeholder="e.g. Understanding Neural Networks"
+              style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)' }}
+            />
+          </div>
+          <div className="grid-2" style={{ gap: 'var(--space-4)' }}>
+            <div>
+              <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Authors</label>
+              <input 
+                type="text" 
+                className="input w-full" 
+                placeholder="e.g. Arjun Sharma"
+                style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)' }}
+              />
+            </div>
+            <div>
+              <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Category</label>
+              <select 
+                className="input w-full"
+                style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)', appearance: 'none' }}
+              >
+                <option value="NLP">NLP</option>
+                <option value="Deep Learning">Deep Learning</option>
+                <option value="LLMs">LLMs</option>
+                <option value="Computer Vision">Computer Vision</option>
+                <option value="Research">Research</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Content (Markdown supported)</label>
+            <textarea 
+              className="input w-full" 
+              placeholder="Write the full blog content here..."
+              rows={8}
+              style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)', resize: 'vertical' }}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-3" style={{ marginTop: 'var(--space-6)' }}>
+          <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
+          <button className="btn btn-primary" onClick={onClose}>
+            <Check size={14} /> Submit Blog
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function BlogsModule() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [catFilter, setCatFilter] = useState('All');
+  const [isCreating, setIsCreating] = useState(false);
 
   const cats = ['All', ...new Set(blogs.map((b) => b.category))];
   const filtered = blogs.filter((b) => {
@@ -99,6 +168,7 @@ export default function BlogsModule() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+      {isCreating && <BlogModal onClose={() => setIsCreating(false)} />}
       <div className="page-header">
         <div>
           <p className="page-header__eyebrow">Content</p>
@@ -106,7 +176,7 @@ export default function BlogsModule() {
           <p className="page-header__desc">{blogs.filter((b) => b.status === 'published').length} published · {blogs.filter((b) => b.status === 'draft').length} drafts</p>
         </div>
         <div className="page-header__actions">
-          <button className="btn btn-primary btn-sm"><Plus size={14} /> Write Blog</button>
+          <button className="btn btn-primary btn-sm" onClick={() => setIsCreating(true)}><Plus size={14} /> Write Blog</button>
         </div>
       </div>
 

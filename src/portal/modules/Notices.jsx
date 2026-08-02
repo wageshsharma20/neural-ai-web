@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Eye, Star, Trash2, Edit2 } from 'lucide-react';
+import { Plus, Eye, Star, Trash2, Edit2, X, Check } from 'lucide-react';
 import { notices, members } from '../data/mockData';
 import { StatusBadge, SectionHeader } from '../components/shared/Primitives';
 
@@ -119,9 +119,86 @@ function NoticeDetail({ notice, onClose }) {
   );
 }
 
+function NoticeModal({ onClose }) {
+  return (
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="modal" style={{ maxWidth: 600 }} onClick={e => e.stopPropagation()}>
+        <div className="modal__header">
+          <div>
+            <p className="text-2xs text-mono uppercase tracking-widest text-mist mb-1">Notice Board</p>
+            <h2 className="modal__title">New Notice</h2>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={onClose}><X size={16} /></button>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', marginTop: 'var(--space-4)' }}>
+          <div>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Heading</label>
+            <input 
+              type="text" 
+              className="input w-full" 
+              placeholder="e.g. Recruitment Drive 2026"
+              style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)' }}
+            />
+          </div>
+          <div className="grid-2" style={{ gap: 'var(--space-4)' }}>
+            <div>
+              <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Category</label>
+              <select 
+                className="input w-full"
+                style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)', appearance: 'none' }}
+              >
+                <option value="General">General</option>
+                <option value="Events">Events</option>
+                <option value="Recruitment">Recruitment</option>
+                <option value="Workshops">Workshops</option>
+                <option value="Academic">Academic</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Date Posted</label>
+              <input 
+                type="date" 
+                className="input w-full"
+                style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)', colorScheme: 'dark' }}
+              />
+            </div>
+          </div>
+          <div>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Image URL</label>
+            <input 
+              type="text" 
+              className="input w-full" 
+              placeholder="https://..."
+              style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)' }}
+            />
+          </div>
+          <div>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Detail / Content</label>
+            <textarea 
+              className="input w-full" 
+              placeholder="Write the full notice here..."
+              rows={5}
+              style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', padding: '10px 12px', borderRadius: 'var(--radius)', outline: 'none', width: '100%', fontSize: 'var(--text-sm)', resize: 'vertical' }}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-3" style={{ marginTop: 'var(--space-6)' }}>
+          <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
+          <button className="btn btn-primary" onClick={onClose}>
+            <Check size={14} /> Create Notice
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function NoticesModule() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [selected, setSelected] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   const filtered = notices.filter((n) => statusFilter === 'All' || n.status === statusFilter);
   const featured = notices.find((n) => n.featured && n.status === 'published');
@@ -129,6 +206,7 @@ export default function NoticesModule() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
       {selected && <NoticeDetail notice={selected} onClose={() => setSelected(null)} />}
+      {isCreating && <NoticeModal onClose={() => setIsCreating(false)} />}
 
       <div className="page-header">
         <div>
@@ -137,7 +215,7 @@ export default function NoticesModule() {
           <p className="page-header__desc">{notices.filter((n) => n.status === 'published').length} published · {notices.filter((n) => n.status === 'draft').length} drafts</p>
         </div>
         <div className="page-header__actions">
-          <button className="btn btn-primary btn-sm"><Plus size={14} /> New Notice</button>
+          <button className="btn btn-primary btn-sm" onClick={() => setIsCreating(true)}><Plus size={14} /> New Notice</button>
         </div>
       </div>
 

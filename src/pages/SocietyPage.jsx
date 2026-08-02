@@ -3,11 +3,12 @@ import { LineAnimation } from '../components/ui/LineAnimation';
 import React, { useRef } from 'react';
 import { useScroll } from 'framer-motion';
 import PageLayout from '../components/layout/PageLayout';
-import { EXECUTIVE_TEAM, LEGACY_TIMELINE, ACHIEVEMENTS, HALL_OF_FAME } from '../data/mockData';
+import { EXECUTIVE_TEAM, LEGACY_TIMELINE, HALL_OF_FAME } from '../data/mockData';
 import { CORE_VALUES } from '../data/societyData';
 import TeamSlider from '../components/ui/TeamSlider';
 import PhotonBeam from '../components/ui/PhotonBeam';
 import { Timeline } from '../components/ui/Timeline';
+import Achievements from '../components/sections/Achievements';
 import './SocietyPage.css';
 
 
@@ -247,27 +248,7 @@ function SocietyPage() {
         </ScrollAnimation>
 
         {/* ── Achievements ── */}
-        <ScrollAnimation as="section" className="society-section" id="achievements" aria-labelledby="soc-ach-heading">
-          <div className="container society-section__inner">
-            <div className="society-section__label">
-              <p className="eyebrow">Achievements</p>
-            </div>
-            <div className="society-section__content">
-              <LineAnimation as="h2" className="society-section__heading" id="soc-ach-heading" text="Stated factually." direction="left" staggerDelay={0.1} />
-              <ul className="ach-list" role="list">
-                {ACHIEVEMENTS.map((a) => (
-                  <li key={a.id} className="ach-row" id={`society-${a.id}`}>
-                    <div>
-                      <p className="ach-row__title">{a.title}</p>
-                      <p className="ach-row__body">{a.body}</p>
-                    </div>
-                    <span className="ach-row__year">{a.year}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </ScrollAnimation>
+        <Achievements variant="society" />
 
         {/* ── Hall of Fame ── */}
         <div ref={hofSectionRef} className="society-section team-hscroll" id="hall-of-fame" aria-labelledby="hof-heading">

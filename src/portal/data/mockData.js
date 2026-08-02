@@ -256,3 +256,78 @@ export const notifications = [
   { id: 1, title: 'Task Overdue', message: 'Book Seminar Hall is past due date.', time: '1h ago', read: false, type: 'warning' },
   { id: 2, title: 'New Application', message: '234 recruitment applications received so far.', time: '3h ago', read: false, type: 'info' }
 ];
+
+export const headData = {
+  department: 'Technical',
+  teamPerformance: 88,
+  activeProjects: 4,
+  pendingApprovals: 6,
+  upcomingDeadlines: 3,
+  departmentMembers: 42,
+  coHeads: [
+    { name: 'Rohan Gupta', role: 'Co-Head', status: 'On Track' },
+    { name: 'Ananya Singh', role: 'Co-Head', status: 'Needs Attention' }
+  ],
+  activeProjectsList: [
+    { name: 'NeuralSight', progress: 75, status: 'On Track' },
+    { name: 'SpeakEasy', progress: 40, status: 'Delayed' },
+  ],
+  announcements: [
+    { title: 'Tech Stack Finalization', date: '2026-08-01' },
+    { title: 'Weekly Sync Moved', date: '2026-08-03' }
+  ]
+};
+
+export const coHeadData = {
+  department: 'Technical',
+  assignedProjects: 2,
+  teamMembers: 15,
+  pendingReviews: 4,
+  upcomingDeadlines: 2,
+  myTasks: [
+    { title: 'Review PR for NeuralSight', priority: 'high', dueDate: 'Today' },
+    { title: 'Update Architecture Doc', priority: 'medium', dueDate: 'Tomorrow' },
+  ],
+  teamTasks: [
+    { title: 'Implement U-Net Model', assignee: 'Vivek Sharma', status: 'In Progress' },
+    { title: 'Setup CI/CD Pipeline', assignee: 'Neha Patel', status: 'Blocked' },
+  ],
+  recentUpdates: [
+    { message: 'Vivek pushed to feature/unet', time: '1h ago' },
+    { message: 'Neha opened a blocker issue', time: '3h ago' }
+  ]
+};
+
+export const memberData = {
+  myTasksCount: 5,
+  completedTasks: 12,
+  upcomingEvents: 2,
+  assignedResources: 3,
+  myTasks: [
+    { title: 'Fix Bug #42 in UI', priority: 'high', status: 'In Progress' },
+    { title: 'Write Tests for API', priority: 'medium', status: 'To Do' },
+  ],
+  myProjects: [
+    { name: 'NeuralSight', role: 'Frontend Dev', progress: 60 }
+  ],
+  recentActivity: [
+    { message: 'Merged PR #41', time: 'Yesterday' },
+    { message: 'Attended Weekly Sync', time: '2 days ago' }
+  ]
+};
+
+export const recruitmentApplications = [
+  { id: 'APP-001', name: 'Aryan Kumar', rollNumber: '2K23/CO/089', phone: '+91 98765 43210', domain: 'Technical', status: 'Pending', dateApplied: '2026-07-26' },
+  { id: 'APP-002', name: 'Ishita Sharma', rollNumber: '2K23/SE/045', phone: '+91 99887 76655', domain: 'Research', status: 'Shortlisted', dateApplied: '2026-07-27' },
+  { id: 'APP-003', name: 'Kabir Singh', rollNumber: '2K23/IT/112', phone: '+91 91234 56789', domain: 'Design', status: 'Pending', dateApplied: '2026-07-28' },
+  { id: 'APP-004', name: 'Riya Patel', rollNumber: '2K23/ECE/078', phone: '+91 98765 12345', domain: 'Events', status: 'Rejected', dateApplied: '2026-07-29' },
+  { id: 'APP-005', name: 'Aditya Verma', rollNumber: '2K23/EE/023', phone: '+91 94567 89012', domain: 'Technical', status: 'Shortlisted', dateApplied: '2026-07-30' },
+  { id: 'APP-006', name: 'Neha Gupta', rollNumber: '2K24/CO/156', phone: '+91 93456 78901', domain: 'Marketing', status: 'Pending', dateApplied: '2026-07-31' },
+];
+
+export const recruitmentInterviews = [
+  { id: 'INT-001', name: 'Ishita Sharma', rollNumber: '2K23/SE/045', phone: '+91 99887 76655', date: 'Aug 24, 2026', time: '10:00 AM - 10:30 AM', interviewer: 'Rohan Gupta' },
+  { id: 'INT-002', name: 'Aditya Verma', rollNumber: '2K23/EE/023', phone: '+91 94567 89012', date: 'Aug 24, 2026', time: '11:00 AM - 11:30 AM', interviewer: 'Ananya Singh' },
+  { id: 'INT-003', name: 'Kavya Desai', rollNumber: '2K23/IT/091', phone: '+91 91234 87654', date: 'Aug 25, 2026', time: '02:00 PM - 02:45 PM', interviewer: 'Rohan Gupta' },
+  { id: 'INT-004', name: 'Rahul Nair', rollNumber: '2K24/CO/211', phone: '+91 98765 11223', date: 'Aug 25, 2026', time: '03:30 PM - 04:00 PM', interviewer: 'Ananya Singh' },
+];

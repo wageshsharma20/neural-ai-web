@@ -173,24 +173,28 @@ export const ACHIEVEMENTS = [
     title: 'Best Paper Award',
     body: 'ICLR 2025 Workshop on Human-Aligned AI',
     year: '2025',
+    image: ''
   },
   {
     id: 'ach-02',
     title: '1st Place — Smart India Hackathon',
     body: 'Track: Healthcare AI · 8,000+ participating teams',
     year: '2024',
+    image: ''
   },
   {
     id: 'ach-03',
     title: 'Runner-Up — IIT Bombay Techfest AI Challenge',
     body: 'Predictive maintenance using multivariate time-series',
     year: '2024',
+    image: ''
   },
   {
     id: 'ach-04',
     title: 'Publication — Springer LNCS',
     body: 'Deep learning for urban traffic flow optimisation',
     year: '2023',
+    image: ''
   },
 ];
 

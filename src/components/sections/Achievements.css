@@ -1,4 +1,9 @@
-/* Achievements Bento Grid */
+/* Achievements Bento Grid / Slider */
+.ach-section {
+  padding-bottom: var(--space-32) !important;
+  margin-bottom: var(--space-12);
+}
+
 .ach__header {
   display: flex;
   align-items: flex-end;
@@ -6,7 +11,12 @@
   gap: var(--space-4);
   border-top: var(--hairline);
   padding-top: var(--space-16);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+.ach__header--society {
+  border-top: none;
+  padding-top: 0;
 }
 
 .ach__heading {
@@ -27,37 +37,66 @@
   background-clip: text;
 }
 
+.ach__slider {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-8);
+}
+
 .ach__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-4);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
   align-items: stretch;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+
+.ach__grid--fading {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .ach__card {
   position: relative;
-  border-radius: 4px;
-  background: rgba(20, 20, 25, 0.4);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(12px) saturate(140%);
   -webkit-backdrop-filter: blur(12px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
-  transition: border-color var(--dur-normal) var(--ease-out),
-              background var(--dur-normal) var(--ease-out);
-  padding: var(--space-6);
+  transition: transform var(--dur-normal) var(--ease-out),
+              border-color var(--dur-normal) var(--ease-out),
+              background var(--dur-normal) var(--ease-out),
+              box-shadow var(--dur-normal) var(--ease-out);
   display: flex;
   flex-direction: column;
 }
 
 .ach__card:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(40, 40, 50, 0.6);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
 }
 
-/* Featured card (first one spans 2 columns) */
-.ach__card.featured {
-  grid-column: span 2;
-  background: rgba(25, 25, 30, 0.6);
+.ach__card-image {
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.ach__card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.0) 100%);
 }
 
 .ach__card-content {
@@ -67,34 +106,48 @@
   flex-direction: column;
   height: 100%;
   gap: var(--space-6);
+  padding: var(--space-6);
 }
 
 .ach__card-header {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  right: var(--space-4);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  z-index: 2;
 }
 
-.ach__stamp {
-  width: 24px;
-  height: 24px;
-  transform: rotate(-10deg);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+.ach__icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bone);
+  transition: transform var(--dur-base) ease, background var(--dur-base) ease;
 }
 
-.ach__card:hover .ach__stamp {
-  transform: rotate(0deg) scale(1.1);
+.ach__card:hover .ach__icon-wrapper {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .ach__card-year {
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   letter-spacing: var(--tracking-wider);
-  color: var(--mist);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px 8px;
+  color: var(--bone);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 4px 12px;
   border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ach__card-body-wrapper {
@@ -103,15 +156,11 @@
 
 .ach__card-title {
   font-family: var(--font-display);
-  font-size: var(--text-base);
-  font-weight: 400;
+  font-size: var(--text-xl);
+  font-weight: 500;
   color: var(--bone);
-  margin-bottom: var(--space-2);
-  line-height: var(--leading-snug);
-}
-
-.ach__card.featured .ach__card-title {
-  font-size: var(--text-lg);
+  margin-bottom: var(--space-3);
+  line-height: 1.2;
 }
 
 .ach__card-body {
@@ -122,12 +171,10 @@
 
 @media (max-width: 900px) {
   .ach__grid { grid-template-columns: repeat(2, 1fr); }
-  .ach__card.featured { grid-column: span 2; }
 }
 
 @media (max-width: 600px) {
-  .ach__header { grid-template-columns: 1fr; gap: var(--space-4); }
+  .ach__header { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
   .ach__grid { grid-template-columns: 1fr; }
-  .ach__card.featured { grid-column: span 1; }
   .ach__card-year { font-size: 10px; }
 }

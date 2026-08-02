@@ -2,6 +2,7 @@ import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
 import { LineAnimation } from '../../components/ui/LineAnimation';
 import React from 'react';
 import { FEATURED_PROJECTS } from '../../data/mockData';
+import { ArrowRight } from 'lucide-react';
 import './FeaturedProjects.css';
 
 function FeaturedProjects() {
@@ -23,24 +24,21 @@ function FeaturedProjects() {
           <LineAnimation as="a" href="/blogs#projects" className="projects__all" text="View all →" direction="left" staggerDelay={0.1} />
         </div>
 
-        <ul className="projects__list" role="list">
+        <ul className="projects__grid" role="list">
           {FEATURED_PROJECTS.map((p) => (
-            <li key={p.id} className="project-row" id={p.id}>
-              <div className="project-row__meta">
-                <LineAnimation as="span" className="project-row__domain" text={p.domain} direction="left" staggerDelay={0.1} />
-                <LineAnimation as="span" className="project-row__year" text={p.year} direction="left" staggerDelay={0.1} />
+            <li key={p.id} className="project-card" id={p.id}>
+              <div className="project-card__content">
+                <div className="project-card__meta">
+                  <span className="project-card__domain">{p.domain}</span>
+                  <span className="project-card__year">{p.year}</span>
+                </div>
+                <h3 className="project-card__title">{p.title}</h3>
+                <p className="project-card__tagline">{p.tagline}</p>
               </div>
-              <div className="project-row__main">
-                <LineAnimation as="h3" className="project-row__title" text={p.title} direction="left" staggerDelay={0.1} />
-                <LineAnimation as="p" className="project-row__tagline" text={p.tagline} direction="left" staggerDelay={0.1} />
-              </div>
-              <div className="project-row__links">
-                {p.github && (
-                  <LineAnimation as="a" href={p.github} className="project-row__link" target="_blank" rel="noopener noreferrer" text="GitHub ↗" direction="left" staggerDelay={0.1} />
-                )}
-                {p.demo && (
-                  <LineAnimation as="a" href={p.demo} className="project-row__link project-row__link--accent" target="_blank" rel="noopener noreferrer" text="Demo ↗" direction="left" staggerDelay={0.1} />
-                )}
+              <div className="project-card__footer">
+                <a href={p.github || p.demo || "#"} className="project-card__btn">
+                  Read more <ArrowRight size={14} />
+                </a>
               </div>
             </li>
           ))}

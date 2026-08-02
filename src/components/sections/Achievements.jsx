@@ -1,73 +1,94 @@
-import React, { useEffect, useRef } from 'react';
-import { animate } from 'animejs';
+import React, { useState, useEffect } from 'react';
+import { Trophy } from 'lucide-react';
 import { ACHIEVEMENTS } from '../../data/mockData';
+import { ScrollAnimation } from '../../components/ui/ScrollAnimation';
+import { LineAnimation } from '../../components/ui/LineAnimation';
 import './Achievements.css';
 
-function Achievements() {
-  const sectionRef = useRef(null);
+function Achievements({ variant = 'default' }) {
+  const [displayIndices, setDisplayIndices] = useState([0, 1]);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const cards = sectionRef.current.querySelectorAll('.ach__card');
-    cards.forEach(card => card.style.opacity = '0');
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          cards.forEach((card, index) => {
-            // Box 1 (index 1) is on the right, all others (0, 2, 3) are on the left side
-            const fromLeft = index !== 1;
-            
-            animate(card, {
-              x: [fromLeft ? '-20vw' : '20vw', 0],
-              opacity: [0, 1],
-              duration: 2500, // Slower duration
-              delay: index * 300, // slightly more stagger
-              ease: 'outQuad'
-            });
-          });
-          observer.disconnect();
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        let i1 = Math.floor(Math.random() * ACHIEVEMENTS.length);
+        let i2 = Math.floor(Math.random() * ACHIEVEMENTS.length);
+        while (i1 === i2) {
+          i2 = Math.floor(Math.random() * ACHIEVEMENTS.length);
         }
-      },
-      { threshold: 0.15 }
-    );
+        setDisplayIndices([i1, i2]);
+        setIsAnimating(false);
+      }, 400); // Wait for fade out to complete before swapping
+    }, 5000);
 
-    observer.observe(sectionRef.current);
-
-    return () => observer.disconnect();
+    return () => clearInterval(interval);
   }, []);
 
-  return (
-    <section className="ach section" id="achievements" aria-labelledby="ach-heading" ref={sectionRef}>
-      <div className="container">
-        <div className="ach__header">
-          <h2 className="ach__heading" id="ach-heading">Recent achievements.</h2>
-        </div>
-        <div className="ach__grid" role="list">
-          {ACHIEVEMENTS.map((a, i) => (
-            <div key={a.id} className={`ach__card ${i === 0 ? 'featured' : ''}`} id={a.id}>
-              <div className="ach__card-content">
-                <div className="ach__card-header">
-                  <svg className="ach__stamp" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                    <circle cx="9" cy="9" r="7.5" stroke="var(--signal-violet)" strokeWidth="0.7" opacity="0.6" />
-                    <circle cx="9" cy="9" r="1.5" fill="var(--signal-violet)" opacity="0.8" />
-                    <line x1="9" y1="3" x2="9" y2="15" stroke="var(--signal-violet)" strokeWidth="0.5" opacity="0.5" />
-                    <line x1="9" y1="6.5" x2="6" y2="4.5" stroke="var(--signal-violet)" strokeWidth="0.4" opacity="0.4" />
-                    <line x1="9" y1="6.5" x2="12" y2="4.5" stroke="var(--signal-violet)" strokeWidth="0.4" opacity="0.4" />
-                  </svg>
-                  <span className="ach__card-year">{a.year}</span>
-                </div>
-                <div className="ach__card-body-wrapper">
-                  <h3 className="ach__card-title">{a.title}</h3>
-                  <p className="ach__card-body">{a.body}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+  // Make sure we have valid data before rendering
+  const displayItems = (displayIndices[0] !== undefined && ACHIEVEMENTS[displayIndices[0]])
+    ? [ACHIEVEMENTS[displayIndices[0]], ACHIEVEMENTS[displayIndices[1]]]
+    : [];
+
+  const renderContent = () => (
+    <>
+      <div className={`ach__header ${variant === 'society' ? 'ach__header--society' : ''}`}>
+        <div>
+          <LineAnimation as="p" className="eyebrow" text="Achievements" direction="left" staggerDelay={0.1} />
+          <LineAnimation 
+            as="h2" 
+            className="ach__heading" 
+            id="ach-heading"
+            text={variant === 'society' ? 'Stated factually.' : 'Recent achievements.'}
+            direction="left"
+            staggerDelay={0.1}
+          />
         </div>
       </div>
-    </section>
+
+      <div className="ach__slider">
+        <ul className={`ach__grid ${isAnimating ? 'ach__grid--fading' : ''}`} role="list">
+          {displayItems.map((a, idx) => (
+            <li key={`${a?.id || idx}-${idx}`} className="ach__card" id={a?.id}>
+              <div className="ach__card-image" style={{ backgroundImage: `url(${a?.image})` }}>
+                <div className="ach__card-overlay"></div>
+                <div className="ach__card-header">
+                  <div className="ach__icon-wrapper">
+                    <Trophy size={18} className="ach__icon" />
+                  </div>
+                  <span className="ach__card-year">{a?.year}</span>
+                </div>
+              </div>
+              <div className="ach__card-content">
+                <div className="ach__card-body-wrapper">
+                  <h3 className="ach__card-title">{a?.title}</h3>
+                  <p className="ach__card-body">{a?.body}</p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+
+  if (variant === 'society') {
+    return (
+      <ScrollAnimation as="section" className="society-section ach-section" id="achievements" aria-labelledby="ach-heading">
+        <div className="container">
+          {renderContent()}
+        </div>
+      </ScrollAnimation>
+    );
+  }
+
+  return (
+    <ScrollAnimation as="section" className="ach section ach-section" id="achievements" aria-labelledby="ach-heading">
+      <div className="container">
+        {renderContent()}
+      </div>
+    </ScrollAnimation>
   );
 }
 

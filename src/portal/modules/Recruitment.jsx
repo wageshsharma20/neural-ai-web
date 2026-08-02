@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Users, CheckCircle, Clock, Search } from 'lucide-react';
-import { recruitmentData } from '../data/mockData';
+import { recruitmentData, recruitmentApplications, recruitmentInterviews } from '../data/mockData';
 import { SectionHeader } from '../components/shared/Primitives';
 
 export default function RecruitmentModule() {
@@ -103,16 +103,86 @@ export default function RecruitmentModule() {
       )}
 
       {activeTab === 'applications' && (
-        <div className="card empty-state">
-           <Search size={32} className="text-mist" />
-           <p className="text-mist text-sm">Application viewer UI will go here.</p>
+        <div className="card fade-in" style={{ padding: 'var(--space-6)' }}>
+          <div className="flex justify-between items-center mb-6">
+            <SectionHeader eyebrow="Database" title="Applicant Pool" />
+            <div className="flex gap-3">
+              <div className="relative">
+                <Search size={14} className="text-mist absolute left-3 top-1/2 -translate-y-1/2" />
+                <input type="text" placeholder="Search applicants..." className="input pl-9 py-1.5 text-sm w-64" style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', borderRadius: 'var(--radius)' }} />
+              </div>
+            </div>
+          </div>
+          
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--surface-border)', color: 'var(--mist)', fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-wider)', fontFamily: 'var(--font-mono)' }}>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Name</th>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Roll Number</th>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Phone Number</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recruitmentApplications.map((app) => (
+                  <tr key={app.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }} className="hover:bg-surface-2 transition-colors">
+                    <td style={{ padding: 'var(--space-4)', color: 'var(--bone)', fontSize: 'var(--text-sm)', fontWeight: 500 }}>{app.name}</td>
+                    <td style={{ padding: 'var(--space-4)', color: 'var(--mist-light)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{app.rollNumber}</td>
+                    <td style={{ padding: 'var(--space-4)', color: 'var(--mist)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{app.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
       
       {activeTab === 'interviews' && (
-        <div className="card empty-state">
-           <Users size={32} className="text-mist" />
-           <p className="text-mist text-sm">Interview scheduling and feedback UI will go here.</p>
+        <div className="card fade-in" style={{ padding: 'var(--space-6)' }}>
+          <div className="flex justify-between items-center mb-6">
+            <SectionHeader eyebrow="Scheduling" title="Upcoming Interviews" />
+            <div className="flex gap-3">
+              <div className="relative">
+                <Search size={14} className="text-mist absolute left-3 top-1/2 -translate-y-1/2" />
+                <input type="text" placeholder="Search schedule..." className="input pl-9 py-1.5 text-sm w-64" style={{ background: 'var(--surface-1)', border: '1px solid var(--surface-border)', color: 'var(--bone)', borderRadius: 'var(--radius)' }} />
+              </div>
+            </div>
+          </div>
+          
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--surface-border)', color: 'var(--mist)', fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-wider)', fontFamily: 'var(--font-mono)' }}>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Name</th>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Roll Number</th>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Phone Number</th>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Slot</th>
+                  <th style={{ padding: 'var(--space-3) var(--space-4)', fontWeight: 500 }}>Interviewer (Co-Head)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recruitmentInterviews.map((int) => (
+                  <tr key={int.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }} className="hover:bg-surface-2 transition-colors">
+                    <td style={{ padding: 'var(--space-4)', color: 'var(--bone)', fontSize: 'var(--text-sm)', fontWeight: 500 }}>{int.name}</td>
+                    <td style={{ padding: 'var(--space-4)', color: 'var(--mist-light)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{int.rollNumber}</td>
+                    <td style={{ padding: 'var(--space-4)', color: 'var(--mist)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{int.phone}</td>
+                    <td style={{ padding: 'var(--space-4)' }}>
+                      <div style={{ color: 'var(--bone)', fontSize: 'var(--text-sm)' }}>{int.date}</div>
+                      <div style={{ color: 'var(--mist)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)', marginTop: 2 }}>{int.time}</div>
+                    </td>
+                    <td style={{ padding: 'var(--space-4)' }}>
+                      <div className="flex items-center gap-2">
+                        <div className="avatar avatar-sm" style={{ background: 'var(--signal-violet-muted)', color: 'var(--signal-violet)' }}>
+                          {int.interviewer.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <span style={{ color: 'var(--bone)', fontSize: 'var(--text-sm)' }}>{int.interviewer}</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
