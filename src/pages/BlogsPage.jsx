@@ -2,8 +2,10 @@ import { ScrollAnimation } from '../components/ui/ScrollAnimation';
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/layout/PageLayout';
-import { ALL_BLOGS, RESOURCES, RESOURCE_TYPES, DIFFICULTY_LEVELS } from '../data/blogsData';
+import { RESOURCE_TYPES, DIFFICULTY_LEVELS } from '../data/blogsData';
 import { BLOG_CATEGORIES } from '../data/mockData';
+import { useApi } from '../hooks/useApi';
+import { blogsAPI } from '../services/api';
 import PhotonBeam from '../components/ui/PhotonBeam';
 import './BlogsPage.css';
 import { LineAnimation } from '../components/ui/LineAnimation';
@@ -30,27 +32,24 @@ function BlogsPage() {
   const [resourceDiff, setResourceDiff]   = useState('All');
   const [searchQuery,  setSearchQuery]    = useState('');
 
-  // Featured = the explicitly flagged blog
-  const featuredBlog = ALL_BLOGS.find(b => b.featured);
-  const otherBlogs   = ALL_BLOGS.filter(b => !b.featured);
+  const { data: featuredRes, loading: loadingFeatured } = useApi(() => blogsAPI.getFeatured());
+  const featuredBlog = featuredRes?.data?.blog;
 
-  const filteredBlogs = useMemo(() => {
-    return otherBlogs.filter(b => {
-      const matchCat   = blogCategory === 'All' || b.category === blogCategory;
-      const matchQuery = searchQuery === '' ||
-        b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchCat && matchQuery;
-    });
-  }, [blogCategory, searchQuery, otherBlogs]);
+  const { data: blogsRes, loading: loadingBlogs } = useApi(() => 
+    blogsAPI.getPublic({ 
+      category: blogCategory !== 'All' ? blogCategory : undefined,
+      search: searchQuery || undefined 
+    })
+  , [blogCategory, searchQuery]);
+  const filteredBlogs = blogsRes?.data?.blogs || [];
 
-  const filteredResources = useMemo(() => {
-    return RESOURCES.filter(r => {
-      const matchType = resourceType === 'All' || r.type === resourceType;
-      const matchDiff = resourceDiff === 'All' || r.difficulty === resourceDiff;
-      return matchType && matchDiff;
-    });
-  }, [resourceType, resourceDiff]);
+  const { data: resourcesRes, loading: loadingResources } = useApi(() => 
+    blogsAPI.getResources({ 
+      type: resourceType !== 'All' ? resourceType : undefined,
+      difficulty: resourceDiff !== 'All' ? resourceDiff : undefined 
+    })
+  , [resourceType, resourceDiff]);
+  const filteredResources = resourcesRes?.data?.resources || [];
 
   return (
     <PageLayout>
@@ -106,11 +105,11 @@ function BlogsPage() {
                     <div className="featured-blog-card__footer">
                       <div className="blog-author">
                         <span className="blog-author__initials" aria-hidden="true">
-                          {featuredBlog.authorInitials}
+                          {featuredBlog.author?.name ? featuredBlog.author.name.charAt(0) : 'U'}
                         </span>
                         <div>
-                          <p className="blog-author__name">{featuredBlog.author}</p>
-                          <p className="blog-author__role">{featuredBlog.authorRole}</p>
+                          <p className="blog-author__name">{featuredBlog.author?.name || 'Unknown'}</p>
+                          <p className="blog-author__role">{featuredBlog.author?.role || 'Member'}</p>
                         </div>
                       </div>
                       <div className="featured-blog-card__tags">
@@ -118,7 +117,7 @@ function BlogsPage() {
                           <span key={tag} className="blog-tag">{tag}</span>
                         ))}
                       </div>
-                      <Link to={`/blogs/${featuredBlog.id}`} className="blog-read-more" style={{ marginTop: '1rem', display: 'flex', width: '100%' }}>Read More <span aria-hidden="true" style={{ marginLeft: '0.5rem' }}>→</span></Link>
+                      <Link to={`/blogs/${featuredBlog.slug}`} className="blog-read-more" style={{ marginTop: '1rem', display: 'flex', width: '100%' }}>Read More <span aria-hidden="true" style={{ marginLeft: '0.5rem' }}>→</span></Link>
                     </div>
                   </div>
                 </article>
@@ -169,6 +168,9 @@ function BlogsPage() {
               </div>
 
               {/* Blog grid */}
+              {loadingBlogs ? (
+                <div className="spinner" style={{ margin: '2rem auto' }}></div>
+              ) : (
               <ul
                 className="blogs-grid"
                 role="list"
@@ -176,7 +178,7 @@ function BlogsPage() {
                 aria-label="Blog articles"
               >
                 {filteredBlogs.map(blog => (
-                  <li key={blog.id} className="blog-card" id={blog.id}>
+                  <li key={blog._id} className="blog-card" id={blog._id}>
                     <div className="blog-card__meta">
                       <span className="blog-cat-tag">{blog.category}</span>
                       <span className="blog-read-time">{blog.readTime}</span>
@@ -187,20 +189,21 @@ function BlogsPage() {
                     <div className="blog-card__footer">
                       <div className="blog-author blog-author--sm">
                         <span className="blog-author__initials blog-author__initials--sm" aria-hidden="true">
-                          {blog.authorInitials}
+                          {blog.author?.name ? blog.author.name.charAt(0) : 'U'}
                         </span>
                         <div>
-                          <p className="blog-author__name">{blog.author}</p>
+                          <p className="blog-author__name">{blog.author?.name || 'Unknown'}</p>
                           <p className="blog-author__role">{formatDate(blog.publishedAt)}</p>
                         </div>
                       </div>
-                      <Link to={`/blogs/${blog.id}`} className="blog-read-more">Read More <span aria-hidden="true">→</span></Link>
+                      <Link to={`/blogs/${blog.slug}`} className="blog-read-more">Read More <span aria-hidden="true">→</span></Link>
                     </div>
                   </li>
                 ))}
               </ul>
+              )}
 
-              {filteredBlogs.length === 0 && (
+              {!loadingBlogs && filteredBlogs.length === 0 && (
                 <p className="blogs-empty">No articles match your search.</p>
               )}
             </div>
@@ -260,9 +263,12 @@ function BlogsPage() {
               </div>
 
               {/* Resources list */}
+              {loadingResources ? (
+                <div className="spinner" style={{ margin: '2rem auto' }}></div>
+              ) : (
               <ul className="resources-list" role="list" aria-live="polite">
                 {filteredResources.map(res => (
-                  <li key={res.id} className="resource-row" id={res.id}>
+                  <li key={res._id} className="resource-row" id={res._id}>
                     <div className="resource-row__left">
                       <div className="resource-row__top">
                         <span className="resource-type-badge">{res.type}</span>
@@ -289,8 +295,9 @@ function BlogsPage() {
                   </li>
                 ))}
               </ul>
+              )}
 
-              {filteredResources.length === 0 && (
+              {!loadingResources && filteredResources.length === 0 && (
                 <p className="blogs-empty">No resources match your filters.</p>
               )}
             </div>

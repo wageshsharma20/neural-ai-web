@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 
 // Eagerly load the Home page for best LCP
 import HomePage from './pages/HomePage';
@@ -44,8 +45,9 @@ function PageLoader() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
+    <AuthProvider>
+      <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/"        element={<HomePage />} />
           <Route path="/society" element={<SocietyPage />} />
@@ -113,7 +115,8 @@ function App() {
           />
         </Routes>
       </Suspense>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

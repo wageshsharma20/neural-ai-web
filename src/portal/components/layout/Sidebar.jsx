@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   LayoutDashboard, Users, CheckSquare, TrendingUp, FolderOpen,
   Calendar, Megaphone, FileText, Image, Trophy, BarChart2,
-  Settings, User, ChevronLeft, LogOut,
+  Settings, User, ChevronLeft, LogOut, Shield,
   Building2, Activity,
 } from 'lucide-react';
 import { currentUser } from '../../data/mockData';
@@ -19,7 +19,7 @@ const NAV_GROUPS = [
     items: [
       { id: 'people', label: 'People', icon: Users },
       { id: 'tasks', label: 'Tasks', icon: CheckSquare, badge: 23 },
-      { id: 'team-progress', label: 'Team Progress', icon: TrendingUp },
+
       { id: 'projects', label: 'Projects', icon: FolderOpen },
       { id: 'events', label: 'Events', icon: Calendar },
       { id: 'recruitment', label: 'Recruitment', icon: Building2 },
@@ -47,6 +47,7 @@ const NAV_GROUPS = [
     items: [
       { id: 'profile', label: 'Profile', icon: User },
       { id: 'settings', label: 'Settings', icon: Settings },
+      { id: 'rbac', label: 'Roles & Permissions', icon: Shield },
     ],
   },
 ];

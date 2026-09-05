@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { animate } from 'animejs';
-import { FEATURED_BLOGS } from '../../data/mockData';
+import { useApi } from '../../hooks/useApi';
+import { blogsAPI } from '../../services/api';
 import './FeaturedBlogs.css';
 
 function FeaturedBlogs() {
-  const displayBlogs = FEATURED_BLOGS.slice(0, 3);
+  const { data: blogsRes } = useApi(() => blogsAPI.getPublic({ limit: 3 }));
+  const displayBlogs = blogsRes?.data?.blogs || [];
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -48,7 +50,7 @@ function FeaturedBlogs() {
 
         <div className="blogs__grid">
           {displayBlogs.map((b) => (
-            <article key={b.id} className="blog-card" id={b.id}>
+            <article key={b._id} className="blog-card" id={b._id}>
               <div className="blog-card__meta">
                 <span className="blog-card__category">{b.category}</span>
                 <time className="blog-card__date" dateTime={b.publishedAt}>
@@ -58,10 +60,10 @@ function FeaturedBlogs() {
                 </time>
               </div>
               <h3 className="blog-card__title">
-                <a href={`/blogs/${b.id}`} className="blog-card__link">{b.title}</a>
+                <a href={`/blogs/${b.slug}`} className="blog-card__link">{b.title}</a>
               </h3>
               <div className="blog-card__footer">
-                <span className="blog-card__author">{b.author}</span>
+                <span className="blog-card__author">{b.author?.name || 'Unknown'}</span>
                 <span className="blog-card__read-time">{b.readTime}</span>
               </div>
             </article>

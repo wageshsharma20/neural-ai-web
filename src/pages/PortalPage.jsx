@@ -19,12 +19,13 @@ import Calendar from '../portal/modules/Calendar';
 import PlatformHealth from '../portal/modules/PlatformHealth';
 import Profile from '../portal/modules/Profile';
 import Settings from '../portal/modules/Settings';
+import RBAC from '../portal/modules/RBAC';
 
 const MODULES = {
   dashboard: Dashboard,
   people: People,
   tasks: Tasks,
-  'team-progress': () => <div style={{ color: 'var(--mist)' }}>Team Progress Module (Under Construction)</div>,
+
   projects: Projects,
   events: Events,
   recruitment: Recruitment,
@@ -37,11 +38,19 @@ const MODULES = {
   health: PlatformHealth,
   profile: Profile,
   settings: Settings,
+  rbac: RBAC,
 };
 
+import { useAuth } from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
+
 export default function PortalPage() {
+  const { isAuthenticated, loading } = useAuth();
   const [activeModule, setActiveModule] = useState('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  if (loading) return null;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   const ActiveComponent = MODULES[activeModule] || Dashboard;
 

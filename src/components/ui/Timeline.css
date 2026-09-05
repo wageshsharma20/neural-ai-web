@@ -24,8 +24,6 @@
   align-items: center;
   align-self: flex-start;
   flex-direction: column;
-  width: 100%;
-  max-width: 20rem;
 }
 
 .ace-timeline__marker-bg {
@@ -104,6 +102,8 @@
   .ace-timeline__marker-col {
     flex-direction: row;
     top: 6rem;
+    width: 100%;
+    max-width: 20rem;
   }
   .ace-timeline__title-desktop {
     display: block;

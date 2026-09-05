@@ -1,16 +1,111 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  ArrowRight, Plus, Target,
-  AlertCircle
+  ArrowRight, Plus,
+  AlertCircle, Users, CheckSquare,
+  TrendingUp, Calendar, FolderOpen,
+  Megaphone, Settings, Check, RotateCcw,
+  X, Send, FileText, Loader
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from 'recharts';
-import {
-  stats, recentActivity, analyticsData, events, tasks, notices, currentUser,
-  headData, coHeadData, memberData
-} from '../data/mockData';
+import { useAuth } from '../../context/AuthContext';
+import { useApi } from '../../hooks/useApi';
+import { analyticsAPI, tasksAPI } from '../../services/api';
 import { KpiCard, StatusBadge, PriorityBadge, SectionHeader } from '../components/shared/Primitives';
+
+// ─── Assigned-task submit modal (mark complete w/ description + optional PDF) ─
+function TaskSubmitModal({ task, onClose, onDone }) {
+  const [description, setDescription] = useState('');
+  const [pdfInfo, setPdfInfo] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const handlePdfChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== 'application/pdf') {
+      setError('Only PDF files are allowed');
+      return;
+    }
+    setError('');
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('solution', file);
+      const res = await tasksAPI.uploadSolution(task._id, fd);
+      setPdfInfo({
+        name: res.data?.data?.task?.submission?.pdf?.name || file.name,
+        url: res.data?.data?.task?.submission?.pdf?.url,
+        publicId: res.data?.data?.task?.submission?.pdf?.publicId || '',
+      });
+    } catch (err) {
+      setError(err.response?.data?.message || 'PDF upload failed');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!description.trim()) return;
+    setSubmitting(true);
+    setError('');
+    try {
+      await tasksAPI.submit(task._id, { description: description.trim(), pdf: pdfInfo || undefined });
+      onDone();
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || 'Submission failed');
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="modal" style={{ maxWidth: 520 }} onClick={(e) => e.stopPropagation()}>
+        <div className="modal__header">
+          <div>
+            <p className="text-2xs text-mono uppercase tracking-widest text-mist mb-1">Mark Complete</p>
+            <h2 className="modal__title">Submit Task</h2>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={onClose}><X size={16} /></button>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--mist)' }}>
+            Describe what you completed for <strong style={{ color: 'var(--bone)' }}>"{task.title}"</strong>.
+          </p>
+          <div>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Completion Description *</label>
+            <textarea
+              className="input w-full" rows={4} placeholder="Explain what was done..."
+              value={description} onChange={(e) => setDescription(e.target.value)} style={{ resize: 'none' }}
+            />
+          </div>
+          <div>
+            <label className="text-xs font-mono text-mist uppercase tracking-wider mb-2 block">Solution PDF (Optional)</label>
+            <input type="file" accept="application/pdf" onChange={handlePdfChange} style={{ color: 'var(--mist)', fontSize: 'var(--text-xs)' }} />
+            {uploading && <p className="text-2xs text-mono text-mist" style={{ marginTop: 6 }}>Uploading PDF...</p>}
+            {pdfInfo && !uploading && (
+              <p className="text-2xs text-mono" style={{ marginTop: 6, color: '#5EC26A', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <FileText size={11} /> {pdfInfo.name}
+              </p>
+            )}
+          </div>
+          {error && <p style={{ color: '#E05A5A', fontSize: 'var(--text-xs)' }}>{error}</p>}
+          <div className="flex justify-end gap-3">
+            <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
+            <button className="btn btn-primary" disabled={!description.trim() || submitting || uploading} onClick={handleSubmit}>
+              {submitting ? <Loader size={14} className="anim-spin" /> : <Send size={14} />}
+              {submitting ? 'Submitting...' : 'Submit for Review'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const fmtDue = (d) => (d ? new Date(d).toLocaleDateString('en-IN') : '—');
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
@@ -40,10 +135,11 @@ const activityTypeColor = {
   event_created: 'var(--signal-cyan)',
 };
 
-function SuperAdminDashboard({ onNavigate }) {
-  const upcomingEvents = events.filter((e) => e.status === 'upcoming').slice(0, 3);
-  const pendingTasks = tasks.filter((t) => t.status !== 'completed').slice(0, 5);
-  const latestNotices = notices.filter((n) => n.status === 'published').slice(0, 3);
+function SuperAdminDashboard({ onNavigate, user, data }) {
+  const upcomingEvents = data?.upcomingEventsList || [];
+  const pendingTasks = data?.pendingTasksList || [];
+  const latestNotices = data?.latestNotices || [];
+  const stats = data || {};
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
@@ -51,7 +147,7 @@ function SuperAdminDashboard({ onNavigate }) {
         <div>
           <p className="page-header__eyebrow">Super Admin Overview</p>
           <h1 className="page-header__title">Society Dashboard</h1>
-          <p className="page-header__desc">Welcome back, {currentUser.name}. Here's the complete society overview.</p>
+          <p className="page-header__desc">Welcome back, {user?.name}. Here's the complete society overview.</p>
         </div>
         <div className="page-header__actions">
           <button className="btn btn-secondary btn-sm" onClick={() => onNavigate('settings')}>
@@ -77,7 +173,7 @@ function SuperAdminDashboard({ onNavigate }) {
           </div>
           <div style={{ height: 180 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={analyticsData.memberGrowth} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
+              <AreaChart data={data?.memberGrowth || []} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
                 <defs>
                   <linearGradient id="memberGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#6B4FA0" stopOpacity={0.3} />
@@ -121,8 +217,8 @@ function SuperAdminDashboard({ onNavigate }) {
             <SectionHeader eyebrow="Feed" title="Recent Activity" />
           </div>
           <div style={{ padding: 'var(--space-2) var(--space-5)' }} className="activity-feed">
-            {recentActivity.map((item) => (
-              <div key={item.id} className="activity-item">
+            {data?.recentActivity?.map((item, i) => (
+              <div key={i} className="activity-item">
                 <span className="activity-item__dot" style={{ background: activityTypeColor[item.type] || 'var(--signal-violet)' }} />
                 <span className="activity-item__text">{item.message}</span>
                 <span className="activity-item__time">{item.time}</span>
@@ -178,10 +274,9 @@ function SuperAdminDashboard({ onNavigate }) {
 }
 
 const SettingsIcon = () => <Settings size={14} />;
-import { Settings } from 'lucide-react';
-
-function HeadDashboard({ onNavigate }) {
-  const pendingTasks = tasks.filter((t) => t.status !== 'completed').slice(0, 3);
+function HeadDashboard({ onNavigate, user, data }) {
+  const pendingTasks = data?.headData?.pendingTasksList || [];
+  const headData = data?.headData || {};
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
@@ -189,7 +284,7 @@ function HeadDashboard({ onNavigate }) {
         <div>
           <p className="page-header__eyebrow">{headData.department} Department</p>
           <h1 className="page-header__title">Head Dashboard</h1>
-          <p className="page-header__desc">Welcome back, {currentUser.name}. Here's your department overview.</p>
+          <p className="page-header__desc">Welcome back, {user?.name}. Here's your department overview.</p>
         </div>
         <div className="page-header__actions">
           <button className="btn btn-primary btn-sm" onClick={() => onNavigate('tasks')}>
@@ -260,104 +355,120 @@ function HeadDashboard({ onNavigate }) {
   );
 }
 
-function CoHeadDashboard({ onNavigate }) {
+function MemberDashboard({ onNavigate, user, data }) {
+  const memberData = data?.memberData || { myProjects: [], recentActivity: [] };
+
+  // Real assigned tasks: the API only returns tasks assigned to this member
+  const { data: tasksRes, loading: tasksLoading, refetch: refetchTasks } = useApi(() => tasksAPI.getAll());
+  const myTasks = tasksRes?.data?.tasks || [];
+  const [submitTask, setSubmitTask] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [busyId, setBusyId] = useState(null);
+
+  const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  const handleUnsubmit = async (task) => {
+    setBusyId(task._id);
+    try {
+      await tasksAPI.unsubmit(task._id);
+      showToast('Task marked as incomplete');
+      refetchTasks();
+    } catch (err) {
+      showToast(err.response?.data?.message || err.message || 'Action failed');
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const completedTasks = myTasks.filter((t) => t.status === 'Completed').length;
+  const canSubmit = (t) => !['Under Review', 'Completed'].includes(t.status);
+  const canUnsubmit = (t) => ['Under Review', 'Completed'].includes(t.status);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-      <div className="page-header">
-        <div>
-          <p className="page-header__eyebrow">{coHeadData.department} Execution</p>
-          <h1 className="page-header__title">Co-Head Workspace</h1>
-          <p className="page-header__desc">Welcome back, {currentUser.name}. Here are your operational priorities.</p>
-        </div>
-        <div className="page-header__actions">
-          <button className="btn btn-primary btn-sm" onClick={() => onNavigate('tasks')}>
-            <Plus size={14} /> Update Tasks
-          </button>
-        </div>
-      </div>
+      {submitTask && (
+        <TaskSubmitModal
+          task={submitTask}
+          onClose={() => setSubmitTask(null)}
+          onDone={() => {
+            setSubmitTask(null);
+            showToast('Task submitted for review');
+            refetchTasks();
+          }}
+        />
+      )}
 
-      <div className="kpi-grid">
-        <KpiCard label="Assigned Projects" value={coHeadData.assignedProjects} delta="Executing" icon={FolderOpen} iconColor="cyan" />
-        <KpiCard label="Team Members" value={coHeadData.teamMembers} delta="Under your wing" icon={Users} iconColor="violet" />
-        <KpiCard label="Pending Reviews" value={coHeadData.pendingReviews} delta="Requires action" icon={CheckSquare} iconColor="amber" />
-        <KpiCard label="Upcoming Deadlines" value={coHeadData.upcomingDeadlines} delta="This week" icon={Target} iconColor="magenta" />
-      </div>
-
-      <div className="grid-12">
-        <div className="card col-span-6" style={{ padding: 0 }}>
-          <div style={{ padding: 'var(--space-4) var(--space-5)', borderBottom: '1px solid var(--surface-border)' }}>
-            <SectionHeader eyebrow="Personal" title="My Assigned Tasks" />
-          </div>
-          <div>
-            {coHeadData.myTasks.map((t, i) => (
-              <div key={i} style={{ padding: 'var(--space-3) var(--space-5)', borderBottom: '1px solid var(--surface-border)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <div className="flex items-center justify-between gap-2">
-                  <span style={{ fontSize: 'var(--text-xs)', color: 'var(--bone)', fontWeight: 500, flex: 1, minWidth: 0 }} className="text-truncate">{t.title}</span>
-                  <PriorityBadge priority={t.priority} />
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-2xs text-mono text-mist">Due {t.dueDate}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+      {toast && (
+        <div className="anim-fade-up" style={{
+          position: 'fixed', bottom: 32, right: 32,
+          background: 'var(--bone)', color: 'var(--surface-0)',
+          padding: '12px 24px', borderRadius: 'var(--radius)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+          fontWeight: 500, fontSize: 'var(--text-sm)', zIndex: 1000,
+          display: 'flex', alignItems: 'center', gap: '8px'
+        }}>
+          <Check size={16} />
+          {toast}
         </div>
+      )}
 
-        <div className="card col-span-6" style={{ padding: 0 }}>
-          <div style={{ padding: 'var(--space-4) var(--space-5)', borderBottom: '1px solid var(--surface-border)' }}>
-            <SectionHeader eyebrow="Team" title="Team Task Progress" />
-          </div>
-          <div>
-            {coHeadData.teamTasks.map((t, i) => (
-              <div key={i} style={{ padding: 'var(--space-3) var(--space-5)', borderBottom: '1px solid var(--surface-border)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <div className="flex items-center justify-between gap-2">
-                  <span style={{ fontSize: 'var(--text-xs)', color: 'var(--bone)', fontWeight: 500, flex: 1, minWidth: 0 }} className="text-truncate">{t.title}</span>
-                  <StatusBadge status={t.status.toLowerCase().replace(' ', '_')} />
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-2xs text-mono text-mist">Assignee: {t.assignee}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MemberDashboard() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
       <div className="page-header">
         <div>
           <p className="page-header__eyebrow">Personal Workspace</p>
           <h1 className="page-header__title">Member Dashboard</h1>
-          <p className="page-header__desc">Welcome back, {currentUser.name}. Ready to build something great?</p>
+          <p className="page-header__desc">Welcome back, {user?.name}. Ready to build something great?</p>
         </div>
       </div>
 
       <div className="kpi-grid">
-        <KpiCard label="My Tasks" value={memberData.myTasksCount} delta="2 high priority" icon={CheckSquare} iconColor="cyan" />
-        <KpiCard label="Completed" value={memberData.completedTasks} delta="Total contribution" icon={TrendingUp} iconColor="violet" />
+        <KpiCard label="My Tasks" value={myTasks.length} delta={`${myTasks.filter((t) => t.status !== 'Completed').length} pending`} icon={CheckSquare} iconColor="cyan" />
+        <KpiCard label="Completed" value={completedTasks} delta="Total contribution" icon={TrendingUp} iconColor="violet" />
         <KpiCard label="Projects" value={memberData.myProjects.length} delta="Active involvement" icon={FolderOpen} iconColor="magenta" />
-        <KpiCard label="Events" value={memberData.upcomingEvents} delta="Registered for" icon={Calendar} iconColor="amber" />
+        <KpiCard label="Events" value={memberData.upcomingEvents || 0} delta="Registered for" icon={Calendar} iconColor="amber" />
       </div>
 
       <div className="grid-12">
         <div className="card col-span-6" style={{ padding: 0 }}>
           <div style={{ padding: 'var(--space-4) var(--space-5)', borderBottom: '1px solid var(--surface-border)' }}>
-            <SectionHeader eyebrow="Action Required" title="Assigned Tasks" />
+            <SectionHeader eyebrow="Action Required" title="Assigned Tasks">
+              <button className="btn btn-ghost btn-sm" onClick={() => onNavigate('tasks')}>View all <ArrowRight size={12} /></button>
+            </SectionHeader>
           </div>
           <div>
-            {memberData.myTasks.map((t, i) => (
-              <div key={i} style={{ padding: 'var(--space-3) var(--space-5)', borderBottom: '1px solid var(--surface-border)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+            {tasksLoading && <div className="spinner" style={{ margin: '2rem auto' }}></div>}
+            {!tasksLoading && myTasks.length === 0 && (
+              <p className="text-2xs text-mono text-mist" style={{ padding: 'var(--space-4) var(--space-5)' }}>No tasks assigned yet.</p>
+            )}
+            {myTasks.map((t) => (
+              <div key={t._id} style={{ padding: 'var(--space-3) var(--space-5)', borderBottom: '1px solid var(--surface-border)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                 <div className="flex items-center justify-between gap-2">
                   <span style={{ fontSize: 'var(--text-xs)', color: 'var(--bone)', fontWeight: 500, flex: 1, minWidth: 0 }} className="text-truncate">{t.title}</span>
                   <PriorityBadge priority={t.priority} />
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <StatusBadge status={t.status.toLowerCase().replace(' ', '_')} />
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={t.status.toLowerCase().replace(/ /g, '_')} />
+                    <span className="text-2xs text-mono text-mist">Due {fmtDue(t.dueDate)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {t.review?.status === 'pending' && <span className="badge badge-status-pending">Awaiting review</span>}
+                    {t.review?.status === 'rejected' && (
+                      <span className="badge badge-status-rejected" title={t.review.note}>Rejected</span>
+                    )}
+                    {canSubmit(t) && (
+                      <button className="btn btn-primary btn-sm" onClick={() => setSubmitTask(t)}>
+                        <Check size={12} /> Complete
+                      </button>
+                    )}
+                    {canUnsubmit(t) && (
+                      <button className="btn btn-secondary btn-sm" disabled={busyId === t._id} onClick={() => handleUnsubmit(t)}>
+                        {busyId === t._id ? <Loader size={12} className="anim-spin" /> : <RotateCcw size={12} />} Uncomplete
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -384,19 +495,26 @@ function MemberDashboard() {
 }
 
 export default function DashboardModule({ onNavigate }) {
-  const [activeRole, setActiveRole] = React.useState(currentUser.role);
+  const { user } = useAuth();
+  // Using activeRole state for testing, defaults to real user role
+  const [activeRole, setActiveRole] = React.useState(user?.role || 'Member');
+  
+  const { data: dashboardRes, loading } = useApi(() => analyticsAPI.dashboard());
+  const data = dashboardRes?.data;
 
   const renderDashboard = () => {
+    if (loading) return <div className="spinner" style={{ margin: '3rem auto' }}></div>;
+
     switch (activeRole) {
       case 'Super Admin':
-        return <SuperAdminDashboard onNavigate={onNavigate} />;
+      case 'Admin':
+        return <SuperAdminDashboard onNavigate={onNavigate} user={user} data={data} />;
       case 'Head':
-        return <HeadDashboard onNavigate={onNavigate} />;
-      case 'Co-Head':
-        return <CoHeadDashboard onNavigate={onNavigate} />;
+      case 'Core Team':
+        return <HeadDashboard onNavigate={onNavigate} user={user} data={data} />;
       case 'Member':
       default:
-        return <MemberDashboard onNavigate={onNavigate} />;
+        return <MemberDashboard onNavigate={onNavigate} user={user} data={data} />;
     }
   };
 
@@ -433,8 +551,8 @@ export default function DashboardModule({ onNavigate }) {
             }}
           >
             <option value="Super Admin">Super Admin</option>
-            <option value="Head">Head</option>
-            <option value="Co-Head">Co-Head</option>
+            <option value="Admin">Admin</option>
+            <option value="Core Team">Core Team</option>
             <option value="Member">Member</option>
           </select>
         </div>

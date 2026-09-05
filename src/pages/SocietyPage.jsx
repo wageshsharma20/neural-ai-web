@@ -9,6 +9,7 @@ import TeamSlider from '../components/ui/TeamSlider';
 import PhotonBeam from '../components/ui/PhotonBeam';
 import { Timeline } from '../components/ui/Timeline';
 import Achievements from '../components/sections/Achievements';
+import SocietyGallery from '../components/sections/SocietyGallery';
 import './SocietyPage.css';
 
 
@@ -266,6 +267,9 @@ function SocietyPage() {
             </ScrollAnimation>
           </div>
         </div>
+        {/* ── Gallery ── */}
+        <SocietyGallery />
+
         {/* ── CTA ── */}
         <ScrollAnimation as="section" className="society-cta section container">
           <div className="society-cta__inner">

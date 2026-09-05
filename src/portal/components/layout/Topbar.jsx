@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Bell, Menu } from 'lucide-react';
-import { notifications } from '../../data/mockData';
+import { useApi } from '../../../hooks/useApi';
+import { notificationsAPI } from '../../../services/api';
 
 const MODULE_LABELS = {
   dashboard: 'Dashboard',
   people: 'People',
   tasks: 'Tasks',
-  'team-progress': 'Team Progress',
+
   projects: 'Projects',
   events: 'Events',
   recruitment: 'Recruitment',
@@ -18,12 +19,29 @@ const MODULE_LABELS = {
   calendar: 'Calendar',
   profile: 'Profile',
   settings: 'Settings',
+  rbac: 'Roles & Permissions',
 };
+
+function timeAgo(dateStr) {
+  if (!dateStr) return '';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString('en-IN');
+}
 
 export default function PortalTopbar({ activeModule, onMobileMenuToggle }) {
   const [notifOpen, setNotifOpen] = useState(false);
   const notifRef = useRef(null);
-  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  const { data: notifData, refetch: refetchNotifs } = useApi(() => notificationsAPI.getAll());
+  const notifications = notifData?.data?.notifications || [];
+  const unreadCount = notifData?.data?.unreadCount || 0;
 
   useEffect(() => {
     const handler = (e) => {
@@ -34,6 +52,24 @@ export default function PortalTopbar({ activeModule, onMobileMenuToggle }) {
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
+
+  const handleMarkAllRead = async () => {
+    try {
+      await notificationsAPI.markAllRead();
+      refetchNotifs();
+    } catch (err) {
+      console.error('Mark all read failed:', err.message);
+    }
+  };
+
+  const handleClickNotif = async (id) => {
+    try {
+      await notificationsAPI.markRead(id);
+      refetchNotifs();
+    } catch (err) {
+      console.error('Mark read failed:', err.message);
+    }
+  };
 
   return (
     <header className="portal-topbar" role="banner">
@@ -96,16 +132,26 @@ export default function PortalTopbar({ activeModule, onMobileMenuToggle }) {
               <button
                 className="btn btn-ghost btn-sm"
                 style={{ padding: '2px 6px', fontSize: 'var(--text-2xs)' }}
-                onClick={() => setNotifOpen(false)}
+                onClick={handleMarkAllRead}
+                disabled={unreadCount === 0}
               >
                 Mark all read
               </button>
             </div>
+            {notifications.length === 0 && (
+              <div style={{ padding: 'var(--space-4)', textAlign: 'center' }}>
+                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--mist)' }}>No notifications yet</p>
+              </div>
+            )}
             {notifications.map((n) => (
-              <div key={n.id} className={`notif-item ${!n.read ? 'unread' : ''}`}>
+              <div
+                key={n._id}
+                className={`notif-item ${!n.read ? 'unread' : ''}`}
+                onClick={() => handleClickNotif(n._id)}
+              >
                 <div className="notif-item__title">{n.title}</div>
                 <div className="notif-item__msg">{n.message}</div>
-                <div className="notif-item__time">{n.time}</div>
+                <div className="notif-item__time">{timeAgo(n.createdAt)}</div>
               </div>
             ))}
           </div>

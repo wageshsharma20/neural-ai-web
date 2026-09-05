@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import { Plus, Globe, ExternalLink, Users } from 'lucide-react';
-import { projects, members } from '../data/mockData';
 import { StatusBadge, SectionHeader, TagList } from '../components/shared/Primitives';
+import { useApi } from '../../hooks/useApi';
+import { projectsAPI } from '../../services/api';
 
 const AVATAR_COLORS = { 'Super Admin': 'magenta', 'Admin': 'violet', 'Core Team': 'cyan', 'Member': 'mist' };
 
-function getMember(id) { return members.find((m) => m.id === id); }
-
 function ProjectCard({ project }) {
-  const lead = getMember(project.lead);
-  const teamMembers = project.team.map(getMember).filter(Boolean);
+  const teamMembers = project.team || [];
 
   return (
     <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-2xs text-mono text-mist" style={{ marginBottom: 4 }}>{project.id} · {project.category}</p>
           <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--bone)', lineHeight: 1.4 }}>{project.title}</h3>
         </div>
         <StatusBadge status={project.status} />
@@ -32,12 +29,14 @@ function ProjectCard({ project }) {
       <div className="flex items-center justify-between">
         <div>
           <span className="text-2xs text-mono text-mist">Start: </span>
-          <span className="text-2xs text-mono text-bone">{project.startDate}</span>
+          <span className="text-2xs text-mono text-bone">{new Date(project.startDate).toLocaleDateString('en-IN')}</span>
         </div>
-        <div>
-          <span className="text-2xs text-mono text-mist">Deadline: </span>
-          <span className="text-2xs text-mono text-bone">{project.deadline}</span>
-        </div>
+        {project.endDate && (
+          <div>
+            <span className="text-2xs text-mono text-mist">Deadline: </span>
+            <span className="text-2xs text-mono text-bone">{new Date(project.endDate).toLocaleDateString('en-IN')}</span>
+          </div>
+        )}
       </div>
 
       <hr className="section-rule" />
@@ -45,9 +44,9 @@ function ProjectCard({ project }) {
       {/* Team + links */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
-          {teamMembers.map((m, i) => (
-            <div key={i} className={`avatar avatar-sm avatar-${AVATAR_COLORS[m.role] || 'mist'}`} title={m.name}>
-              {m.initials}
+          {teamMembers.map((m) => (
+            <div key={m._id} className={`avatar avatar-sm avatar-${AVATAR_COLORS[m.role] || 'mist'}`} title={m.name}>
+              {m.name?.charAt(0)}
             </div>
           ))}
           <span className="text-2xs text-mono text-mist" style={{ marginLeft: 6 }}>{teamMembers.length} members</span>
@@ -72,11 +71,16 @@ function ProjectCard({ project }) {
 export default function ProjectsModule() {
   const [statusFilter, setStatusFilter] = useState('All');
 
+  const { data, loading } = useApi(() => projectsAPI.getAll());
+  const projects = data?.data?.projects || [];
+
   const filtered = projects.filter((p) =>
     statusFilter === 'All' || p.status === statusFilter
   );
 
   const statuses = ['All', 'active', 'completed', 'on_hold'];
+
+  if (loading) return <div className="spinner" style={{ margin: '3rem auto' }}></div>;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
@@ -107,7 +111,7 @@ export default function ProjectsModule() {
       {/* Grid */}
       <div className="grid-3">
         {filtered.map((p) => (
-          <ProjectCard key={p.id} project={p} />
+          <ProjectCard key={p._id} project={p} />
         ))}
       </div>
 

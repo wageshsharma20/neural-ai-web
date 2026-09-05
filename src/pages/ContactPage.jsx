@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PageLayout from '../components/layout/PageLayout';
 import './ContactPage.css';
 import { LineAnimation } from '../components/ui/LineAnimation';
+import { useMutation } from '../hooks/useApi';
+import { contactAPI } from '../services/api';
 
 function ContactPage() {
   const [formData, setFormData] = useState({
@@ -10,25 +12,21 @@ function ContactPage() {
     message: '',
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { mutate: submitContact, loading: isSubmitting, error } = useMutation((data) => contactAPI.submit(data));
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate network request
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await submitContact(formData);
       alert('Thank you for reaching out! We will get back to you soon.');
-      setFormData({
-        name: '',
-        email: '',
-        message: '',
-      });
-    }, 1500);
+      setFormData({ name: '', email: '', message: '' });
+    } catch (err) {
+      // error is handled and exposed by useMutation
+    }
   };
 
   return (
@@ -74,6 +72,7 @@ function ContactPage() {
                   <label htmlFor="message" className="form-label">Message</label>
                   <textarea id="message" name="message" className="form-input form-textarea" rows="4" value={formData.message} onChange={handleChange} required placeholder="Tell us more about your inquiry..."></textarea>
                 </div>
+                {error && <div style={{ color: 'red', marginBottom: '1rem', fontSize: '14px' }}>{error}</div>}
                 <button type="submit" className={`submit-btn ${isSubmitting ? 'submitting' : ''}`} disabled={isSubmitting}>
                   {isSubmitting ? (
                     <span className="spinner"></span>

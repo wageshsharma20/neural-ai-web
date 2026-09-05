@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { Users, CheckCircle, Clock, Search } from 'lucide-react';
-import { recruitmentData, recruitmentApplications, recruitmentInterviews } from '../data/mockData';
-import { SectionHeader } from '../components/shared/Primitives';
+import { SectionHeader, StatusBadge } from '../components/shared/Primitives';
+import { useApi, useMutation } from '../../hooks/useApi';
+import { recruitmentAPI } from '../../services/api';
 
 export default function RecruitmentModule() {
   const [activeTab, setActiveTab] = useState('overview');
+
+  const { data: statsData, loading: statsLoading } = useApi(() => recruitmentAPI.getStats());
+  const { data: appsData, loading: appsLoading } = useApi(() => recruitmentAPI.getApplications());
+
+  const recruitmentData = statsData?.data || { totalApplications: 0, byStatus: [], byDomain: [] };
+  const recruitmentApplications = appsData?.data?.applications || [];
+
+  const byStatus = (status) => recruitmentData.byStatus?.find(s => s._id === status)?.count || 0;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
@@ -44,23 +53,23 @@ export default function RecruitmentModule() {
             <div className="card">
               <div className="flex items-center gap-2 mb-2">
                 <Clock size={16} className="text-mist" />
-                <span className="text-xs text-mist">Shortlisted</span>
+                <span className="text-xs text-mist">Under Review</span>
               </div>
-              <div className="text-2xl text-cyan mono font-semibold">{recruitmentData.shortlisted}</div>
+              <div className="text-2xl text-cyan mono font-semibold">{byStatus('under_review')}</div>
             </div>
             <div className="card">
               <div className="flex items-center gap-2 mb-2">
                 <Users size={16} className="text-mist" />
                 <span className="text-xs text-mist">Interviewed</span>
               </div>
-              <div className="text-2xl text-violet mono font-semibold">{recruitmentData.interviewed}</div>
+              <div className="text-2xl text-violet mono font-semibold">{byStatus('interviewed')}</div>
             </div>
             <div className="card">
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle size={16} className="text-mist" />
-                <span className="text-xs text-mist">Selected</span>
+                <span className="text-xs text-mist">Accepted</span>
               </div>
-              <div className="text-2xl text-green mono font-semibold">{recruitmentData.selected}</div>
+              <div className="text-2xl text-green mono font-semibold">{byStatus('accepted')}</div>
             </div>
           </div>
 
@@ -86,12 +95,12 @@ export default function RecruitmentModule() {
             <div className="card">
               <SectionHeader eyebrow="Breakdown" title="Applications by Domain" />
               <div className="flex flex-col gap-4 mt-4">
-                {recruitmentData.domains.map(d => {
+                {recruitmentData.byDomain?.map(d => {
                   return (
-                    <div key={d.name}>
+                    <div key={d._id}>
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-medium text-bone">{d.name}</span>
-                        <span className="text-xs text-mist">{d.applications}</span>
+                        <span className="text-xs font-medium text-bone">{d._id}</span>
+                        <span className="text-xs text-mist">{d.count}</span>
                       </div>
                     </div>
                   );
@@ -125,7 +134,7 @@ export default function RecruitmentModule() {
               </thead>
               <tbody>
                 {recruitmentApplications.map((app) => (
-                  <tr key={app.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }} className="hover:bg-surface-2 transition-colors">
+                  <tr key={app._id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }} className="hover:bg-surface-2 transition-colors">
                     <td style={{ padding: 'var(--space-4)', color: 'var(--bone)', fontSize: 'var(--text-sm)', fontWeight: 500 }}>{app.name}</td>
                     <td style={{ padding: 'var(--space-4)', color: 'var(--mist-light)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{app.rollNumber}</td>
                     <td style={{ padding: 'var(--space-4)', color: 'var(--mist)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{app.phone}</td>
@@ -161,21 +170,17 @@ export default function RecruitmentModule() {
                 </tr>
               </thead>
               <tbody>
-                {recruitmentInterviews.map((int) => (
-                  <tr key={int.id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }} className="hover:bg-surface-2 transition-colors">
+                {recruitmentApplications.filter(a => a.status === 'interviewed' || a.status === 'under_review').map((int) => (
+                  <tr key={int._id} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }} className="hover:bg-surface-2 transition-colors">
                     <td style={{ padding: 'var(--space-4)', color: 'var(--bone)', fontSize: 'var(--text-sm)', fontWeight: 500 }}>{int.name}</td>
                     <td style={{ padding: 'var(--space-4)', color: 'var(--mist-light)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{int.rollNumber}</td>
                     <td style={{ padding: 'var(--space-4)', color: 'var(--mist)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{int.phone}</td>
                     <td style={{ padding: 'var(--space-4)' }}>
-                      <div style={{ color: 'var(--bone)', fontSize: 'var(--text-sm)' }}>{int.date}</div>
-                      <div style={{ color: 'var(--mist)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)', marginTop: 2 }}>{int.time}</div>
+                      <div style={{ color: 'var(--bone)', fontSize: 'var(--text-sm)' }}>Pending Scheduling</div>
                     </td>
                     <td style={{ padding: 'var(--space-4)' }}>
                       <div className="flex items-center gap-2">
-                        <div className="avatar avatar-sm" style={{ background: 'var(--signal-violet-muted)', color: 'var(--signal-violet)' }}>
-                          {int.interviewer.split(' ').map(n => n[0]).join('')}
-                        </div>
-                        <span style={{ color: 'var(--bone)', fontSize: 'var(--text-sm)' }}>{int.interviewer}</span>
+                        <span style={{ color: 'var(--bone)', fontSize: 'var(--text-sm)' }}>TBA</span>
                       </div>
                     </td>
                   </tr>

@@ -2,7 +2,8 @@ import { ScrollAnimation } from '../components/ui/ScrollAnimation';
 import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageLayout from '../components/layout/PageLayout';
-import { ALL_BLOGS } from '../data/blogsData';
+import { useApi } from '../hooks/useApi';
+import { blogsAPI } from '../services/api';
 import './BlogPostPage.css';
 
 const formatDate = (dateString) => {
@@ -11,11 +12,20 @@ const formatDate = (dateString) => {
 };
 
 export default function BlogPostPage() {
-  const { id } = useParams();
+  const { id } = useParams(); // actually the slug
 
-  const blog = useMemo(() => {
-    return ALL_BLOGS.find(b => b.id === id);
-  }, [id]);
+  const { data: blogRes, loading } = useApi(() => blogsAPI.getBySlug(id), [id]);
+  const blog = blogRes?.data?.blog;
+
+  if (loading) {
+    return (
+      <PageLayout>
+        <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="spinner"></div>
+        </div>
+      </PageLayout>
+    );
+  }
 
   if (!blog) {
     return (
@@ -44,10 +54,10 @@ export default function BlogPostPage() {
             <h1 className="blog-post-title">{blog.title}</h1>
             
             <div className="blog-author">
-              <div className="blog-author__initials" aria-hidden="true">{blog.authorInitials}</div>
+              <span className="blog-author__initials">{blog.author?.name ? blog.author.name.charAt(0) : 'U'}</span>
               <div>
-                <p className="blog-author__name">{blog.author}</p>
-                <p className="blog-author__role">{blog.authorRole} • {formatDate(blog.publishedAt)}</p>
+                <p className="blog-author__name">{blog.author?.name || 'Unknown'}</p>
+                <p className="blog-author__role">{blog.author?.role || 'Member'} • {formatDate(blog.publishedAt)}</p>
               </div>
             </div>
           </div>

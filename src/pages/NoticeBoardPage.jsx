@@ -1,7 +1,8 @@
 import { ScrollAnimation } from '../components/ui/ScrollAnimation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PageLayout from '../components/layout/PageLayout';
-import { ALL_NOTICES, ALL_EVENTS } from '../data/noticeData';
+import { useApi } from '../hooks/useApi';
+import { noticesAPI, eventsAPI, recruitmentAPI } from '../services/api';
 import { LineAnimation } from '../components/ui/LineAnimation';
 import PhotonBeam from '../components/ui/PhotonBeam';
 import './NoticeBoardPage.css';
@@ -57,6 +58,24 @@ function NoticeBoardPage() {
   const [eventTab,     setEventTab]     = useState('Upcoming');
   
   const recFlowRef = React.useRef(null);
+
+  // ── API Calls ──
+  const { data: noticeRes, loading: loadingNotices } = useApi(() => 
+    noticesAPI.getPublic({ category: noticeFilter === 'All' ? undefined : noticeFilter })
+  , [noticeFilter]);
+
+  const { data: eventRes, loading: loadingEvents } = useApi(() => 
+    eventsAPI.getPublic({ status: eventTab.toLowerCase() })
+  , [eventTab]);
+
+  const { data: cycleRes } = useApi(() => recruitmentAPI.getPublicCycle());
+
+  const notices = noticeRes?.data?.notices || [];
+  const events = eventRes?.data?.events || [];
+  const activeCycle = cycleRes?.data?.cycle;
+  
+  const { data: featuredNoticeRes } = useApi(() => noticesAPI.getFeatured());
+  const pinnedNotice = featuredNoticeRes?.data?.notice;
 
   React.useEffect(() => {
     const observer = new IntersectionObserver(
@@ -123,15 +142,8 @@ function NoticeBoardPage() {
     return () => observer.disconnect();
   }, []);
 
-  const filteredNotices = noticeFilter === 'All'
-    ? ALL_NOTICES
-    : ALL_NOTICES.filter(n => n.category === noticeFilter);
-
-  const filteredEvents = ALL_EVENTS.filter(
-    e => e.status === eventTab.toLowerCase()
-  );
-
-  const pinnedNotice = ALL_NOTICES.find(n => n.pinned);
+  //   return () => observer.disconnect();
+  // }, []);
 
   return (
     <PageLayout>
@@ -219,17 +231,28 @@ function NoticeBoardPage() {
                 ))}
               </div>
 
-              <div className="rec-whatsapp-link-wrapper">
-                <a
-                  href="https://chat.whatsapp.com/invite-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rec-mid-btn"
-                  style={{ opacity: 0 }}
-                >
-                  Join WhatsApp Group ↗
-                </a>
-              </div>
+              {activeCycle ? (
+                <div className="rec-whatsapp-link-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                  <a
+                    href={activeCycle.applyUrl || '/portal'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rec-mid-btn"
+                    style={{ opacity: 0 }}
+                  >
+                    Apply Now ↗
+                  </a>
+                  <p style={{ color: 'var(--mist)', fontSize: '0.85rem' }}>
+                    Deadline: {formatDate(activeCycle.deadline)}
+                  </p>
+                </div>
+              ) : (
+                <div className="rec-whatsapp-link-wrapper">
+                  <p className="rec-mid-btn" style={{ opacity: 0, pointerEvents: 'none', background: 'var(--space)', color: 'var(--mist)' }}>
+                    Applications Closed
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </ScrollAnimation>
@@ -281,7 +304,7 @@ function NoticeBoardPage() {
                       <span className="notice-pinned__tag">Pinned</span>
                       <LineAnimation as="p" className="notice-pinned__title" text={pinnedNotice.title} direction="left" staggerDelay={0.1} />
                       <LineAnimation as="p" className="notice-pinned__desc" text={pinnedNotice.description} direction="left" staggerDelay={0.1} />
-                      <span className="notice-pinned__date">{formatDate(pinnedNotice.date)}</span>
+                      <span className="notice-pinned__date">{formatDate(pinnedNotice.publishedAt || pinnedNotice.createdAt)}</span>
                     </div>
                   )}
 
@@ -300,20 +323,24 @@ function NoticeBoardPage() {
                     ))}
                   </div>
 
+                  {loadingNotices ? (
+                    <div className="spinner" style={{ margin: '2rem auto' }}></div>
+                  ) : (
                   <ul className="notice-list" role="list" aria-live="polite">
-                    {filteredNotices.map(notice => (
+                    {notices.map(notice => (
                       <li key={notice.id} className="notice-card" id={notice.id}>
                         <div className="notice-card__top">
                           <span className="notice-card__cat">{notice.category}</span>
-                          <span className="notice-card__date">{formatDate(notice.date)}</span>
+                          <span className="notice-card__date">{formatDate(notice.publishedAt || notice.createdAt)}</span>
                         </div>
                         <LineAnimation as="p" className="notice-card__title" text={notice.title} direction="left" staggerDelay={0.1} />
                         <LineAnimation as="p" className="notice-card__desc" text={notice.description} direction="left" staggerDelay={0.1} />
                       </li>
                     ))}
                   </ul>
+                  )}
 
-                  {filteredNotices.length === 0 && (
+                  {!loadingNotices && notices.length === 0 && (
                     <p className="board-empty">No notices in this category.</p>
                   )}
                 </div>
@@ -341,8 +368,11 @@ function NoticeBoardPage() {
                     ))}
                   </div>
 
+                  {loadingEvents ? (
+                    <div className="spinner" style={{ margin: '2rem auto' }}></div>
+                  ) : (
                   <ul className="events-list" role="list" aria-live="polite">
-                    {filteredEvents.map(evt => (
+                    {events.map(evt => (
                       <li key={evt.id} className="event-card" id={evt.id}>
                         <div className="event-card__meta">
                           <span className="event-card__cat">{evt.category}</span>
@@ -388,8 +418,9 @@ function NoticeBoardPage() {
                       </li>
                     ))}
                   </ul>
+                  )}
 
-                  {filteredEvents.length === 0 && (
+                  {!loadingEvents && events.length === 0 && (
                     <p className="board-empty">No {eventTab.toLowerCase()} events right now.</p>
                   )}
                 </div>
