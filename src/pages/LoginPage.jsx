@@ -35,7 +35,13 @@ export default function LoginPage() {
         navigate('/portal');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to login');
+      // Distinguish network errors (backend offline) from auth errors
+      const isNetworkError = !err.response;
+      if (isNetworkError) {
+        setError('Cannot reach the server. The backend may be offline. Please try again later.');
+      } else {
+        setError(err.response?.data?.message || 'Invalid email or password.');
+      }
     } finally {
       setLoading(false);
     }
