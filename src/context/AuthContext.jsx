@@ -18,10 +18,17 @@ export function AuthProvider({ children }) {
 
   // ─── Verify session on app load ───────────────────────────────────────────
   useEffect(() => {
-    authAPI.me()
+    // Use a short timeout so the app doesn't hang when the backend is offline.
+    // If /auth/me doesn't respond within 3 s, treat user as logged out.
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 3000);
+
+    authAPI.me({ signal: controller.signal })
       .then((res) => setUser(res.data.data.user))
       .catch(() => setUser(null))
-      .finally(() => setLoading(false));
+      .finally(() => { clearTimeout(timer); setLoading(false); });
+
+    return () => { clearTimeout(timer); controller.abort(); };
   }, []);
 
   // ─── Login ────────────────────────────────────────────────────────────────

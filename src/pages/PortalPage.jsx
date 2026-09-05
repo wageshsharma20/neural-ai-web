@@ -49,7 +49,23 @@ export default function PortalPage() {
   const [activeModule, setActiveModule] = useState('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  if (loading) return null;
+  if (loading) return (
+    <div style={{
+      minHeight: '100dvh',
+      background: 'var(--ink)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <span style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: 'var(--text-xs)',
+        letterSpacing: 'var(--tracking-wider)',
+        textTransform: 'uppercase',
+        color: 'var(--mist)',
+      }}>Loading…</span>
+    </div>
+  );
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   const ActiveComponent = MODULES[activeModule] || Dashboard;
