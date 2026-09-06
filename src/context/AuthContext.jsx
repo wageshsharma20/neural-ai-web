@@ -5,12 +5,22 @@
  * - On mount: calls GET /auth/me (cookie is sent automatically)
  * - login(): POST /auth/login → stores user in state
  * - logout(): POST /auth/logout → clears cookie + state
+ *
+ * LOCAL DEV (no backend): use mock credentials below to access the portal.
+ *   admin@neural.ai  /  admin123   → Super Admin
+ *   member@neural.ai /  member123  → Core Team
  */
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { authAPI } from '../services/api';
 
 const AuthContext = createContext(null);
+
+// ── Mock credentials for local frontend-only development ──────────────────────
+const MOCK_CREDENTIALS = [
+  { email: 'admin@neural.ai',  password: 'admin123',  role: 'Super Admin', name: 'Admin (Local)' },
+  { email: 'member@neural.ai', password: 'member123', role: 'Core Team',   name: 'Member (Local)' },
+];
 
 export function AuthProvider({ children }) {
   const [user,    setUser]    = useState(null);
@@ -25,7 +35,11 @@ export function AuthProvider({ children }) {
 
     authAPI.me({ signal: controller.signal })
       .then((res) => setUser(res.data.data.user))
-      .catch(() => setUser(null))
+      .catch(() => {
+        // Restore mock session if one was saved
+        const saved = localStorage.getItem('mock_user');
+        setUser(saved ? JSON.parse(saved) : null);
+      })
       .finally(() => { clearTimeout(timer); setLoading(false); });
 
     return () => { clearTimeout(timer); controller.abort(); };
@@ -33,12 +47,35 @@ export function AuthProvider({ children }) {
 
   // ─── Login ────────────────────────────────────────────────────────────────
   const login = useCallback(async (email, password) => {
-    const res = await authAPI.login({ email, password });
-    if (res.data.requiresOtp) {
-      return { requiresOtp: true };
+    try {
+      const res = await authAPI.login({ email, password });
+      if (res.data.requiresOtp) {
+        return { requiresOtp: true };
+      }
+      setUser(res.data.data.user);
+      return res.data;
+    } catch (err) {
+      // If backend is unreachable, fall back to mock credentials
+      if (!err.response) {
+        const match = MOCK_CREDENTIALS.find(
+          (c) => c.email === email && c.password === password
+        );
+        if (match) {
+          const mockUser = { _id: 'mock-1', name: match.name, email: match.email, role: match.role };
+          localStorage.setItem('mock_user', JSON.stringify(mockUser));
+          setUser(mockUser);
+          return { data: { user: mockUser } };
+        }
+        // Wrong mock credentials — give a helpful hint
+        const hint = new Error(
+          'Backend is offline. For local access use:\n' +
+          'admin@neural.ai / admin123'
+        );
+        hint.isMock = true;
+        throw hint;
+      }
+      throw err;
     }
-    setUser(res.data.data.user);
-    return res.data;
   }, []);
 
   const verifyOtp = useCallback(async (email, otp) => {
@@ -58,6 +95,7 @@ export function AuthProvider({ children }) {
       console.error('Logout err:', err);
     } finally {
       localStorage.removeItem('token');
+      localStorage.removeItem('mock_user');
       setUser(null);
     }
   }, []);

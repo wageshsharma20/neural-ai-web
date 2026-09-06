@@ -35,12 +35,11 @@ export default function LoginPage() {
         navigate('/portal');
       }
     } catch (err) {
-      // Distinguish network errors (backend offline) from auth errors
-      const isNetworkError = !err.response;
+      const isNetworkError = !err.response && !err.isMock;
       if (isNetworkError) {
-        setError('Cannot reach the server. The backend may be offline. Please try again later.');
+        setError('Cannot reach the server. Try: admin@neural.ai / admin123');
       } else {
-        setError(err.response?.data?.message || 'Invalid email or password.');
+        setError(err.message || err.response?.data?.message || 'Invalid email or password.');
       }
     } finally {
       setLoading(false);
